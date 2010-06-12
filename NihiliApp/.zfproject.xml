@@ -17,6 +17,11 @@
           <actionMethod actionName="index"/>
         </controllerFile>
         <controllerFile controllerName="Index"/>
+        <controllerFile controllerName="User">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="User"/>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory enabled="false"/>
@@ -73,6 +78,12 @@
           <viewControllerScriptsDirectory forControllerName="Index">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -113,6 +124,8 @@
           <testApplicationControllerFile filesystemName="SiteControllerTest.php"/>
           <testApplicationControllerFile filesystemName="PageControllerTest.php"/>
           <testApplicationControllerFile filesystemName="IndexControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="UserControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="UserControllerTest.php"/>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory>
