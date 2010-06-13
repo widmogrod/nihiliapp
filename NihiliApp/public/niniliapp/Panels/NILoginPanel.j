@@ -2,6 +2,13 @@
 
 var SharedLoginPanel = nil;
 
+/*
+	Panel logowania jest zawsze widoczny nad wszystkimi oknami.
+	Jego funkcjonalność to:
+	- TODO: nie można zamknąć okna bez poprawnego logowania
+	- TODO: logowanie użytkownika
+	- TODO: rejestrowanie nowego użytkownika
+*/
 @implementation NILoginPanel : CPPanel
 {}
 

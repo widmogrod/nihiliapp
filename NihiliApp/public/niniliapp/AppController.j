@@ -8,6 +8,7 @@
 
 @import <Foundation/CPObject.j>
 @import "Windows/NILoginWindow.j"
+@import "Windows/NIOpenWindow.j"
 @import "Panels/NILoginPanel.j"
 
 // Globale dla aplikacji
@@ -56,6 +57,10 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     var loginPanel = [NILoginPanel sharedLoginPanel];
     [loginPanel makeKeyAndOrderFront:self];
     
+    
+    var openWindow = [NIOpenWindow sharedOpenWindow];
+    [openWindow orderFront:self];
+    
 	var toolbar = [[CPToolbar alloc] initWithIdentifier:"Photos"]
     
     //we tell the toolbar that we want to be its delegate and attach it to theWindow
@@ -71,7 +76,8 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 @end
 
-@implementation AppController (Toolbar)
+
+@implementation AppController (ToolbarItems)
 /*
     Wszystkie elementy, które są dostępne na pasku narzędzi.
     Kolejnośc elementów określa ich kolejność występowania na pasku narzędzi.
