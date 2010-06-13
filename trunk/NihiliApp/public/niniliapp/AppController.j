@@ -10,13 +10,17 @@
 @import "Windows/NILoginWindow.j"
 @import "Windows/NIOpenWindow.j"
 @import "Panels/NILoginPanel.j"
+@import "Views/NIPageView.j"
+@import "NIMenu.j"
 
-// Globale dla aplikacji
-SISitebarLeftWidth = 200.0;
-SIToolbarHeight = 59.0;
-SIMenubarHeight = 29.0;
-SIToolbarAndMenubarHeight = SIToolbarHeight + SIMenubarHeight;
+/*
+	Zmienne globale dla aplikacji
+*/ 
+NIPageViewWidth = 200.0;
 
+// gdy jest wykorzystywane menu główne całość strony spada o 29px
+// dlatego trzeba o tą wartość modyfikować gówne bloki strony!
+NIMenubarHeight = 29.0; 
 
 var ToolbarItemUndo = "ToolbarItemUndo",
 	ToolbarItemRedo = "ToolbarItemRedo",
@@ -35,7 +39,8 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
     var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask],
-        contentView = [theWindow contentView];
+        contentView = [theWindow contentView],
+        bounds = [contentView bounds];
 
     var label = [[CPTextField alloc] initWithFrame:CGRectMakeZero()];
 
@@ -50,6 +55,18 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     [contentView addSubview:label];
 
     [theWindow orderFront:self];
+    
+    // Menu główne applikacji
+    var mainMenu = [[NIMenu alloc] initWithDelegate:self];
+    //[[CPApplication sharedApplication] setMainMenu:mainMenu];
+    
+    // Panel po lewej stronie
+    var pageView = [[NIPageView alloc] initWithFrame:CGRectMake(0,0,
+    															NIPageViewWidth,
+    															CGRectGetHeight(bounds) - NIMenubarHeight)];
+    [contentView addSubview:pageView];
+
+
     
     var loginWindow = [NILoginWindow sharedLoginWindow];
     [loginWindow makeKeyAndOrderFront:self];
@@ -69,9 +86,6 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 	[theWindow setToolbar:toolbar];
 
     [theWindow orderFront:self];
-
-    // Uncomment the following line to turn on the standard menu bar.
-    //[CPMenu setMenuBarVisible:YES];
 }
 
 @end
