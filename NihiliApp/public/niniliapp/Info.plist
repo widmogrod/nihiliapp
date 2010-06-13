@@ -4,9 +4,37 @@
 <dict>
 	<key>CPApplicationDelegateClass</key>
 	<string>AppController</string>
+	
 	<key>CPBundleName</key>
-	<string>niniliapp</string>
+	<string>NiniliApp</string>
+	
 	<key>CPPrincipalClass</key>
 	<string>CPApplication</string>
+	
+	<key>CPBundleVersion</key>
+	<string>0.1</string>
+
+	<key>CPBundleShortVersionString</key>
+	<string>alpha</string>
+
+	<key>CPApplicationIcon</key>
+	<string>Resources/NihiliAppIcon_256x256.png</string>
+
+	<key>CPHumanReadableCopyright</key>
+	<string>Gabriel Habryn</string>
+	
+	<key>CPBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CPBundleTypeName</key>
+			<string>SigilBundle</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>nhl</string>
+			</array>
+			<key>CPDocumentClass</key>
+			<string>NIDocument</string>
+		</dict>
+	</array>
 </dict>
 </plist>
