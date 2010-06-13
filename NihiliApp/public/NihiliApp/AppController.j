@@ -8,6 +8,7 @@
 
 @import <Foundation/CPObject.j>
 
+@import "Windows/NILoginWindow.j"
 
 @implementation AppController : CPObject
 {
@@ -31,6 +32,9 @@
     [contentView addSubview:label];
 
     [theWindow orderFront:self];
+    
+    var loginWindow = [NILoginWindow sharedLoginWindow];
+    [loginWindow makeKeyAndOrderFront:self];
 
     // Uncomment the following line to turn on the standard menu bar.
     //[CPMenu setMenuBarVisible:YES];
