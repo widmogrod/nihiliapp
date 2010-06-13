@@ -1,4 +1,5 @@
 @import <AppKit/CPDocument.j>
+@import "Controllers/NIPageWindowController.j"
 
 @implementation NIDocument : CPDocument
 {
@@ -11,27 +12,28 @@
     
     if (self)
     {
-    	{
-    		"id":1,
-    		name:"2R System",
-    		url:"2rsyste.pl",
-    		pages:[
-    			{
-    				"id": 1
-    				name : "Strona główna",
-    				url : "index.html",
-    				elements: [
-    					{
-    						"path":"/div/div/",
-    						"type":"text"
-    						"content":"to jest treść"
-    					}
-    				]
-    				
-    			}
-    		]
-    		
-    	}	
+    	console.log("open");
+//    	{
+//    		"id":1,
+//    		name:"2R System",
+//    		url:"2rsyste.pl",
+//    		pages:[
+//    			{
+//    				"id": 1
+//    				name : "Strona główna",
+//    				url : "index.html",
+//    				elements: [
+//    					{
+//    						"path":"/div/div/",
+//    						"type":"text"
+//    						"content":"to jest treść"
+//    					}
+//    				]
+//    				
+//    			}
+//    		]
+//    		
+//    	};
     }
     
     return self;
@@ -66,6 +68,8 @@
 
 - (void)makeWindowControllers
 {
+
+
 	/*
 		TODO: Czy te okna w kontrolerze nie powinny być sinlegonem?
 			  - okno opcji wydaje mi się że powinno być jak najbardziej,
@@ -73,8 +77,8 @@
 	*/
 
 	// dodaj kontroler okna wizualizacji podstron
-	//var pageWindowController = [[NIPageWindowController alloc] init];
-	//[self addWindowController: pageWindowController];
+	var pageWindowController = [[NIPageWindowController alloc] init];
+	[self addWindowController: pageWindowController];
 }
 
 @end
