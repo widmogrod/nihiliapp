@@ -22,7 +22,7 @@
 		// Okno bedzie się rozszerzać w wysokości i szerokości
 		[self setAutoresizingMask:CPViewHeightSizable];	
 
-		[self setBackgroundColor: [CPColor redColor]];
+		[self setBackgroundColor: [CPColor colorWithHexString:@"dce2e6"]];
 		
 		var buttonBarHeight = 25;
 

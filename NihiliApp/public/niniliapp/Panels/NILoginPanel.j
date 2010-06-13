@@ -14,7 +14,7 @@ var SharedLoginPanel = nil;
 
 - (id)init
 {
-	self = [super initWithContentRect:CGRectMake(0,0,400,200) styleMask:CPHUDBackgroundWindowMask | CPDocModalWindowMask];
+	self = [super initWithContentRect:CGRectMake(0,0,400,200) styleMask:CPDocModalWindowMask];
 	
 	if (self)
 	{
@@ -22,29 +22,15 @@ var SharedLoginPanel = nil;
 			frame = [contentView frame];
 
 		[self center];
-		[self setTitle:@"Logowanie w panelu"]
-		
 		[self setFloatingPanel:YES];
 		[self setWorksWhenModal:YES];
 
-		var buttonBarHeight = 25;
-
-		var buttonBar = [[CPButtonBar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - buttonBarHeight,
-																	 CGRectGetWidth(frame), buttonBarHeight)];
-
-		[contentView addSubview:buttonBar];
-
-		var popUpButton = [CPButtonBar actionPopupButton];
-		[popUpButton addItemWithTitle:@"Item1"];
-
-		var buttons = [
-			[CPButtonBar plusButton],
-			[CPButtonBar minusButton],
-			popUpButton
-		];
-		
-		[buttonBar setButtons:buttons];
-		
+		var loginButton = [CPButton buttonWithTitle:"Zaloguj"];
+		[loginButton setDefaultButton:YES];
+		// ustaw położenie w lewym dolnym roku!
+		[loginButton setFrameOrigin:CGPointMake(CGRectGetMinX(frame) + 10, CGRectGetMaxY(frame) - 10 - CGRectGetHeight([loginButton frame]))];
+		[loginButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin ];
+		[contentView addSubview:loginButton];
 	}
 	
 	return self;

@@ -16,7 +16,7 @@ var SharedOpenWindow = nil;
 
 - (id)init
 {
-	self = [super initWithContentRect:CGRectMake(0,0,500,350) styleMask:CPTitledWindowMask];
+	self = [super initWithContentRect:CGRectMake(0,0,500,350) styleMask:CPTitledWindowMask | CPClosableWindowMask];
 	
 	if (self)
 	{

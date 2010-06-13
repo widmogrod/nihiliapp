@@ -98,6 +98,9 @@
 
 	[self addItem:[CPMenuItem separatorItem]];
 
+	var loginMenuItem = [[CPMenuItem alloc] initWithTitle:@"Logowanie" action:@selector(login:) keyEquivalent:nil];
+	[self addItem:loginMenuItem];
+
 	return self;
 }
 
