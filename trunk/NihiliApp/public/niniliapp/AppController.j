@@ -7,7 +7,6 @@
  */
 
 @import <Foundation/CPObject.j>
-@import "Windows/NILoginWindow.j"
 @import "Windows/NIOpenWindow.j"
 @import "Panels/NILoginPanel.j"
 @import "Views/NIPageView.j"
@@ -23,18 +22,10 @@ NIPageViewWidth = 200.0;
 NIMenubarHeight = 29.0; 
 
 var ToolbarItemUndo = "ToolbarItemUndo",
-	ToolbarItemRedo = "ToolbarItemRedo",
-	ToolbarItemAddText = "ToolbarItemAddText",
-	ToolbarItemAddImage = "ToolbarItemAddImage",
-	ToolbarItemAlignLeft = "ToolbarItemAlignLeft",
-	ToolbarItemAlignCenter = "ToolbarItemAlignCenter",
-	ToolbarItemAlignRight = "ToolbarItemAlignRight",
-	ToolbarItemPreview = "ToolbarItemPreview",
-	ToolbarItemOrder = "ToolbarItemOrder";
+	ToolbarItemRedo = "ToolbarItemRedo";
 
 @implementation AppController : CPObject
-{
-}
+{}
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
@@ -68,15 +59,15 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 
     
-    var loginWindow = [NILoginWindow sharedLoginWindow];
-    [loginWindow makeKeyAndOrderFront:self];
+//    var loginWindow = [NILoginWindow sharedLoginWindow];
+//    [loginWindow makeKeyAndOrderFront:self];
+//    
+//    var loginPanel = [NILoginPanel sharedLoginPanel];
+//    [loginPanel makeKeyAndOrderFront:self];
     
-    var loginPanel = [NILoginPanel sharedLoginPanel];
-    [loginPanel makeKeyAndOrderFront:self];
     
-    
-    var openWindow = [NIOpenWindow sharedOpenWindow];
-    [openWindow orderFront:self];
+//    var openWindow = [NIOpenWindow sharedOpenWindow];
+//    [openWindow orderFront:self];
     
 	var toolbar = [[CPToolbar alloc] initWithIdentifier:"Photos"]
     
@@ -90,6 +81,19 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 @end
 
+@implementation AppController (MenuActions)
+
+- (void)openDocument:(id)sender
+{
+	[[NIOpenWindow sharedOpenWindow] orderFront:self];
+}
+
+- (void)login:(id)sender
+{
+    [[NILoginPanel sharedLoginPanel] makeKeyAndOrderFront:nil];
+}
+
+@end
 
 @implementation AppController (ToolbarItems)
 /*
@@ -99,27 +103,10 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 -(CPArray)toolbarDefaultItemIdentifiers:(CPToolbar)toolbar
 {
 	// mogę zstowować [].. ale w ramach nauki Objective-J wybieram ten sposób
-	return new [CPArray arrayWithObjects: ToolbarItemUndo,
+	return new [CPArray arrayWithObjects: CPToolbarFlexibleSpaceItemIdentifier,
+										  ToolbarItemUndo,
 										  ToolbarItemRedo,
-
-										  CPToolbarFlexibleSpaceItemIdentifier,
-										  
-										  ToolbarItemAddText,
-										  ToolbarItemAddImage,
-
-										  CPToolbarSpaceItemIdentifier,
-
-										  ToolbarItemAlignLeft,
-										  ToolbarItemAlignCenter,
-										  ToolbarItemAlignRight,
-										  
-										  CPToolbarFlexibleSpaceItemIdentifier,
-										  
-										  ToolbarItemPreview,
-										  
-										  CPToolbarSpaceItemIdentifier,
-										  
-										  ToolbarItemOrder];
+										  CPToolbarFlexibleSpaceItemIdentifier];
 }
 
 /*
@@ -130,19 +117,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 	// mogę zstowować [].. ale w ramach nauki Objective-J wybieram ten sposób
 	return new [CPArray arrayWithObjects: ToolbarItemUndo,
 										  ToolbarItemRedo,
-
-										  ToolbarItemAddText,
-										  ToolbarItemAddImage,
-										  
-										  ToolbarItemPreview,
-										  ToolbarItemOrder,
-										  
-										  ToolbarItemAlignLeft,										  
-										  ToolbarItemAlignCenter,
-										  ToolbarItemAlignRight,
-
-										  CPToolbarFlexibleSpaceItemIdentifier,
-										  CPToolbarSpaceItemIdentifier];
+										  CPToolbarFlexibleSpaceItemIdentifier];
 }
 
 /*
@@ -198,79 +173,6 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 			[item setImage:image];
 			[item setAlternateImage:imageAlternate];
 			break;
-
-		case ToolbarItemAddText:
-			[item setLabel:@"Dodaj tekst"];
-
-			var image = [[CPImage alloc] initWithContentsOfFile:"Resources/add_text.png" size:CPSizeMake(32, 32)],
-				imageAlternate = [[CPImage alloc] initWithContentsOfFile:"Resources/add_text_alternate.png" size:CPSizeMake(32, 32)];
-			
-			[item setImage:image];
-			[item setAlternateImage:imageAlternate];
-			break;
-
-		case ToolbarItemAddImage:
-			[item setLabel:@"Dodaj grafikę"];
-
-			var image = [[CPImage alloc] initWithContentsOfFile:"Resources/add_image.png" size:CPSizeMake(32, 32)],
-				imageAlternate = [[CPImage alloc] initWithContentsOfFile:"Resources/add_image_alternate.png" size:CPSizeMake(32, 32)];
-			
-			[item setImage:image];
-			[item setAlternateImage:imageAlternate];
-			break;
-
-		case ToolbarItemPreview:
-			[item setLabel:@"Podgląd"];
-			[item setToolTip:@"Zobacz projekt w orginalnych rozmiarach"];
-
-			var image = [[CPImage alloc] initWithContentsOfFile:"Resources/preview.png" size:CPSizeMake(32, 32)],
-				imageAlternate = [[CPImage alloc] initWithContentsOfFile:"Resources/preview_alternate.png" size:CPSizeMake(32, 32)];
-			
-			[item setImage:image];
-			[item setAlternateImage:imageAlternate];
-			break;
-
-		case ToolbarItemOrder:
-			[item setLabel:@"Zamów"];
-			[item setToolTip:@"Zamów ten projekt pieczątki"];
-
-			var image = [[CPImage alloc] initWithContentsOfFile:"Resources/order.png" size:CPSizeMake(32, 32)],
-				imageAlternate = [[CPImage alloc] initWithContentsOfFile:"Resources/order_alternate.png" size:CPSizeMake(32, 32)];
-			
-			[item setImage:image];
-			[item setAlternateImage:imageAlternate];
-			break;
-
-		case ToolbarItemAlignLeft:
-			[item setLabel:@"Do lewej"];
-			[item setToolTip:@"Wyrównaj do lewej"];
-
-			var image = [[CPImage alloc] initWithContentsOfFile:"Resources/align_left.png" size:CPSizeMake(32, 32)];
-			
-			[item setImage:image];
-			//[item setAlternateImage:imageAlternate];
-			break;
-
-		case ToolbarItemAlignCenter:
-			[item setLabel:@"Wyśrodkuj"];
-			[item setToolTip:@"Wyśrodkuj"];
-
-			var image = [[CPImage alloc] initWithContentsOfFile:"Resources/align_center.png" size:CPSizeMake(32, 32)];
-			
-			[item setImage:image];
-			//[item setAlternateImage:imageAlternate];
-			break;
-
-		case ToolbarItemAlignRight:
-			[item setLabel:@"Do prawej"];
-			[item setToolTip:@"Wyrównaj do prawej"];
-
-			var image = [[CPImage alloc] initWithContentsOfFile:"Resources/align_right.png" size:CPSizeMake(32, 32)];
-			
-			[item setImage:image];
-			//[item setAlternateImage:imageAlternate];
-			break;
-
 	}
 
 	return item;
