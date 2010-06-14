@@ -9,8 +9,13 @@
 @import <Foundation/CPObject.j>
 @import "Windows/NIOpenWindow.j"
 @import "Panels/NILoginPanel.j"
+@import "Panels/NISitePanel.j"
 @import "Views/NIPageView.j"
 @import "NIMenu.j"
+
+@import "NIDocument.j"
+
+@import "Controllers/NIApiController.j"
 
 /*
 	Zmienne globale dla aplikacji
@@ -25,62 +30,58 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 	ToolbarItemRedo = "ToolbarItemRedo";
 
 @implementation AppController : CPObject
-{}
+{
+	CPView contentView;
+}
+
+/*
+	Nie otwieraj pustego dokumentu przy starcie aplikacji, najpierw autoryzacja!
+*/
+- (BOOL)applicationShouldOpenUntitledFile:(id)sender
+{
+	return NO;
+}
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-    var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask],
-        contentView = [theWindow contentView],
-        bounds = [contentView bounds];
-
-    var label = [[CPTextField alloc] initWithFrame:CGRectMakeZero()];
-
-    [label setStringValue:@"Hello World!"];
-    [label setFont:[CPFont boldSystemFontOfSize:24.0]];
-
-    [label sizeToFit];
-
-    [label setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
-    [label setCenter:[contentView center]];
-
-    [contentView addSubview:label];
-
+    var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
     [theWindow orderFront:self];
+
+	contentView = [theWindow contentView];
     
-    // Menu główne applikacji
+    // dokonanie autoryzacji uzytkownika przed uruchomieniem aplikacji!
+    if (![[NIApiController sharedController] isAuthenticated])
+    {
+    	[self login:self];
+    } else {
+    	[self initApplicationView];
+    }
+    
+//    [[NIOpenWindow sharedOpenWindow] orderFront:self];
+    
+    [[NISitePanel sharedPanel] orderFront:self]
+}
+
+- (void)initApplicationView
+{
+	// Aktywuj menu główne applikacji
     var mainMenu = [[NIMenu alloc] initWithDelegate:self];
-    //[[CPApplication sharedApplication] setMainMenu:mainMenu];
     
-    // Panel po lewej stronie
-    var pageView = [[NIPageView alloc] initWithFrame:CGRectMake(0,0,
-    															NIPageViewWidth,
-    															CGRectGetHeight(bounds) - NIMenubarHeight)];
-    [contentView addSubview:pageView];
-
-
-    
-//    var loginWindow = [NILoginWindow sharedLoginWindow];
-//    [loginWindow makeKeyAndOrderFront:self];
-//    
-//    var loginPanel = [NILoginPanel sharedLoginPanel];
-//    [loginPanel makeKeyAndOrderFront:self];
-    
-    
-//    var openWindow = [NIOpenWindow sharedOpenWindow];
-//    [openWindow orderFront:self];
-    
-	var toolbar = [[CPToolbar alloc] initWithIdentifier:"Photos"]
-    
-    //we tell the toolbar that we want to be its delegate and attach it to theWindow
+    // Utwórz pasek nawigacyjny
+	var toolbar = [[CPToolbar alloc] initWithIdentifier:"Navigation"];
     [toolbar setDelegate:self];
 	[toolbar setVisible:YES];
 	[theWindow setToolbar:toolbar];
-
-    [theWindow orderFront:self];
+	
+	var pageView = [[NIPageView alloc] initWithFrame:CGRectMake(0,0, NIPageViewWidth, CGRectGetHeight([contentView bounds]))];
+	[contentView addSubview:pageView];
 }
 
 @end
 
+/*
+	Kategoria obsługuje wiadomości akcj operacji na dokumencie
+*/
 @implementation AppController (MenuActions)
 
 - (void)openDocument:(id)sender
@@ -90,11 +91,15 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)login:(id)sender
 {
-    [[NILoginPanel sharedLoginPanel] makeKeyAndOrderFront:nil];
+	var panel = [[NILoginPanel sharedLoginPanel] makeKeyAndOrderFront:self];
 }
 
 @end
 
+
+/*
+	Kategotia odpowiada za zbudowanie Paska narzędzi
+*/
 @implementation AppController (ToolbarItems)
 /*
     Wszystkie elementy, które są dostępne na pasku narzędzi.
