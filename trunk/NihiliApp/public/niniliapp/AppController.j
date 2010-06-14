@@ -9,6 +9,7 @@
 @import <Foundation/CPObject.j>
 @import "Windows/NIOpenWindow.j"
 @import "Panels/NILoginPanel.j"
+@import "Panels/NISitePanel.j"
 @import "Views/NIPageView.j"
 @import "NIMenu.j"
 
@@ -29,7 +30,9 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 	ToolbarItemRedo = "ToolbarItemRedo";
 
 @implementation AppController : CPObject
-{}
+{
+	CPView contentView;
+}
 
 /*
 	Nie otwieraj pustego dokumentu przy starcie aplikacji, najpierw autoryzacja!
@@ -41,20 +44,27 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-    var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask],
-        contentView = [theWindow contentView];
-
+    var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
     [theWindow orderFront:self];
+
+	contentView = [theWindow contentView];
     
     // dokonanie autoryzacji uzytkownika przed uruchomieniem aplikacji!
     if (![[NIApiController sharedController] isAuthenticated])
     {
     	[self login:self];
     } else {
-    	[self openDocument:self]
+    	[self initApplicationView];
     }
+    
+//    [[NIOpenWindow sharedOpenWindow] orderFront:self];
+    
+    [[NISitePanel sharedPanel] orderFront:self]
+}
 
-    // Aktywuj menu główne applikacji
+- (void)initApplicationView
+{
+	// Aktywuj menu główne applikacji
     var mainMenu = [[NIMenu alloc] initWithDelegate:self];
     
     // Utwórz pasek nawigacyjny
@@ -62,6 +72,9 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     [toolbar setDelegate:self];
 	[toolbar setVisible:YES];
 	[theWindow setToolbar:toolbar];
+	
+	var pageView = [[NIPageView alloc] initWithFrame:CGRectMake(0,0, NIPageViewWidth, CGRectGetHeight([contentView bounds]))];
+	[contentView addSubview:pageView];
 }
 
 @end
@@ -78,7 +91,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)login:(id)sender
 {
-    [[NILoginPanel sharedLoginPanel] makeKeyAndOrderFront:self];
+	var panel = [[NILoginPanel sharedLoginPanel] makeKeyAndOrderFront:self];
 }
 
 @end
