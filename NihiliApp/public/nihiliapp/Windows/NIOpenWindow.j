@@ -12,7 +12,11 @@ var SharedOpenWindow = nil;
 	- TODO: zmiana kolejności projektów
 */
 @implementation NIOpenWindow : CPWindow
-{}
+{
+	CPButton plusButton;
+	CPButton minusButton;
+	CPPopUpButton popUpButton;
+}
 
 - (id)init
 {
@@ -24,26 +28,31 @@ var SharedOpenWindow = nil;
 			frame = [contentView frame];
 
 		[self center];
-		[self setTitle:@"Otwórz projekt"]
+		[self setTitle:@"Otwórz stronę internetową"]
 
 		var buttonBarHeight = 25;
 
 		var buttonBar = [[CPButtonBar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - buttonBarHeight,
 																	 CGRectGetWidth(frame), buttonBarHeight)];
 
-		[contentView addSubview:buttonBar];
-
-		var popUpButton = [CPButtonBar actionPopupButton];
+		popUpButton = [CPButtonBar actionPopupButton];
 		[popUpButton addItemWithTitle:@"Ustawienia"];
 		[popUpButton addItemWithTitle:@"Zmień nazwę"];
+		
+		[popUpButton setAction:@selector(actionPopUp:)];
+		[popUpButton setTarget:self];
+		
+		plusButton = [CPButtonBar plusButton];
+		minusButton = [CPButtonBar minusButton];
 
 		var buttons = [
-			[CPButtonBar plusButton],
-			[CPButtonBar minusButton],
+			plusButton,
+			minusButton,
 			popUpButton
 		];
-		
+
 		[buttonBar setButtons:buttons];
+		[contentView addSubview:buttonBar];
 		
 	}
 	
@@ -56,6 +65,20 @@ var SharedOpenWindow = nil;
 		SharedOpenWindow = [[NIOpenWindow alloc] init];
 
 	return SharedOpenWindow;
+}
+
+@end
+
+@implementation NIOpenWindow (Actions)
+
+- (void)openSetting:(id)sender
+{
+	
+}
+
+- (void)rename:(id)sender
+{
+	
 }
 
 @end
