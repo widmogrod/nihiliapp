@@ -11,10 +11,10 @@
 */
 @implementation NISitePanel : CPPanel
 {
-	CPTextField hostnameField;
-	CPTextField usernameField;
-	CPTextField passwordField;
-	CPTextField	filepathField
+	CPTextField hostnameField @accessors(readonly);
+	CPTextField usernameField @accessors(readonly);
+	CPTextField passwordField @accessors(readonly);
+	CPTextField	filepathField @accessors(readonly);
 	
 	CPTableView tableView;
 	CPOutlineView outlineView;
@@ -39,9 +39,19 @@
 
 		var fieldHeight = 29;
 
-		usernameField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(frame) + 10, 
+		hostnameField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(frame) + 10, 
 																	  CGRectGetMinY(frame) + 10,
 																	  CGRectGetWidth(frame)-20,
+																	  fieldHeight)];
+		[hostnameField setEditable:YES];
+		[hostnameField setBezeled:YES];
+		[contentView addSubview:hostnameField];
+		
+		var hostnameFrame = [hostnameField frame];
+		
+		usernameField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(hostnameFrame), 
+																	  CGRectGetMinY(hostnameFrame) + 10 + fieldHeight,
+																	  CGRectGetWidth(hostnameFrame),
 																	  fieldHeight)];
 		[usernameField setEditable:YES];
 		[usernameField setBezeled:YES];
@@ -81,7 +91,7 @@
 		[checkButton setFrameOrigin:CGPointMake(CGRectGetMinX(filepathFrame), 
 												CGRectGetMaxY(filepathFrame) + 10 + fieldHeight)];
 		[checkButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin];
-		[checkButton setAction:@selector(getPath:)];
+		[checkButton setAction:@selector(testConnection:)];
 		[checkButton setTarget:[self windowController]];
 		[contentView addSubview:checkButton];
 		

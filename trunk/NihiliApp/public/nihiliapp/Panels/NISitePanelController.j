@@ -1,6 +1,7 @@
 @import <AppKit/CPWindowController.j>
 
 @import "NISitePanel.j"
+@import "../Controllers/NIApiController.j"
 
 var SharedSIPanelController
 
@@ -57,11 +58,15 @@ var SharedSIPanelController
 }
 
 /*
-	głównym zadaniem akcji jest
+	Sprawź połączenie
 */
-- (id)getPath:(id)sender
+- (id)testConnection:(id)sender
 {
-	console.log(@"getPath", sender);
+	var hostname = [[[self window] hostnameField] stringValue],
+		username = [[[self window] usernameField] stringValue],
+		password = [[[self window] passwordField] stringValue];
+
+	[[NIApiController sharedController] testConnectionToHost:hostname user:username pass:password];
 }
 
 @end
