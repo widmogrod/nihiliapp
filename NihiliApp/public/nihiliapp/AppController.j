@@ -9,7 +9,9 @@
 @import <Foundation/CPObject.j>
 @import "Windows/NIOpenWindow.j"
 @import "Panels/NILoginPanel.j"
-@import "Panels/NISitePanel.j"
+
+@import "Panels/NISitePanelController.j"
+
 @import "Views/NIPageView.j"
 @import "NIMenu.j"
 
@@ -59,7 +61,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     
 //    [[NIOpenWindow sharedOpenWindow] orderFront:self];
     
-    [[NISitePanel sharedPanel] orderFront:self]
+    [NISitePanelController sharedController];
 }
 
 - (void)initApplicationView
