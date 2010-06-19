@@ -17,7 +17,8 @@
 
 @import "NIDocument.j"
 
-@import "Controllers/NIApiController.j"
+//@import "Controllers/NIApiController.j"
+@import "Panels/NIFileExplorerController.j"
 
 /*
 	Zmienne globale dla aplikacji
@@ -61,7 +62,8 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     
 //    [[NIOpenWindow sharedOpenWindow] orderFront:self];
     
-    [NISitePanelController sharedController];
+    //[NISitePanelController sharedController];
+    [[NIFileExplorerController sharedController] connectToServer:@"ftp://widmogrod.info" username:@"widmogrod" password:@"for6ba!"];
 }
 
 - (void)initApplicationView
