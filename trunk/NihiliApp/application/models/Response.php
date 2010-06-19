@@ -25,32 +25,67 @@ abstract class Application_Model_Response
 	 */	
 	protected $_messages = array();
 
+	/**
+	 * @param string $status
+	 * @return void
+	 */
+	protected function setStatus($status)
+	{
+		switch ($status)
+		{
+			case self::SUCCESS:
+			case self::FAILURE:
+				$this->_status = $status;
+				break;
+		}
+	}
 
+	/**
+	 * @return void
+	 */
 	protected function setStatusSuccess()
 	{
 		$this->_status = self::SUCCESS;
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function setStatusFailure()
 	{
 		$this->_status = self::FAILURE;
 	}
 	
+	/**
+	 * @return string
+	 */
 	public function getStatus()
 	{
 		return $this->_status;
 	}
 
+	/**
+	 * @param mixed $result
+	 * @return void
+	 */
 	public function setResult($result)
 	{
 		$this->_result = $result;
 	}
 	
+	/**
+	 * @return mixed
+	 */
 	public function getResult()
 	{
 		return $this->_result;
 	}
 	
+	/**
+	 * @param string $message
+	 * @param string $type
+	 * @return void
+	 */
 	public function addMessage($message, $type = self::INFO)
 	{
 		$this->_messages[] = array(
@@ -59,11 +94,17 @@ abstract class Application_Model_Response
 		);
 	}
 	
+	/**
+	 * @return array
+	 */
 	public function getMessages()
 	{
 		return $this->_messages;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function toArray()
 	{
 		return array(
@@ -73,11 +114,17 @@ abstract class Application_Model_Response
 		);
 	}
 	
+	/**
+	 * @return string
+	 */
 	public function toJSON()
 	{
 		return Zend_Json::encode($this->toArray());
 	}
 
+	/**
+	 * @return string
+	 */
 	public function __toString()
 	{
 		return $this->toJSON();

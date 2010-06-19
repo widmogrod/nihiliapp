@@ -2,6 +2,8 @@
 class Application_Model_Connection extends Application_Model_Response
 {
 	protected $_ftp;
+	
+	protected $_data = array();
 
 	public function __construct(array $data) 
 	{
@@ -9,9 +11,26 @@ class Application_Model_Connection extends Application_Model_Response
 		
 		try {
 			$this->_ftp = KontorX_Ftp::factory($connectionType, $data);
-		} catch(KontroX_Ftp_Exception $e) {
-		
+			$this->setStatus(self::SUCCESS);
+		} catch(KontorX_Ftp_Exception $e) {
+			$this->setStatus(self::FAILURE);
+			$this->addMessage($e->getMessage(), self::ERROR);		
 		}
+	}
+
+	public function ls()
+	{
+		$resutl = array();
+
+		try {
+			$resutl = $this->_ftp->ls(@$this->_data['path']);
+			$this->setStatus(self::SUCCESS);
+		} catch(KontorX_Ftp_Exception $e) {
+			$this->setStatus(self::FAILURE);
+			$this->addMessage($e->getMessage(), self::ERROR);
+		}
+
+		$this->setResult($result);
 	}
 }
 

@@ -11,6 +11,7 @@ var SharedFileExplorerController = nil;
 	//NIFTPConnection _connection @accessors(readoly);
 	
 	@outlet CPOutlineTable fileExplorerTable;
+	CPArray _dataSource;
 }
 
 + (NIFileExplorerController)sharedController
@@ -29,7 +30,8 @@ var SharedFileExplorerController = nil;
 	if (self)
 	{
 		fileExplorerTable = [fileExplorerPanel fileExplorerTable];
-
+		[fileExplorerTable setDataSource:self];
+		
 		[fileExplorerPanel orderFront:self];
 	}
 	return self;
@@ -58,7 +60,7 @@ var SharedFileExplorerController = nil;
 	if (!anItem)
 	{
 		console.log("child", array[aChild]);
-		return array[aChild];
+		return _dataSource[aChild];
 	}
 		
 
@@ -79,17 +81,17 @@ var SharedFileExplorerController = nil;
 	console.log("numberOfChildrenOfItem", anItem);
 	if (!anItem)
 	{
-		console.log("numberOfChildrenOfItem", array.length);
-		return array.length;
+		console.log("numberOfChildrenOfItem", _dataSource);
+		return [_dataSource count];
 	}
 		
-	return anItem.childrens.length;
+//	return anItem.childrens.length;
 }
 
 - (id)outlineView:(CPOutlineView)anOutlineView objectValueForTableColumn:(id)aColumn byItem:(id)anItem
 {
 	console.log("objectValueForTableColumn", aColumn, anItem);
-	return array[anItem];
+	return _dataSource[anItem];
 }
 
 @end
@@ -120,8 +122,27 @@ var SharedFileExplorerController = nil;
 		return;	
 	}
 
-//	/_dataSource = data.response;
-//	[fileExplorerTable reloadData];
+// CPTree ??
+//	_dataSource = data.response;
+	_dataSource = [
+		@"Raz",
+		@"Dwa",
+		@"Trzy",
+//		[CPObject new],
+//		[CPObject new]
+
+//		[CPTreeNode treeNodeWithRepresentedObject:{
+//			type: "DIR",
+//			name: "httpdocs",
+//			path: "Ścieżka dostępu do pliku",
+//			info: {
+//				group:"root"
+//			}
+//		}]
+	];
+	console.log(_dataSource);
+	[outlineView expandItem:nil expandChildren:NO];
+  	[fileExplorerTable reloadData];
 }
 
 // Called when the URL has finished loading.
