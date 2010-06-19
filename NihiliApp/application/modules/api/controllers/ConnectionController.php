@@ -32,7 +32,7 @@ class Api_ConnectionController extends Zend_Controller_Action
 	
 	public function postDispatch()
 	{
-		print $this->_connectionApi->toJSON();
+		$this->_helper->json($this->_connectionApi->toJSON());
 	}
 
 	/**
@@ -58,8 +58,6 @@ class Api_ConnectionController extends Zend_Controller_Action
 	 *			name: "Nazwa pliku lub katalogu"
 	 *			path: "Ścieżka dostępu do pliku",
 	 *			info: {
-	 *				ctime:123123123,
-	 *				mtime:123123123,
 	 *				group:"root",
 	 *				
 	 *			}
@@ -73,6 +71,8 @@ class Api_ConnectionController extends Zend_Controller_Action
 	 */
 	public function lsAction()
 	{
+		$this->_connectionApi->ls();
+		
 #		$data = array(
 #			'server'   => $_POST['server'],
 #			'username' => $_POST['username'],
