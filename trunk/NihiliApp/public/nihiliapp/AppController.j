@@ -63,7 +63,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 //    [[NIOpenWindow sharedOpenWindow] orderFront:self];
     
     //[NISitePanelController sharedController];
-    [[NIFileExplorerController sharedController] connectToServer:@"ftp://widmogrod.info" username:@"widmogrod" password:@"for6ba!"];
+	[[NIFileExplorerController sharedController] connectToServer:@"ftp.widmogrod.info" username:@"widmogrod" password:@"for6ba!"];
 }
 
 - (void)initApplicationView

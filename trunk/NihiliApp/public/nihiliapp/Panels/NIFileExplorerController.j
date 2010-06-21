@@ -45,7 +45,9 @@ var SharedFileExplorerController = nil;
 			   password:(CPString)aPassword 
 //			   	   path:(CPStrong)aPath
 {
-	[[NIFTPConnection connectionToServer:aServer username:anUsername password:aPassword] connectionWithDelegate:self];
+	var conn = [NIFTPConnection connectionToServer:aServer username:anUsername password:aPassword];
+	[conn setConnectionType:"ftp"];
+	[conn connectionWithDelegate:self];
 }
 @end
 
@@ -59,21 +61,29 @@ var SharedFileExplorerController = nil;
 	console.log("child", aChild, anItem);
 	if (!anItem)
 	{
-		console.log("child", array[aChild]);
-		return _dataSource[aChild];
+		//console.log("child", _dataSource[aChild]);
+		
+		// TODO: Dodać obwiniecie rekordu z CPObject?
+		
+		// TODO: natywny objekt JS ma problem z description
+//		console.log([_dataSource[aChild] description]);
+		
+		return _dataSource[aChild]["filename"];
+		
+//		return null;
 	}
 		
 
-	return anItem.childrens[aChild];
+//	return anItem.childrens[aChild];
 }
 
 -(BOOL)outlineView:(CPOutlineView)anOutlineView  isItemExpandable:(id)anItem
 {
 	console.log("isItemExpandable", anItem);
-	if (!anItem)
+//	if (!anItem)
 		return NO;
 
-	return !!anItem.childrens;
+//	return !!anItem.childrens;
 }
 
 - (int)outlineView:(CPOutlineView)anOutlineView  numberOfChildrenOfItem:(id)anItem
@@ -81,7 +91,7 @@ var SharedFileExplorerController = nil;
 	console.log("numberOfChildrenOfItem", anItem);
 	if (!anItem)
 	{
-		console.log("numberOfChildrenOfItem", _dataSource);
+		console.log("numberOfChildrenOfItem", [_dataSource count]);
 		return [_dataSource count];
 	}
 		
@@ -91,7 +101,8 @@ var SharedFileExplorerController = nil;
 - (id)outlineView:(CPOutlineView)anOutlineView objectValueForTableColumn:(id)aColumn byItem:(id)anItem
 {
 	console.log("objectValueForTableColumn", aColumn, anItem);
-	return _dataSource[anItem];
+	return anItem;
+//	return _dataSource[anItem];
 }
 
 @end
@@ -116,6 +127,7 @@ var SharedFileExplorerController = nil;
 // Called when the connection has received data.
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data
 {
+	data = [data objectFromJSON];
 	console.log("didReceiveData",data);
 	if (data.status != @"SUCCESS")
 	{
@@ -123,26 +135,26 @@ var SharedFileExplorerController = nil;
 	}
 
 // CPTree ??
-//	_dataSource = data.response;
-	_dataSource = [
-		@"Raz",
-		@"Dwa",
-		@"Trzy",
-//		[CPObject new],
-//		[CPObject new]
+	_dataSource = data.result;
+//	_dataSource = [
+//		@"Raz",
+//		@"Dwa",
+//		@"Trzy",
+////		[CPObject new],
+////		[CPObject new]
 
-//		[CPTreeNode treeNodeWithRepresentedObject:{
-//			type: "DIR",
-//			name: "httpdocs",
-//			path: "Ścieżka dostępu do pliku",
-//			info: {
-//				group:"root"
-//			}
-//		}]
-	];
-	console.log(_dataSource);
-	[outlineView expandItem:nil expandChildren:NO];
-  	[fileExplorerTable reloadData];
+////		[CPTreeNode treeNodeWithRepresentedObject:{
+////			type: "DIR",
+////			name: "httpdocs",
+////			path: "Ścieżka dostępu do pliku",
+////			info: {
+////				group:"root"
+////			}
+////		}]
+//	];
+//	console.log("_dataSource", _dataSource);
+	[fileExplorerTable reloadData];
+//	[outlineView expandItem:nil expandChildren:NO];
 }
 
 // Called when the URL has finished loading.

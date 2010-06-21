@@ -32,7 +32,7 @@ class Api_ConnectionController extends Zend_Controller_Action
 	
 	public function postDispatch()
 	{
-		$this->_helper->json($this->_connectionApi->toJSON());
+		$this->_helper->json($this->_connectionApi->toArray());
 	}
 
 	/**
@@ -54,13 +54,13 @@ class Api_ConnectionController extends Zend_Controller_Action
 	 *	],
 	 *  result: [
 	 *		{
-	 *			type: "DIR|FILR",
-	 *			name: "Nazwa pliku lub katalogu"
-	 *			path: "Ścieżka dostępu do pliku",
-	 *			info: {
-	 *				group:"root",
-	 *				
-	 *			}
+	 *			'filename' => '...',
+	 *			'filetype' => '...',
+	 *			'filesize' => 1234,
+	 *			'permissions' => 'drwx-rwx-rwx',
+	 *			'user'  => '...',
+	 *			'group' => '...',
+	 *			'filemtime' => 1233455
 	 *		}
 	 *  ]
 	 * }
@@ -72,14 +72,5 @@ class Api_ConnectionController extends Zend_Controller_Action
 	public function lsAction()
 	{
 		$this->_connectionApi->ls();
-		
-#		$data = array(
-#			'server'   => $_POST['server'],
-#			'username' => $_POST['username'],
-#			'password' => $_POST['password']
-#		);
-#		
-#		$connection = KontorX_Ftp::factory('ftp', $data);
-#		print_r($connection->ls());
 	}
 }
