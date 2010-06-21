@@ -8,6 +8,7 @@ var NIURLFTPConnection = @"http://nihiliapp.lh/api/connection/ls";
 	CPString _server;
 	CPString _username;
 	CPString _password;
+	CPString _connectionType @accessors(property=connectionType);
 	CPString path @accessors;
 	int	port @accessors;
 }
@@ -40,7 +41,9 @@ var NIURLFTPConnection = @"http://nihiliapp.lh/api/connection/ls";
 	var request = [CPURLRequest requestWithURL:NIURLFTPConnection];
 	var body = @"server=" + _server + "&" +
 			   @"username=" + _username + "&" +
-			   @"password=" + _password;
+			   @"password=" + _password + "&" +
+			   @"connectionType=" + _connectionType;
+
 
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];

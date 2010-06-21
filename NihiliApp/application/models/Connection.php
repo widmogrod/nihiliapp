@@ -20,10 +20,10 @@ class Application_Model_Connection extends Application_Model_Response
 
 	public function ls()
 	{
-		$resutl = array();
+		$result = array();
 
 		try {
-			$resutl = $this->_ftp->ls(@$this->_data['path']);
+			$result = $this->_ftp->ls(@$this->_data['path'], true);
 			$this->setStatus(self::SUCCESS);
 		} catch(KontorX_Ftp_Exception $e) {
 			$this->setStatus(self::FAILURE);
