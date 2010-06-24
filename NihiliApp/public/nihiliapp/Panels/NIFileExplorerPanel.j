@@ -18,67 +18,49 @@
 		var contentView = [self contentView],
 			frame = [contentView frame];
 
-		[self setTitle:@"Przeglądaj plik"];
+		[self setTitle:@"Przeglądaj pliki"];
 		[self center];
 		[self setFloatingPanel:YES];
 		[self setWorksWhenModal:YES];
+		
+		var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
 
-		_fileExplorerTable = [[CPOutlineView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
+		_fileExplorerTable = [[CPOutlineView alloc] initWithFrame:CGRectMake(0,0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
 																   								   
 		//[_fileExplorerTable setDelegate:self];
-		[_fileExplorerTable setColumnAutoresizingStyle:CPTableViewLastColumnOnlyAutoresizingStyle];
-		[_fileExplorerTable setRowHeight:26.0];
-		[_fileExplorerTable setSelectionHighlightStyle:CPTableViewSelectionHighlightStyleNone];
-		[_fileExplorerTable setVerticalMotionCanBeginDrag:YES];
-		
-			var column = [[CPTableColumn alloc] initWithIdentifier:"filename"];
-			[[column headerView] setStringValue:"Nazwa katalogu"];
 
-			[column setWidth:220.0];
-			[column setMinWidth:20.0];
+		// zapewnia rozszeżenie sie pierwszej kolumny!
+		[_fileExplorerTable setColumnAutoresizingStyle:CPTableViewFirstColumnOnlyAutoresizingStyle];
+		// ustaw styl podświetlania rekordu
+		[_fileExplorerTable setSelectionHighlightStyle:CPTableViewSelectionHighlightStyleSourceList];
+//		// ustaw linie poziomą rodzielającą poszczególne wiersze
+//		[_fileExplorerTable setGridStyleMask:CPTableViewSolidHorizontalGridLineMask];
+
+		[_fileExplorerTable setVerticalMotionCanBeginDrag:NO];
+		[_fileExplorerTable setAllowsMultipleSelection:NO];
+
+		[_fileExplorerTable setRowHeight:26.0];
+
+			// tworzenie kolumny
+			var column = [[CPTableColumn alloc] initWithIdentifier:"filename"];
+			[[column headerView] setStringValue:"Nazwa"];
+//			[column setWidth:220.0];
+//			[column setMinWidth:20.0];
+//			[column setMaxWidth: 200.0];
 //			[column setEditable:NO];
 //			[column setDataView:[CPTextField new]];
 			[_fileExplorerTable addTableColumn:column];
 			[_fileExplorerTable setOutlineTableColumn:column];
 			
-			
 //			[_fileExplorerTable addTableColumn:[[CPTableColumn alloc] initWithIdentifier:@"Two"]];
+			
+		[scrollView setDocumentView:_fileExplorerTable];
+		[contentView addSubview:scrollView];
 
-		[contentView addSubview:_fileExplorerTable];
-		//[column setWidth:CPRectGetWidth([_fileExplorerTable bounds])];
-		
-//		[tableView sizeLastColumnToFit];
 //		[_fileExplorerTable setDataSource: [OutlineDataSource new]];
 //		[_fileExplorerTable expandItem:nil expandChildren:NO];
 	}
 	return self;
-	
-//	
-//	
-// _outlineView = [[CPOutlineView alloc] initWithFrame:[contentView bounds]];
-//    
-//    var column = [[CPTableColumn alloc] initWithIdentifier:@"One"];
-//    [_outlineView addTableColumn:column];
-//    [_outlineView setOutlineTableColumn:column];
-//    
-//    [_outlineView addTableColumn:[[CPTableColumn alloc] initWithIdentifier:@"Two"]];
-
-//    [_outlineView registerForDraggedTypes:[CustomOutlineViewDragType]];
-//    
-//    [_outlineView setDataSource:self];
-//    [_outlineView setAllowsMultipleSelection:YES];
-//    [_outlineView expandItem:nil expandChildren:YES];
-//	// [_outlineView setRowHeight:50.0];
-//    // [_outlineView setIntercellSpacing:CPSizeMake(0.0, 10.0)]
-//    
-//    [scrollView setDocumentView:_outlineView];
-//    [theWindow setContentView:scrollView];
-
-//    // [theWindow setContentView:_outlineView];
-
-//    [theWindow orderFront:self];
-
-//    
 }
 
 @end
