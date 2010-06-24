@@ -31,7 +31,6 @@ var SharedFileExplorerController = nil;
 	{
 		fileExplorerTable = [fileExplorerPanel fileExplorerTable];
 		[fileExplorerTable setDataSource:self];
-		
 		[fileExplorerPanel orderFront:self];
 	}
 	return self;
@@ -45,10 +44,43 @@ var SharedFileExplorerController = nil;
 			   password:(CPString)aPassword 
 //			   	   path:(CPStrong)aPath
 {
+	console.log(@"start 1", aServer);
+	_dataSource = [
+		{
+			'filename':"Pierwszy plik 1"
+		},
+		{
+			'filename':"Drugi plik"
+		},
+		{
+			'filename':"Trzeci plik"
+		}
+	];
+	
+	[fileExplorerTable reloadData];
+	console.log(@"end 1");
+
 	var conn = [NIFTPConnection connectionToServer:aServer username:anUsername password:aPassword];
 	[conn setConnectionType:"ftp"];
 	[conn connectionWithDelegate:self];
 }
+@end
+
+@implementation NIFileExplorerObject : CPObject
+{
+	CPString _filename @accessors(readonly, property=filename);
+}
+
+- (id)initWithObject:(Object)anObject
+{
+	_filename = anObject.filename;
+}
+
+- (CPString)description
+{
+	return _filename;
+}
+
 @end
 
 /*
@@ -68,7 +100,9 @@ var SharedFileExplorerController = nil;
 		// TODO: natywny objekt JS ma problem z description
 //		console.log([_dataSource[aChild] description]);
 		
+//		var object = [[NIFileExplorerObject alloc] initWithObject:_dataSource[aChild]];
 		return _dataSource[aChild]["filename"];
+//		return object;
 		
 //		return null;
 	}
@@ -79,11 +113,11 @@ var SharedFileExplorerController = nil;
 
 -(BOOL)outlineView:(CPOutlineView)anOutlineView  isItemExpandable:(id)anItem
 {
-	console.log("isItemExpandable", anItem);
+	console.log("isItemExpandable", anItem, !!anItem.files);
 //	if (!anItem)
 		return NO;
 
-//	return !!anItem.childrens;
+	return !!anItem.files;
 }
 
 - (int)outlineView:(CPOutlineView)anOutlineView  numberOfChildrenOfItem:(id)anItem
@@ -101,6 +135,9 @@ var SharedFileExplorerController = nil;
 - (id)outlineView:(CPOutlineView)anOutlineView objectValueForTableColumn:(id)aColumn byItem:(id)anItem
 {
 	console.log("objectValueForTableColumn", aColumn, anItem);
+	var identifier = [aColumn identifier];
+	console.log("objectValueForTableColumn-identifer:", identifier);
+	
 	return anItem;
 //	return _dataSource[anItem];
 }
@@ -136,6 +173,7 @@ var SharedFileExplorerController = nil;
 
 // CPTree ??
 	_dataSource = data.result;
+	
 //	_dataSource = [
 //		@"Raz",
 //		@"Dwa",
@@ -152,7 +190,7 @@ var SharedFileExplorerController = nil;
 ////			}
 ////		}]
 //	];
-//	console.log("_dataSource", _dataSource);
+	console.log("_dataSource", _dataSource);
 	[fileExplorerTable reloadData];
 //	[outlineView expandItem:nil expandChildren:NO];
 }
