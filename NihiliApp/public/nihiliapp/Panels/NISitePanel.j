@@ -2,6 +2,19 @@
 
 //var SharedSitePanel = nil;
 
+var NISitePanelWidth = 400.0,
+	NISitePanelHeight = 250.0,
+	NISitePanelViewConntentSpacing = 10.0,
+	
+	NISitePanelVerticalFieldsSpacing = 10.0,
+	NISitePanelHorizontalFieldsSpacing = 30.0
+	
+	NISitePanelLabelWight = 120.0,
+	NISitePanelValueWight = NISitePanelWidth - NISitePanelLabelWight - (2 * NISitePanelViewConntentSpacing) - NISitePanelVerticalFieldsSpacing;
+	
+	NISitePanelLabelHeight = 30.0,
+	NISitePanelValueHeight = 30.0;
+
 /*
 	Panel strony - zarządza danymi strony|projektu tj.
 	- FTP
@@ -11,10 +24,11 @@
 */
 @implementation NISitePanel : CPPanel
 {
-	CPTextField hostnameField @accessors(readonly);
-	CPTextField usernameField @accessors(readonly);
-	CPTextField passwordField @accessors(readonly);
-	CPTextField	filepathField @accessors(readonly);
+	CPTextField _serverField @accessors(readonly, property=serverField);
+	CPTextField _usernameField @accessors(readonly, property=usernameField);
+	CPTextField _passwordField @accessors(readonly, property=passwordField);
+	CPTextField	_filepathField @accessors(readonly, property=filepathField);
+	CPTextField _protocolField @accessors(readonly, property=protocolField)
 	
 	CPTableView tableView;
 	CPOutlineView outlineView;
@@ -22,7 +36,7 @@
 
 - (id)init
 {
-	self = [super initWithContentRect:CGRectMake(0,0,300,400) 
+	self = [super initWithContentRect:CGRectMake(0,0, NISitePanelWidth, NISitePanelHeight) 
 							styleMask:CPDocModalWindowMask |
 									  CPClosableWindowMask |
 									  CPHUDBackgroundWindowMask];
@@ -32,64 +46,86 @@
 		var contentView = [self contentView],
 			frame = [contentView frame];
 
-		[self setTitle:@"Konfigurowanie witryny"];
+		[self setTitle:@"Konfigurowanie połączenia"];
 		[self center];
 		[self setFloatingPanel:YES];
 		[self setWorksWhenModal:YES];
 
-		var fieldHeight = 29;
+		// Server
+		var serverFieldLabel = [self _createLabelWithTitle:@"Nazwa serwera" frame:frame];
+		[contentView addSubview:serverFieldLabel];
 
-		hostnameField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(frame) + 10, 
-																	  CGRectGetMinY(frame) + 10,
-																	  CGRectGetWidth(frame)-20,
-																	  fieldHeight)];
-		[hostnameField setEditable:YES];
-		[hostnameField setBezeled:YES];
-		[contentView addSubview:hostnameField];
+		_serverField = [self _createValueWithPlaceholderString:@"ftp.example.com (wymagane)" frame:frame];
+		[contentView addSubview:_serverField];
 		
-		var hostnameFrame = [hostnameField frame];
-		
-		usernameField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(hostnameFrame), 
-																	  CGRectGetMinY(hostnameFrame) + 10 + fieldHeight,
-																	  CGRectGetWidth(hostnameFrame),
-																	  fieldHeight)];
-		[usernameField setEditable:YES];
-		[usernameField setBezeled:YES];
-		[contentView addSubview:usernameField];
+		frame = [_serverField frame];
 
-		var usernameFrame = [usernameField frame];
 		
-		passwordField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(usernameFrame), 
-																	  CGRectGetMinY(usernameFrame) + 10 + fieldHeight,
-																	  CGRectGetWidth(usernameFrame),
-																	  fieldHeight)];
-		[passwordField setEditable:YES];
-		[passwordField setBezeled:YES];
-		[contentView addSubview:passwordField];
-																	  
-		var passwordFrame = [passwordField frame];
+		// Nazwa użytkownika
+		var usernameFieldLabel = [self _createLabelWithTitle:@"Nazwa użytkownika" frame:frame];
+		[contentView addSubview:usernameFieldLabel];
+
+		_usernameField = [self _createValueWithPlaceholderString:@"(wymagane)" frame:frame];
+		[contentView addSubview:_usernameField];
 		
-		filepathField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(passwordFrame), 
-																	  CGRectGetMinY(passwordFrame) + 10 + fieldHeight,
-																	  CGRectGetWidth(passwordFrame),
-																	  fieldHeight)];
-		[filepathField setEditable:YES];
-		[filepathField setBezeled:YES];
-		[contentView addSubview:filepathField];
+		frame = [_usernameField frame];
 		
-		var filepathFrame = [filepathField frame];
 		
+		// Hasło
+		var passwordFieldLabel = [self _createLabelWithTitle:@"Hasło" frame:frame];
+		[contentView addSubview:passwordFieldLabel];
+
+		_passwordField = [self _createValueWithPlaceholderString:@"" frame:frame];
+		[_passwordField setSecure:YES];
+		[contentView addSubview:_passwordField];
+		
+		frame = [_passwordField frame];
+		
+		
+		// Katalog/ścieżka
+		var filepathFieldLabel = [self _createLabelWithTitle:@"Katalog/ścieżka" frame:frame];
+		[contentView addSubview:filepathFieldLabel];
+
+		_filepathField = [self _createValueWithPlaceholderString:@"" frame:frame];
+		// mały odstęp od lewej - miejsce na przycisk "Wybierz katalog"
+		[_filepathField setFrameSize:CGSizeMake(CGRectGetWidth([_filepathField frame]) - 60,
+											   CGRectGetHeight([_filepathField frame]))];
+		[contentView addSubview:_filepathField];
+
+		frame = [_filepathField frame];
+		
+		
+		// Wybierz katalog
+		var choseDirectoryButton = [CPButton buttonWithTitle:"Wybierz"];
+		[choseDirectoryButton setFrameOrigin: CGPointMake(CGRectGetMaxX(frame), CGRectGetMinY(frame))];
+		[choseDirectoryButton setAction:@selector(choseDirectory:)]
+		[choseDirectoryButton setTarget:[self windowController]];
+		[contentView addSubview:choseDirectoryButton];
+		
+
+		// Protokuł
+		var protocolFieldLabel = [self _createLabelWithTitle:@"Protokuł" frame:frame];
+		[contentView addSubview:protocolFieldLabel];
+
+		_protocolField = [[CPPopUpButton alloc] initWithFrame:[self _frameForValue:frame]];
+		[_protocolField addItemWithTitle:@"FTP"];
+		[_protocolField sizeToFit];
+		[contentView addSubview:_protocolField];
+		
+		console.log([[_protocolField selectedItem] title]);
 		
 		var checkButton = [CPButton buttonWithTitle:"Sprawdź połączenie"];
 		//[loginButton setFont:[CPFont systemFontOfSize:18]];
-		//[loginButton setDefaultButton:YES];
+//		[checkButton setDefaultButton:YES];
 		//[loginButton setBezelStyle:CPHUDBezelStyle];
 		//[loginButton setThemeState:CPBackgroundButtonMask];
-		[checkButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
+//		[checkButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
 		[checkButton sizeToFit];
+		
 		// ustaw położenie w lewym dolnym roku!
-		[checkButton setFrameOrigin:CGPointMake(CGRectGetMinX(filepathFrame), 
-												CGRectGetMaxY(filepathFrame) + 10 + fieldHeight)];
+		[checkButton setFrameOrigin:CGPointMake(CGRectGetMaxX([contentView frame]) - CGRectGetWidth([checkButton frame]) - NISitePanelViewConntentSpacing, 
+												CGRectGetMaxY([contentView frame]) - CGRectGetHeight([checkButton frame]) - 4 * NISitePanelViewConntentSpacing)];
+
 		[checkButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin];
 		[checkButton setAction:@selector(testConnection:)];
 		[checkButton setTarget:[self windowController]];
@@ -125,35 +161,35 @@
 /////////////////////////////////////
 
 
-		outlineView = [[CPOutlineView alloc] initWithFrame:CGRectMake(CGRectGetMinX(checkFrame), 
-																	CGRectGetMinY(checkFrame) + 10 + fieldHeight,
-																	CGRectGetWidth(checkFrame),
-																	300)];
-																   								   
-		[outlineView setDelegate:self];
-		[outlineView setColumnAutoresizingStyle:CPTableViewLastColumnOnlyAutoresizingStyle];
-		[outlineView setRowHeight:26.0];
-//		[outlineView setSelectionHighlightStyle:CPTableViewSelectionHighlightStyleNone];
-//		[outlineView setVerticalMotionCanBeginDrag:YES];
-		
-			var column = [[CPTableColumn alloc] initWithIdentifier:"path"];
-			[[column headerView] setStringValue:"Katalog"];
+//		outlineView = [[CPOutlineView alloc] initWithFrame:CGRectMake(CGRectGetMinX(checkFrame), 
+//																	CGRectGetMinY(checkFrame) + 10 + fieldHeight,
+//																	CGRectGetWidth(checkFrame),
+//																	300)];
+//																   								   
+//		[outlineView setDelegate:self];
+//		[outlineView setColumnAutoresizingStyle:CPTableViewLastColumnOnlyAutoresizingStyle];
+//		[outlineView setRowHeight:26.0];
+////		[outlineView setSelectionHighlightStyle:CPTableViewSelectionHighlightStyleNone];
+////		[outlineView setVerticalMotionCanBeginDrag:YES];
+//		
+//			var column = [[CPTableColumn alloc] initWithIdentifier:"path"];
+//			[[column headerView] setStringValue:"Katalog"];
 
-			[column setWidth:220.0];
-			[column setMinWidth:220.0];
-			[column setEditable:NO];
-			[column setDataView:[CPTextField new]];
-			[outlineView addTableColumn:column];
-			[outlineView setOutlineTableColumn:column];
-			
-			
-//			[outlineView addTableColumn:[[CPTableColumn alloc] initWithIdentifier:@"Two"]];
+//			[column setWidth:220.0];
+//			[column setMinWidth:220.0];
+//			[column setEditable:NO];
+//			[column setDataView:[CPTextField new]];
+//			[outlineView addTableColumn:column];
+//			[outlineView setOutlineTableColumn:column];
+//			
+//			
+////			[outlineView addTableColumn:[[CPTableColumn alloc] initWithIdentifier:@"Two"]];
 
-		[contentView addSubview:outlineView];
-		
-//		[tableView sizeLastColumnToFit];
-		[outlineView setDataSource: [OutlineDataSource new]];
-		[outlineView expandItem:nil expandChildren:NO];
+//		[contentView addSubview:outlineView];
+//		
+////		[tableView sizeLastColumnToFit];
+//		[outlineView setDataSource: [OutlineDataSource new]];
+//		[outlineView expandItem:nil expandChildren:NO];
 
 /////////////////////////////////////
 
@@ -177,20 +213,20 @@
 
 
 
-		var loginButton = [CPButton buttonWithTitle:"Zaloguj"];
-		//[loginButton setFont:[CPFont systemFontOfSize:18]];
-		//[loginButton setDefaultButton:YES];
-		//[loginButton setBezelStyle:CPHUDBezelStyle];
-		//[loginButton setThemeState:CPBackgroundButtonMask];
-		[loginButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
-		[loginButton sizeToFit];
-		// ustaw położenie w lewym dolnym roku!
-		[loginButton setFrameOrigin:CGPointMake(CGRectGetMinX(frame) + 10, 
-												CGRectGetMaxY(frame) - 30 - CGRectGetHeight([loginButton frame]))];
-		[loginButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin];
-		[loginButton setAction:@selector(login:)];
-		[loginButton setTarget:self];
-		[contentView addSubview:loginButton];
+//		var loginButton = [CPButton buttonWithTitle:"Zaloguj"];
+//		//[loginButton setFont:[CPFont systemFontOfSize:18]];
+//		//[loginButton setDefaultButton:YES];
+//		//[loginButton setBezelStyle:CPHUDBezelStyle];
+//		//[loginButton setThemeState:CPBackgroundButtonMask];
+//		[loginButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
+//		[loginButton sizeToFit];
+//		// ustaw położenie w lewym dolnym roku!
+//		[loginButton setFrameOrigin:CGPointMake(CGRectGetMinX(frame) - 10, 
+//												CGRectGetMaxY(frame) - 30 - CGRectGetHeight([loginButton frame]))];
+//		[loginButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin];
+//		[loginButton setAction:@selector(login:)];
+//		[loginButton setTarget:self];
+//		[contentView addSubview:loginButton];
 	}
 	
 	return self;
@@ -223,6 +259,82 @@
 }
 
 @end
+
+
+
+/*
+	Kategoria zawiera methody pomocnicze
+	do obliczania CGRect
+*/
+@implementation NISitePanel (FrameHelper)
+
+/*
+	Obliczanie położenia elementu z etykietą pola tekstowego.
+	- jedyną zmienną jest wysokość
+*/
+- (CGRect)_frameForLabel:(CGRect)aFrame
+{
+	return CGRectMake(NISitePanelViewConntentSpacing, 
+					  CGRectGetMinY(aFrame) + NISitePanelHorizontalFieldsSpacing,
+					  NISitePanelLabelWight,
+					  NISitePanelLabelHeight);
+}
+
+/*
+	Obliczanie położenia elementu z wartością pola tekstowego
+	- jedyną zmienną jest wysokość
+*/
+- (CGRect)_frameForValue:(CGRect)aFrame
+{
+	return CGRectMake(NISitePanelViewConntentSpacing + NISitePanelLabelWight + NISitePanelVerticalFieldsSpacing, 
+					  CGRectGetMinY(aFrame) + NISitePanelHorizontalFieldsSpacing,
+					  NISitePanelValueWight,
+					  NISitePanelValueHeight);
+}
+
+@end
+
+
+/*
+	Kategoria grupuje metody tworzące elementy formularza
+	- etykieta - CPTextField
+	- wartość - CPTextField
+*/
+@implementation NISitePanel (TextFieldHelper)
+
+/*!
+	Tworzenie etykiety!
+*/
+- (void)_createLabelWithTitle:(CPString)aTitle frame:(CGRect)aFrame
+{
+	var label = [[CPTextField alloc] initWithFrame:[self _frameForLabel:aFrame]];
+
+	[label setStringValue:aTitle];
+	[label setTextColor:[CPColor whiteColor]];
+	[label setAlignment:CPRightTextAlignment];
+	
+	return label;
+}
+
+/*!
+	Tworzenie pola tekstowego o nazwie!
+*/
+- (void)_createValueWithPlaceholderString:(CPString)aPlaceholder frame:(CGRect)aFrame
+{
+	var label = [[CPTextField alloc] initWithFrame:[self _frameForValue:aFrame]];
+
+	[label setEditable:YES];
+	[label setBezeled:YES];
+	[label setPlaceholderString:aPlaceholder];
+	
+	return label;
+}
+
+serverField = [[CPTextField alloc] initWithFrame:[self _frameForValue:frame]];
+		
+
+@end
+
 
 @implementation TableDataSource : CPObject
 {
