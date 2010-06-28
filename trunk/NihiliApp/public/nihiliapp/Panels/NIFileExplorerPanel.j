@@ -4,6 +4,7 @@
 @implementation NIFileExplorerPanel : CPPanel
 {
 	CPOutlineView _fileExplorerTable @accessors(readonly, property=fileExplorerTable);
+	CPButton _okButton @accessors(readonly, property=okButton);
 }
 
 - (id)init
@@ -23,7 +24,7 @@
 		[self setFloatingPanel:YES];
 		[self setWorksWhenModal:YES];
 		
-		var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
+		var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,0, CGRectGetWidth(frame), CGRectGetHeight(frame)  - 35)];
 
 		_fileExplorerTable = [[CPOutlineView alloc] initWithFrame:CGRectMake(0,0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
 																   								   
@@ -59,6 +60,25 @@
 
 //		[_fileExplorerTable setDataSource: [OutlineDataSource new]];
 //		[_fileExplorerTable expandItem:nil expandChildren:NO];
+
+		_okButton = [CPButton buttonWithTitle:"OK"];
+		//[loginButton setFont:[CPFont systemFontOfSize:18]];
+		[_okButton setDefaultButton:YES];
+		//[loginButton setBezelStyle:CPHUDBezelStyle];
+		//[loginButton setThemeState:CPBackgroundButtonMask];
+//		[_okButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
+		[_okButton sizeToFit];
+
+		var myButtonSize = [_okButton frame];
+//		console.log(myButtonSize, CGRectGetHeight(myButtonSize),CGRectGetWidth(myButtonSize));
+
+		// ustaw położenie w lewym dolnym roku!
+		[_okButton setFrameOrigin:CGPointMake(CGRectGetMaxX(frame) - CGRectGetWidth(myButtonSize), 
+												CGRectGetMaxY(frame) - 35 - CGRectGetHeight(myButtonSize))];
+		[_okButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin];
+//		[_okButton setAction:@selector(testConnection:)];
+//		[_okButton setTarget:[self windowController]];
+		[contentView addSubview:_okButton];	
 	}
 	return self;
 }

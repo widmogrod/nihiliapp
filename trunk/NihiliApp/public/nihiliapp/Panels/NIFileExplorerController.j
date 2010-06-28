@@ -1,7 +1,7 @@
 @import <AppKit/CPWindowController.j>
 
 @import "NIFileExplorerPanel.j"
-@import "../Models/NIFTPConnection.j"
+
 
 
 var SharedFileExplorerController = nil;
@@ -10,7 +10,7 @@ var SharedFileExplorerController = nil;
 {
 	//NIFTPConnection _connection @accessors(readoly);
 	
-	@outlet CPOutlineTable fileExplorerTable;
+	@outlet CPOutlineTable _fileExplorerTable(property=fileExplorerTable);
 	CPArray _dataSource;
 }
 
@@ -29,41 +29,30 @@ var SharedFileExplorerController = nil;
 
 	if (self)
 	{
-		fileExplorerTable = [fileExplorerPanel fileExplorerTable];
-		[fileExplorerTable setDataSource:self];
-		[fileExplorerPanel orderFront:self];
+		_fileExplorerTable = [fileExplorerPanel fileExplorerTable];
+		[_fileExplorerTable setDataSource:self];
 	}
 	return self;
 }
 
 /*
-	Ustaw dane do połączenia z serwerem
+	Przekazany obiekt połączenia jest inicjonowany
 */
-- (void) connectToServer:(CPString)aServer 
-			   username:(CPString)anUsername 
-			   password:(CPString)aPassword 
-//			   	   path:(CPStrong)aPath
+- (void) setConnection:(NIFTPConnection)aConnection
 {
-	console.log(@"start 1", aServer);
-	_dataSource = [
-		{
-			'filename':"Pierwszy plik 1"
-		},
-		{
-			'filename':"Drugi plik"
-		},
-		{
-			'filename':"Trzeci plik"
-		}
-	];
-	
-	[fileExplorerTable reloadData];
-	console.log(@"end 1");
+	[aConnection connectionWithDelegate:self];
+//	[aConnection start];
 
-	var conn = [NIFTPConnection connectionToServer:aServer username:anUsername password:aPassword];
-	[conn setConnectionType:"ftp"];
-	[conn connectionWithDelegate:self];
+	[[self window] orderFront:self];
 }
+
+- (void) setConnection:(NIFTPConnection)aConnection target:(id)aTarget action:(SEL)aSelector
+{
+	[self setConnection:aConnection];
+	[[[self window] okButton] setTarget:aTarget];
+	[[[self window] okButton] setAction:aSelector];
+}
+
 @end
 
 @implementation NIFileExplorerObject : CPObject
@@ -191,7 +180,7 @@ var SharedFileExplorerController = nil;
 ////		}]
 //	];
 	console.log("_dataSource", _dataSource);
-	[fileExplorerTable reloadData];
+	[_fileExplorerTable reloadData];
 //	[outlineView expandItem:nil expandChildren:NO];
 }
 

@@ -1,9 +1,12 @@
 @import <AppKit/CPWindowController.j>
 
 @import "NISitePanel.j"
+@import "NIFileExplorerController.j"
 @import "../Controllers/NIApiController.j"
+@import "../Models/NIFTPConnection.j"
+@import "../Models/VOConnection.j"
 
-var SharedSIPanelController
+var SharedSIPanelController = nil;
 
 /*
 	Łaczenie interakcji widok, apikacja, server
@@ -12,7 +15,9 @@ var SharedSIPanelController
 	- wyświetlanie strukóry katalogów na serwerze
 */
 @implementation NISitePanelController : CPWindowController
-{}
+{
+	VOConnection _connection;
+}
 
 + (id)sharedController
 {
@@ -58,69 +63,63 @@ var SharedSIPanelController
 }
 
 /*
-	Sprawź połączenie
+	Otwiera okno wybierania katalogu!
 */
-- (id)testConnection:(id)sender
+- (void)choseDirectory:(id)sender
 {
-	var hostname = [[[self window] hostnameField] stringValue],
-		username = [[[self window] usernameField] stringValue],
-		password = [[[self window] passwordField] stringValue];
-
-	[[NIApiController sharedController] testConnectionToHost:hostname user:username pass:password];
+	[[NIFileExplorerController sharedController] 
+				setConnection:[self connection]
+				 	   target:[[self window] filepathField] 
+				 	   action:@selector(setStringValue:)];
 }
-
-@end
-
 
 /*
-	Źródło danych dla CPoutlineView wykorzystywane w NISitePanel
-	- odpowiada za stworzenie drzewiastej stryktury danych katalogów (po stronie serwera)
+	Sprawź połączenie
 */
-@implementation NISitePanelController (DataSource)
-{}
-
-- (id)outlineView:(CPOutlineView)anOutlineView  child:(int)aChild   ofItem:(id)anItem
+- (void)testConnection:(id)sender
 {
-	console.log("child", aChild, anItem);
-	if (!anItem)
-	{
-		console.log("child", array[aChild]);
-		return array[aChild];
+	
+}
+
+/*
+	Ustawia obiekt połączenia
+*/
+- (void)setConnection:(VOConnection)aConnection
+{
+	if (!aConnection) {
+		_connection = nil;
+		return;
 	}
-		
 
-	return anItem.childrens[aChild];
+	if (_connection == aConnection)
+		return;
+
+	[[[self window] serverField]   setStringValue:aConnection server];
+	[[[self window] usernameField] setStringValue:aConnection username];
+	[[[self window] passwordField] setStringValue:aConnection password];
+	[[[self window] pathnameField] setStringValue:aConnection pathname];
+	[[[self window] protocolField] setStringValue:aConnection protocol];
+	
+	_connection = aConnection;
 }
 
-//-(BOOL)outlineView:(CPOutlineView)theOutlineView isItemExpandable:(id)theItem
--(BOOL)outlineView:(CPOutlineView)anOutlineView  isItemExpandable:(id)anItem
+/*
+	Pobierz obiekt połączenia.
+	- Obiekt jeżeli był wcześniej ustawiony jest zwracany
+	  jako obiekt referencyjny a nie jako nowy obiekt!
+*/
+- (VOConnection)connection
 {
-	console.log("isItemExpandable", anItem);
-	if (!anItem)
-		return NO;
+	if (!_connection)
+		_connection = [[VOConnection alloc] init];
 
-	return !!anItem.childrens;
-}
-
-//- (int)outlineView:(CPOutlineView)theOutlineView numberOfChildrenOfItem:(id)theItem
-- (int)outlineView:(CPOutlineView)anOutlineView  numberOfChildrenOfItem:(id)anItem
-{
-	console.log("numberOfChildrenOfItem", anItem);
-	if (!anItem)
-	{
-		console.log("numberOfChildrenOfItem", array.length);
-		return array.length;
-	}
-		
-//	console.log("numberOfChildrenOfItem", anItem);
-	return anItem.childrens.length;
-//	return array.length;
-}
-//- (id)outlineView:(CPOutlineView)anOutlineView objectValueForTableColumn:(CPTableColumn)theColumn byItem:(id)theItem
-- (id)outlineView:(CPOutlineView)anOutlineView objectValueForTableColumn:(id)aColumn byItem:(id)anItem
-{
-	console.log("objectValueForTableColumn", aColumn, anItem);
-	return array[anItem];
+	[connection setServer:   [[[self window] serverField] stringValue]];
+	[connection setUsername: [[[self window] usernameField] stringValue]];
+	[connection setPassword: [[[self window] passwordField] stringValue]];
+	[connection setPathname: [[[self window] pathnameField] stringValue]];
+	[connection setProtocol: [[[self window] protocolField] stringValue]];
+	
+	return _connection = nil;;
 }
 
 @end

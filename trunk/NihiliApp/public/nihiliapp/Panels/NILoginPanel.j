@@ -48,15 +48,15 @@ var SharedLoginPanel = nil;
 		[passwordField setBezeled:YES];
 		[contentView addSubview:passwordField];
 
-		var loginButton = [CPButton buttonWithTitle:"Zaloguj"];
-		[loginButton setDefaultButton:YES];
-		// ustaw położenie w lewym dolnym roku!
-		[loginButton setFrameOrigin:CGPointMake(CGRectGetMinX(frame) + 10, 
-												CGRectGetMaxY(frame) - 10 - CGRectGetHeight([loginButton frame]))];
-		[loginButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin ];
-		[loginButton setAction:@selector(login:)];
-		[loginButton setTarget:self];
-		[contentView addSubview:loginButton];
+//		var loginButton = [CPButton buttonWithTitle:"Zaloguj"];
+//		[loginButton setDefaultButton:YES];
+//		// ustaw położenie w lewym dolnym roku!
+//		[loginButton setFrameOrigin:CGPointMake(CGRectGetMinX(frame) + 10, 
+//												CGRectGetMaxY(frame) - 10 - CGRectGetHeight([loginButton frame]))];
+//		[loginButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin ];
+//		[loginButton setAction:@selector(login:)];
+//		[loginButton setTarget:self];
+//		[contentView addSubview:loginButton];
 	}
 	
 	return self;

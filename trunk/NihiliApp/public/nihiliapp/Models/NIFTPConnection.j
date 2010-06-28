@@ -5,12 +5,12 @@ var NIURLFTPConnection = @"http://nihiliapp.lh/api/connection/ls";
 
 @implementation NIFTPConnection : CPObject
 {
-	CPString _server;
-	CPString _username;
-	CPString _password;
+	CPString _server @accessors(property=server);
+	CPString _username @accessors(property=username);
+	CPString _password @accessors(property=password);
 	CPString _connectionType @accessors(property=connectionType);
-	CPString path @accessors;
-	int	port @accessors;
+	CPString _path @accessors(property=path);
+	int	_port @accessors(property=port);
 }
 
 + (NIFTPConnection)connectionToServer:(CPString)aServer
