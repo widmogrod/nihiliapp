@@ -4,9 +4,9 @@
  * Należy przekazać do tego kontrolera parametry:
  * - server (*)
  * - username (*)
- * - password (*)
- * - port (*)
- * - connectionType (*)
+ * - password 
+ * - protocol
+ * - pathname
  *
  * (*) - oznacza parametr wymagane.
  *
@@ -33,6 +33,14 @@ class Api_ConnectionController extends Zend_Controller_Action
 	public function postDispatch()
 	{
 		$this->_helper->json($this->_connectionApi->toArray());
+	}
+
+	/**
+	 * Proste sprawdzenie czy można nawiązać połączenie
+	 */
+	public function testAction()
+	{
+		$this->_connectionApi->test();
 	}
 
 	/**
