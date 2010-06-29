@@ -27,7 +27,7 @@ var NISitePanelWidth = 400.0,
 	CPTextField _serverField @accessors(readonly, property=serverField);
 	CPTextField _usernameField @accessors(readonly, property=usernameField);
 	CPTextField _passwordField @accessors(readonly, property=passwordField);
-	CPTextField	_filepathField @accessors(readonly, property=filepathField);
+	CPTextField	_pathnameField @accessors(readonly, property=pathnameField);
 	CPTextField _protocolField @accessors(readonly, property=protocolField)
 	
 	CPTableView tableView;
@@ -83,16 +83,16 @@ var NISitePanelWidth = 400.0,
 		
 		
 		// Katalog/ścieżka
-		var filepathFieldLabel = [self _createLabelWithTitle:@"Katalog/ścieżka" frame:frame];
-		[contentView addSubview:filepathFieldLabel];
+		var pathnameFieldLabel = [self _createLabelWithTitle:@"Katalog/ścieżka" frame:frame];
+		[contentView addSubview:pathnameFieldLabel];
 
-		_filepathField = [self _createValueWithPlaceholderString:@"" frame:frame];
+		_pathnameField = [self _createValueWithPlaceholderString:@"" frame:frame];
 		// mały odstęp od lewej - miejsce na przycisk "Wybierz katalog"
-		[_filepathField setFrameSize:CGSizeMake(CGRectGetWidth([_filepathField frame]) - 60,
-											   CGRectGetHeight([_filepathField frame]))];
-		[contentView addSubview:_filepathField];
+		[_pathnameField setFrameSize:CGSizeMake(CGRectGetWidth([_pathnameField frame]) - 60,
+											   CGRectGetHeight([_pathnameField frame]))];
+		[contentView addSubview:_pathnameField];
 
-		frame = [_filepathField frame];
+		frame = [_pathnameField frame];
 		
 		
 		// Wybierz katalog
@@ -111,8 +111,6 @@ var NISitePanelWidth = 400.0,
 		[_protocolField addItemWithTitle:@"FTP"];
 		[_protocolField sizeToFit];
 		[contentView addSubview:_protocolField];
-		
-		console.log([[_protocolField selectedItem] title]);
 		
 		var checkButton = [CPButton buttonWithTitle:"Sprawdź połączenie"];
 		//[loginButton setFont:[CPFont systemFontOfSize:18]];

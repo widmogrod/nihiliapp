@@ -3,7 +3,9 @@
 @import "NISitePanel.j"
 @import "NIFileExplorerController.j"
 @import "../Controllers/NIApiController.j"
-@import "../Models/NIFTPConnection.j"
+@import "../Models/NIFTPApi.j"
+
+//@import "../Models/NIFTPConnection.j"
 @import "../Models/VOConnection.j"
 
 var SharedSIPanelController = nil;
@@ -78,7 +80,28 @@ var SharedSIPanelController = nil;
 */
 - (void)testConnection:(id)sender
 {
+	var ftp = [NIFTPApi sharedApi];
+	[ftp setConnection:[self connection]];
+	[ftp testWithDelegate:self selector:@selector(connectionTestComplite:)];
+}
+
+// jeżeli jest
+- (void)connectionTestComplite:(CPResponse)aResponse
+{
+	console.log(aResponse);
+//	console.log([aResponse objectFromJSON]);
+//	aResponse = [aResponse objectFromJSON];
+	var alert = [[CPAlert alloc] init];
+	[alert setMessageText:[aResponse objectForKey:@"status"]];
 	
+	if ([aResponse objectForKey:@"status"] == "SUCCESS")
+		[alert setAlertStyle:CPInformationalAlertStyle];
+	else  
+		[alert setAlertStyle:CPWarningAlertStyle];
+	
+	[alert runModal];
+	
+//	console.log(aResponse);
 }
 
 /*
@@ -98,7 +121,7 @@ var SharedSIPanelController = nil;
 	[[[self window] usernameField] setStringValue:aConnection username];
 	[[[self window] passwordField] setStringValue:aConnection password];
 	[[[self window] pathnameField] setStringValue:aConnection pathname];
-	[[[self window] protocolField] setStringValue:aConnection protocol];
+//	[[[self window] protocolField] setStringValue:aConnection protocol];
 	
 	_connection = aConnection;
 }
@@ -113,13 +136,13 @@ var SharedSIPanelController = nil;
 	if (!_connection)
 		_connection = [[VOConnection alloc] init];
 
-	[connection setServer:   [[[self window] serverField] stringValue]];
-	[connection setUsername: [[[self window] usernameField] stringValue]];
-	[connection setPassword: [[[self window] passwordField] stringValue]];
-	[connection setPathname: [[[self window] pathnameField] stringValue]];
-	[connection setProtocol: [[[self window] protocolField] stringValue]];
+	[_connection setServer:   [[[self window] serverField] stringValue]];
+	[_connection setUsername: [[[self window] usernameField] stringValue]];
+	[_connection setPassword: [[[self window] passwordField] stringValue]];
+	[_connection setPathname: [[[self window] pathnameField] stringValue]];
+	[_connection setProtocol: [[[[self window] protocolField] selectedItem] title]];
 	
-	return _connection = nil;;
+	return _connection;
 }
 
 @end
