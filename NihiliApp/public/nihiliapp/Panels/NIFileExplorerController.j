@@ -103,23 +103,24 @@ var SharedFileExplorerController = nil;
 
 -(BOOL)outlineView:(CPOutlineView)anOutlineView  isItemExpandable:(id)anItem
 {
-	console.log("isItemExpandable", anItem, !!anItem.files);
-//	if (!anItem)
+	console.log("isItemExpandable", anItem, [anItem valueForKey:@"filetype"] == "DIR" && [anItem valueForKey:@"filesize"] > 0);
+
+	if (!anItem)
 		return NO;
 
-	return !!anItem.files;
+	return [anItem valueForKey:@"filetype"] == "DIR" && [anItem valueForKey:@"filesize"] > 0;
 }
 
 - (int)outlineView:(CPOutlineView)anOutlineView  numberOfChildrenOfItem:(id)anItem
 {
 	console.log("numberOfChildrenOfItem", anItem);
+
 	if (!anItem)
-	{
-		console.log("numberOfChildrenOfItem", [_dataSource count]);
 		return [_dataSource count];
-	}
-		
-//	return anItem.childrens.length;
+
+	// tylko katalog ale to jest już załatwione 
+	// w @see outlineView:isItemExpandable:
+	return [anItem valueForKey:@"filesize"];
 }
 
 - (id)outlineView:(CPOutlineView)anOutlineView objectValueForTableColumn:(id)aColumn byItem:(id)anItem
