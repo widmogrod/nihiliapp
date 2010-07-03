@@ -31,6 +31,7 @@ var SharedFileExplorerController = nil;
 	{
 		_fileExplorerTable = [fileExplorerPanel fileExplorerTable];
 		[_fileExplorerTable setDataSource:self];
+		[_fileExplorerTable setDelegate:self];
 	}
 	return self;
 }
@@ -38,19 +39,29 @@ var SharedFileExplorerController = nil;
 /*
 	Przekazany obiekt połączenia jest inicjonowany
 */
-- (void) setConnection:(NIFTPConnection)aConnection
+- (void)setConnection:(VOConnection)aConnection
 {
-	[aConnection connectionWithDelegate:self];
-//	[aConnection start];
+	var ftp = [NIFTPApi sharedApi];
+	[ftp setConnection:aConnection];
+	[ftp action:@"ls" delegate:self selector:@selector(didReciveData:)];
 
 	[[self window] orderFront:self];
 }
 
-- (void) setConnection:(NIFTPConnection)aConnection target:(id)aTarget action:(SEL)aSelector
+- (void)didReciveData:(CPDictionary)aResponse
 {
-	[self setConnection:aConnection];
-	[[[self window] okButton] setTarget:aTarget];
-	[[[self window] okButton] setAction:aSelector];
+	console.log("didReciveData", aResponse);
+	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
+	{
+		_dataSource = [aResponse valueForKey:@"result"];
+		[_fileExplorerTable reloadData];
+	}
+	
+}
+
+- (void)outlineViewSelectionDidChange:(id)sender
+{
+	console.log("outlineViewSelectionDidChange:");
 }
 
 @end
@@ -80,23 +91,13 @@ var SharedFileExplorerController = nil;
 - (id)outlineView:(CPOutlineView)anOutlineView  child:(int)aChild   ofItem:(id)anItem
 {
 	console.log("child", aChild, anItem);
+
 	if (!anItem)
 	{
-		//console.log("child", _dataSource[aChild]);
-		
-		// TODO: Dodać obwiniecie rekordu z CPObject?
-		
-		// TODO: natywny objekt JS ma problem z description
-//		console.log([_dataSource[aChild] description]);
-		
-//		var object = [[NIFileExplorerObject alloc] initWithObject:_dataSource[aChild]];
-		return _dataSource[aChild]["filename"];
-//		return object;
-		
-//		return null;
+		return [_dataSource objectAtIndex:aChild];
 	}
-		
 
+	// TODO: napisać dzieciątka ;)
 //	return anItem.childrens[aChild];
 }
 
@@ -123,71 +124,16 @@ var SharedFileExplorerController = nil;
 
 - (id)outlineView:(CPOutlineView)anOutlineView objectValueForTableColumn:(id)aColumn byItem:(id)anItem
 {
-	console.log("objectValueForTableColumn", aColumn, anItem);
 	var identifier = [aColumn identifier];
-	console.log("objectValueForTableColumn-identifer:", identifier);
+	return [anItem valueForKey:identifier];
+}
+
+- (id)outlineViewSelectionDidChange:(CPNotification)aNotification
+{
+	var outlineView = [aNotification object];
+	var item = [outlineView itemAtRow:[outlineView selectedRow]];
 	
-	return anItem;
-//	return _dataSource[anItem];
-}
-
-@end
-
-/*
-	Kategoria reprezentująca
-*/
-@implementation NIFileExplorerController (CPURLConnection)
-
-// Called when the connection encounters an error.
--(void)connection:(CPURLConnection)connection didFailWithError:(id)error
-{
-	console.log("didFailWithError");
-}
-
-// Called when the connection receives a response.
--(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response
-{
-	console.log("didReceiveResponse");
-}
-
-// Called when the connection has received data.
--(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data
-{
-	data = [data objectFromJSON];
-	console.log("didReceiveData",data);
-	if (data.status != @"SUCCESS")
-	{
-		return;	
-	}
-
-// CPTree ??
-	_dataSource = data.result;
-	
-//	_dataSource = [
-//		@"Raz",
-//		@"Dwa",
-//		@"Trzy",
-////		[CPObject new],
-////		[CPObject new]
-
-////		[CPTreeNode treeNodeWithRepresentedObject:{
-////			type: "DIR",
-////			name: "httpdocs",
-////			path: "Ścieżka dostępu do pliku",
-////			info: {
-////				group:"root"
-////			}
-////		}]
-//	];
-	console.log("_dataSource", _dataSource);
-	[_fileExplorerTable reloadData];
-//	[outlineView expandItem:nil expandChildren:NO];
-}
-
-// Called when the URL has finished loading.
--(void)connectionDidFinishLoading:(CPURLConnection)connection
-{
-	console.log("connectionDidFinishLoading");
+	console.log("outlineViewSelectionDidChange", item, [outlineView selectedRow]);
 }
 
 @end

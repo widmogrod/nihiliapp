@@ -1,5 +1,6 @@
 @import <AppKit/CPWindowController.j>
 
+@import "NIAlert.j"
 @import "NISitePanel.j"
 @import "NIFileExplorerController.j"
 @import "../Controllers/NIApiController.j"
@@ -76,32 +77,40 @@ var SharedSIPanelController = nil;
 }
 
 /*
-	Sprawź połączenie
+	Do tej metody jest wysyłana wiadomość z @see NISitePanel 
+	w celu sprawdzenia czy podane dane są poprane
 */
 - (void)testConnection:(id)sender
 {
 	var ftp = [NIFTPApi sharedApi];
 	[ftp setConnection:[self connection]];
-	[ftp testWithDelegate:self selector:@selector(connectionTestComplite:)];
+	[ftp action:@"test" delegate:self selector:@selector(testConnectionComplite:)];
 }
 
-// jeżeli jest
-- (void)connectionTestComplite:(CPResponse)aResponse
+/*
+	Zakończone testowanie połączenia
+*/
+- (void)testConnectionComplite:(CPResponse)aResponse
 {
-	console.log(aResponse);
-//	console.log([aResponse objectFromJSON]);
-//	aResponse = [aResponse objectFromJSON];
-	var alert = [[CPAlert alloc] init];
-	[alert setMessageText:[aResponse objectForKey:@"status"]];
-	
-	if ([aResponse objectForKey:@"status"] == "SUCCESS")
-		[alert setAlertStyle:CPInformationalAlertStyle];
-	else  
-		[alert setAlertStyle:CPWarningAlertStyle];
-	
-	[alert runModal];
-	
-//	console.log(aResponse);
+//	if ([aResponse objectForKey:@"status"] == "FAILURE")
+		[[NIAlert alertWithResponse:aResponse] runModal];
+}
+
+/*
+	Do tej metody jest wysyłana wiadomość z @see NISitePanel 
+	by włączyć panel, który umożłiwi wskazanie głównego katalog na serwerze
+*/
+- (void)choseDirectory:(id)sender
+{
+	var fileExplorer = [NIFileExplorerController sharedController];
+//	[fileExplorer setShowFiles:NIFileExplorerShowDir]; 	// ustawienie flagi pokazu tylko katalogi
+	[fileExplorer setConnection:[self connection]];		// przekaż obiekt połączenia
+//	[fileExplorer setDelegate:self];
+}
+
+- (void)choseDirectoryComplite:(FileInfoVO)aFileInfo
+{
+	[[[self window] pathnameField] setStringValue:[aFileInfo]];
 }
 
 /*

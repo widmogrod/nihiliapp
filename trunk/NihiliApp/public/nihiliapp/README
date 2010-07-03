@@ -1,0 +1,17 @@
+NihiliApp
+---------
+
+TODO
+====
+
+### NIAlert
+ - przemyśleć zbudowanie od nowa tego komponentu by
+   mnogość typów i wiadomości była wyświetlana w sposón przyzwoity
+   lub w/g idei "lejka - mniej zakłuceń więcej przyjemności"
+   ograniczyć powiadomienia do tych istotnych!
+
+### NISitePanelController
+ - dodać walicację wymaganych pól
+ - dodać animację przy sprawdzaniu nawiązywania połączenia (loader)
+ - przemyśleć sposób wyświetlania komunikatów - nie chcę NIAlert!
+
