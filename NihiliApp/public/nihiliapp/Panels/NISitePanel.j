@@ -28,7 +28,7 @@ var NISitePanelWidth = 400.0,
 	CPTextField _usernameField @accessors(readonly, property=usernameField);
 	CPTextField _passwordField @accessors(readonly, property=passwordField);
 	CPTextField	_pathnameField @accessors(readonly, property=pathnameField);
-	CPTextField _protocolField @accessors(readonly, property=protocolField)
+	CPTextField _protocolField @accessors(readonly, property=protocolField);
 	
 	CPTableView tableView;
 	CPOutlineView outlineView;
@@ -97,6 +97,7 @@ var NISitePanelWidth = 400.0,
 		
 		// Wybierz katalog
 		var choseDirectoryButton = [CPButton buttonWithTitle:"Wybierz"];
+		[choseDirectoryButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
 		[choseDirectoryButton setFrameOrigin: CGPointMake(CGRectGetMaxX(frame), CGRectGetMinY(frame))];
 		[choseDirectoryButton setAction:@selector(choseDirectory:)]
 		[choseDirectoryButton setTarget:[self windowController]];

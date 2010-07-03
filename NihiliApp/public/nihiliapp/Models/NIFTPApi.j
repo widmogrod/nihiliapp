@@ -72,30 +72,29 @@ var NIFTPApiShared = nil,
 	return body;
 }
 
-- (void)testWithDelegate:(id)aDelegate selector:(SEL)aSelector
+
+
+- (void)action:(CPString)anAction delegate:(id)aDelegate selector:(SEL)aSelector
 {
-	console.log("[self connection]", [self connection]);
-	
 	var request = [[NIFTPApiRequestHelper alloc] initWithApi:self];
+	[request setAction:anAction];
 	[request setDelegate:aDelegate];
 	[request setSelector:aSelector];
 	[request setConnection:[self connection]];
-	[request setAction:@"test"];
-	
+
 	[_requests addObject:request];
+
 	[self performNextRequest];
+}
+
+- (void)testWithDelegate:(id)aDelegate selector:(SEL)aSelector
+{
+	[self action:@"test" delegate:aDelegate selector:selector];
 }
 
 - (void)lsWithDelegate:(id)aDelegate selector:(SEL)aSelector
 {
-	var request = [[NIFTPApiRequestHelper alloc] initWithApi:self];
-	[request setDelegate:aDelegate];
-	[request setSelector:aSelector];
-	[request setConnection:[self connection]];
-	[request setAction:@"ls"];
-
-	[_requests addObject:request];
-	[self performNextRequest];
+	[self action:@"ls" delegate:aDelegate selector:selector];
 }
 
 /*
@@ -155,7 +154,7 @@ var NIFTPApiShared = nil,
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data
 {
 	data = [data objectFromJSON];
-	data = [CPDictionary dictionaryWithJSObject: data];
+	data = [CPDictionary dictionaryWithJSObject: data recursively:YES];
 	[delegate performSelector:selector withObject:data];
 }
 

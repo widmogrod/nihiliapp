@@ -8,6 +8,7 @@ class Application_Model_Connection extends Application_Model_Response
 	public function __construct(array $data) 
 	{
 		$protocol = isset($data['protocol']) ? $data['protocol'] : @$data['server'];
+		$protocol = strtolower($protocol);
 		
 		try {
 			$this->_ftp = KontorX_Ftp::factory($protocol, $data);
@@ -28,6 +29,7 @@ class Application_Model_Connection extends Application_Model_Response
 		try {
 			$result = $this->_ftp->getAdapter()->connect();
 			$this->setStatus(self::SUCCESS);
+			$this->addMessage('Połączenie zostało nazwiązane', self::INFO);
 		} catch(Exception $e) {
 			$this->setStatus(self::FAILURE);
 			$this->addMessage($e->getMessage(), self::ERROR);
