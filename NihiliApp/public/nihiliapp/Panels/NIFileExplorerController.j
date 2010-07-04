@@ -150,7 +150,11 @@ var SharedFileExplorerController = nil;
 
 	// tylko katalog ale to jest już załatwione 
 	// w @see outlineView:isItemExpandable:
-	return [anItem valueForKey:@"files"];
+	
+	// Sprawdzanie czy klucz "childrens" istnieje,
+	// umożliwia stworzenie małej sztuczki z wyświetleniem tylko
+	// jednego wierszu z tekste "Wczytuje..." (pusty wypełniacz)
+	return !![anItem valueForKey:@"childrens"] ? [anItem valueForKey:@"files"] : 1;
 }
 
 - (id)outlineView:(CPOutlineView)anOutlineView objectValueForTableColumn:(id)aColumn byItem:(id)anItem
