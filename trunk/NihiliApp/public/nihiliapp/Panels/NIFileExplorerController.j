@@ -108,6 +108,7 @@ var SharedFileExplorerController = nil;
 	if (!anItem)
 		return NO;
 
+	// rezszeżalne są tylko katalogi, które mają jakieś pliki w sobie...
 	return [anItem valueForKey:@"filetype"] == "DIR" && [anItem valueForKey:@"filesize"] > 0;
 }
 
