@@ -7,6 +7,8 @@ class Application_Model_Connection extends Application_Model_Response
 
 	public function __construct(array $data) 
 	{
+		$this->_data = $data;
+
 		$protocol = isset($data['protocol']) ? $data['protocol'] : @$data['server'];
 		$protocol = strtolower($protocol);
 		
@@ -46,7 +48,8 @@ class Application_Model_Connection extends Application_Model_Response
 		$result = array();
 
 		try {
-			$result = $this->_ftp->ls(@$this->_data['path'], true);
+			$this->addMessage($this->_data['pathname']);
+			$result = $this->_ftp->ls(@$this->_data['pathname'], true);
 			$this->setStatus(self::SUCCESS);
 		} catch(Exception $e) {
 			$this->setStatus(self::FAILURE);

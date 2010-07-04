@@ -12,6 +12,7 @@ var SharedFileExplorerController = nil;
 	
 	@outlet CPOutlineTable _fileExplorerTable(property=fileExplorerTable);
 	CPArray _dataSource;
+	VOConnection _connection;
 }
 
 + (NIFileExplorerController)sharedController
@@ -41,6 +42,8 @@ var SharedFileExplorerController = nil;
 */
 - (void)setConnection:(VOConnection)aConnection
 {
+	_connection = aConnection;
+	
 	var ftp = [NIFTPApi sharedApi];
 	[ftp setConnection:aConnection];
 	[ftp action:@"ls" delegate:self selector:@selector(didReciveData:)];
@@ -50,7 +53,6 @@ var SharedFileExplorerController = nil;
 
 - (void)didReciveData:(CPDictionary)aResponse
 {
-	console.log("didReciveData", aResponse);
 	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
 	{
 		_dataSource = [aResponse valueForKey:@"result"];
@@ -59,9 +61,15 @@ var SharedFileExplorerController = nil;
 	
 }
 
-- (void)outlineViewSelectionDidChange:(id)sender
+- (void)didReciveChildData:(CPDictionary)aResponse
 {
-	console.log("outlineViewSelectionDidChange:");
+	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
+	{
+		var item = [aResponse valueForKey:@"userInfo"];
+		[item setValue:[aResponse valueForKey:@"result"] forKey:@"childrens"];
+		[_fileExplorerTable reloadData];
+	}
+	
 }
 
 @end
@@ -90,38 +98,58 @@ var SharedFileExplorerController = nil;
 
 - (id)outlineView:(CPOutlineView)anOutlineView  child:(int)aChild   ofItem:(id)anItem
 {
-	console.log("child", aChild, anItem);
-
 	if (!anItem)
-	{
 		return [_dataSource objectAtIndex:aChild];
+
+	// metoda outlineView:isItemExpandable: zadbała
+	// o to by dojśc do tego miejsca ;)
+	if (![anItem valueForKey:@"childrens"])
+	{
+		// tworzenie pustej tablicy
+		[anItem setValue:[[CPArray alloc] init] forKey:@"childrens"];
+
+		// ustawienie ktalogu jaki ma zostać wylistowany
+		[_connection setPathname:[anItem valueForKey:@"pathname"]];
+
+		// inicjowanie pobierania asynchronicznego danych
+		var ftp = [NIFTPApi sharedApi];
+		[ftp setConnection:_connection];
+		[ftp action:@"ls" delegate:self selector:@selector(didReciveChildData:) userInfo:anItem];
 	}
 
-	// TODO: napisać dzieciątka ;)
-//	return anItem.childrens[aChild];
+	// jako że dane są pobierane asynchonicznie
+	// w tym miejscu tworzę "pusty wypełniacz" obiektu,
+	// który po wczytaniu ashynch. danych zostanie zastąpiony :)
+	var childrens = [anItem valueForKey:@"childrens"];
+	if ([[childrens count] isEqualToNumber:aChild])
+	{
+		// tworzenie "pustego wypełniacza" dla wiersza tabeli .(0_0).
+		var item = [anItem copy];
+		[item setValue:nil forKey:"files"];
+		[item setValue:nil forKey:"filetype"];
+		[childrens addObject:item];
+	}
+
+	return [childrens objectAtIndex:aChild];
 }
 
 -(BOOL)outlineView:(CPOutlineView)anOutlineView  isItemExpandable:(id)anItem
 {
-	console.log("isItemExpandable", anItem, [anItem valueForKey:@"filetype"] == "DIR" && [anItem valueForKey:@"filesize"] > 0);
-
 	if (!anItem)
 		return NO;
 
 	// rezszeżalne są tylko katalogi, które mają jakieś pliki w sobie...
-	return [anItem valueForKey:@"filetype"] == "DIR" && [anItem valueForKey:@"filesize"] > 0;
+	return [anItem valueForKey:@"filetype"] == "DIR" && [anItem valueForKey:@"files"] > 0;
 }
 
 - (int)outlineView:(CPOutlineView)anOutlineView  numberOfChildrenOfItem:(id)anItem
 {
-	console.log("numberOfChildrenOfItem", anItem);
-
 	if (!anItem)
 		return [_dataSource count];
 
 	// tylko katalog ale to jest już załatwione 
 	// w @see outlineView:isItemExpandable:
-	return [anItem valueForKey:@"filesize"];
+	return [anItem valueForKey:@"files"];
 }
 
 - (id)outlineView:(CPOutlineView)anOutlineView objectValueForTableColumn:(id)aColumn byItem:(id)anItem
@@ -136,6 +164,7 @@ var SharedFileExplorerController = nil;
 	var item = [outlineView itemAtRow:[outlineView selectedRow]];
 	
 	console.log("outlineViewSelectionDidChange", item, [outlineView selectedRow]);
+	console.log([item valueForKey:@"pathname"])
 }
 
 @end

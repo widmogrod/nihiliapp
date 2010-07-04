@@ -87,6 +87,20 @@ var NIFTPApiShared = nil,
 	[self performNextRequest];
 }
 
+- (void)action:(CPString)anAction delegate:(id)aDelegate selector:(SEL)aSelector userInfo:(CPDictionary)anUserInfo
+{
+	var request = [[NIFTPApiRequestHelper alloc] initWithApi:self];
+	[request setAction:anAction];
+	[request setDelegate:aDelegate];
+	[request setSelector:aSelector];
+	[request setUserInfo:anUserInfo];
+	[request setConnection:[self connection]];
+
+	[_requests addObject:request];
+
+	[self performNextRequest];
+}
+
 - (void)testWithDelegate:(id)aDelegate selector:(SEL)aSelector
 {
 	[self action:@"test" delegate:aDelegate selector:selector];
@@ -125,7 +139,8 @@ var NIFTPApiShared = nil,
 {
 	id delegate @accessors;
 	SEL selector @accessors;
-	SPString action @accessors;
+	CPString action @accessors;
+	CPDictionary userInfo @accessors;
 	VOConnection _connection @accessors;
 	NIFTPApi api @accessors;
 }
@@ -155,6 +170,15 @@ var NIFTPApiShared = nil,
 {
 	data = [data objectFromJSON];
 	data = [CPDictionary dictionaryWithJSObject: data recursively:YES];
+
+	console.log("CONNECION:userInfo", userInfo);
+	console.log("CONNECION:[self userInfo]", [self userInfo]);
+
+	if (userInfo)
+		[data setValue:userInfo forKey:@"userInfo"];
+
+	console.log("sel_getName(selector)", sel_getName(selector));
+
 	[delegate performSelector:selector withObject:data];
 }
 
