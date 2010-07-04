@@ -3,7 +3,7 @@
 
 
 var NIFTPApiShared = nil,
-	NIFTPApiURL = "http://nihiliapp.lh/api/connection/";
+	NIFTPApiURL = "http://"+ location.hostname +"/api/connection/";
 
 /*
 	Klasa odpowiada za połączenie z API serwera odpowiedzialnego za połączenie FTP

@@ -125,8 +125,9 @@ var SharedFileExplorerController = nil;
 	{
 		// tworzenie "pustego wypełniacza" dla wiersza tabeli .(0_0).
 		var item = [anItem copy];
-		[item setValue:nil forKey:"files"];
-		[item setValue:nil forKey:"filetype"];
+		[item setValue:@"Wczytuje.." forKey:@"filename"];
+		[item setValue:nil forKey:@"files"];
+		[item setValue:nil forKey:@"filetype"];
 		[childrens addObject:item];
 	}
 
