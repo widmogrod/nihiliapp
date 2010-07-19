@@ -1,4 +1,5 @@
 @import <Foundation/CPObject.j>
+@import <Foundation/CPString.j>
 
 @implementation VOConnection : CPObject
 {
