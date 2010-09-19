@@ -16,6 +16,8 @@ var NIDefaultFileType = @"blank",
 	CPImage image;
 	CPImageView imageView @accessors;
 	CPTextField textField @accessors;
+	
+	BOOL _imageDidError;
 }
 
 - (id)initWithFrame:(CGRect)aFrame
@@ -23,14 +25,16 @@ var NIDefaultFileType = @"blank",
     self = [super initWithFrame:aFrame];
 	if(self)
 	{
+		_imageDidError = NO;
+	
 		[self setImageExtension:NIDefaultImageExtension];
 
-		imageView = [[CPImageView alloc] initWithFrame:CGRectMake(CGRectGetMinX(aFrame), CGRectGetMinY(aFrame), 16,16)];
+		imageView = [[CPImageView alloc] initWithFrame:CGRectMake(CGRectGetMinX(aFrame), CGRectGetMinY(aFrame) + 2, 16,16)];
 		[imageView setImageScaling: CPScaleProportionally];
 		//[imageView setImageAlignment: CPImageAlignLeft];
 		[self addSubview: imageView];
 		
-		textField = [[CPTextField alloc] initWithFrame: CGRectMake(CGRectGetMinX(aFrame) + 20, CGRectGetMinY(aFrame), CGRectGetWidth(aFrame) - 20, CGRectGetHeight(aFrame))];
+		textField = [[CPTextField alloc] initWithFrame: CGRectMake(CGRectGetMinX(aFrame) + 20, CGRectGetMinY(aFrame) + 2, CGRectGetWidth(aFrame) - 20, CGRectGetHeight(aFrame))];
 		[self addSubview: textField];
 	}
 	return self;
@@ -41,6 +45,8 @@ var NIDefaultFileType = @"blank",
 */
 - (void)setObjectValue:(CPString)aValue
 {	
+	CPLog.debug("OutlineView ustawia wartość: " + aValue);
+	
 	[self setFilename:aValue];
 	[[self textField] setObjectValue: aValue];
 	[[self textField] sizeToFit];
@@ -50,7 +56,27 @@ var NIDefaultFileType = @"blank",
 - (void)initImage
 {
 	var image = [[CPImage alloc] initWithContentsOfFile:[self imageFilepath] size:CGSizeMake(16.0, 16.0)];
+	[image setDelegate:self];
 	[[self imageView] setImage: image];
+}
+
+/*
+	W przypadku gdy nie została znaleziona ikona reprezentująca rozszeżenie do pliku,
+	wczytywana jest domyślna ikona. 
+*/
+- (void)imageDidError:(id)aImage
+{
+	CPLog.warn(@"imageDidError, filename: " + [aImage filename]);
+	
+	if (_imageDidError)
+		return;
+
+	_imageDidError = YES;
+	
+	CPLog.info(@"Wczytaj kolejną grafikę");
+		
+	[self setFiletype:NIDefaultFileType withImageExtension:NIDefaultImageExtension];
+	[self initImage];
 }
 
 /*
@@ -60,13 +86,13 @@ var NIDefaultFileType = @"blank",
 */
 - (void)setFiletype:(CPString)aFiletype
 {
-	CPLog.debug(@"setFiletype");
-	CPLog.trace(_filetype);
+	CPLog.debug(@"Ustawiam wartość setFiletype: " + aFiletype);
 	_filetype = aFiletype;
 }
 
 - (void)setFiletype:(CPString)aFiletype withImageExtension:(CPString)anImageExtension
 {
+	CPLog.debug(@"Ustawiam wartość setFiletype: "+ aFiletype +" withImageExtension: " + anImageExtension);
 	[self setFiletype:aFiletype];
 	[self setImageExtension:anImageExtension];
 }
@@ -77,14 +103,25 @@ var NIDefaultFileType = @"blank",
 */
 - (CPString)filetype
 {
-	CPLog.trace(_filetype);
-	if (!_filetype)
+	CPLog.debug(@"Pobieram typ pliku: " + _filetype);
+	
+	if (_imageDidError)
+		return _filetype;
+
+	/* 
+		tylko pliki mogą mieć dynamiczne ikony
+	 	- folder - jest folderem
+		- spinner - jest typem specjalnym pokazującym się podczas wczytywania plików
+	*/
+	if (_filetype != @"folder" && _filetype != @"spinner") 
 	{
 		_filetype = [[[self filename] pathExtension] lowercaseString];
 		if (!_filetype) {
 			_filetype = NIDefaultFileType;
 		}
 	}
+	
+	CPLog.debug(@"Ostatecznie zwracany typ pliku: " + _filetype);
 
 	return _filetype;
 }
@@ -95,6 +132,9 @@ var NIDefaultFileType = @"blank",
 - (CPString)imageFilepath
 {
 	var filename = [self filetype] + @"." + [self imageExtension];
+	
+	CPLog.debug("Wczytuję grafikę: " + filename);
+	
 	filepath = [[CPBundle bundleForClass:[self class]] pathForResource:filename];
 	return filepath;
 }
@@ -122,7 +162,7 @@ var NIFileExplorerFileDataViewImageView = @"NIFileExplorerFileDataViewImageView"
 		[self setTextField:[aCoder decodeObjectForKey:NIFileExplorerFileDataViewTextField]];
 		[self setImageExtension:[aCoder decodeObjectForKey:NIFileExplorerFileDataViewImageExtension]];
 		[self setFiletype:[aCoder decodeObjectForKey:NIFileExplorerFileDataViewFiletype]];
-		// [self setFilename:[aCoder decodeObjectForKey:NIFileExplorerFileDataViewFilename]];
+		[self setFilename:[aCoder decodeObjectForKey:NIFileExplorerFileDataViewFilename]];
     }
 
     return self;
@@ -135,7 +175,7 @@ var NIFileExplorerFileDataViewImageView = @"NIFileExplorerFileDataViewImageView"
 	[aCoder encodeObject:[self textField] forKey:NIFileExplorerFileDataViewTextField];
 	[aCoder encodeObject:[self imageExtension] forKey:NIFileExplorerFileDataViewImageExtension];
 	[aCoder encodeObject:[self filetype] forKey:NIFileExplorerFileDataViewFiletype];
-	// [aCoder encodeObject:[self filename] forKey:NIFileExplorerFileDataViewFilename];
+	[aCoder encodeObject:[self filename] forKey:NIFileExplorerFileDataViewFilename];
 }
 
 @end

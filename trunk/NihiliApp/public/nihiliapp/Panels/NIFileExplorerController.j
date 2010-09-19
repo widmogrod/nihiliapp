@@ -193,18 +193,21 @@ var SharedFileExplorerController = nil;
 		case @"filename":
 			dataView = [[NIFileExplorerFileDataView alloc] init];
 			
+			CPLog.debug(@"Generowanie dataView:");
+			CPLog.debug([anItem valueForKey:@"filetype"]);
+			
 			switch([anItem valueForKey:@"filetype"])
 			{
 				// ikona jako folder
 				case @"DIR":
-					CPLog.debug("filetype:" + [anItem valueForKey:@"filetype"]);
-					[dataView setFiletype:'folder'];
+					CPLog.debug("Ikona katalogu:" + [anItem valueForKey:@"filetype"]);
+					[dataView setFiletype:@"folder"];
 				break;
 				
 				// ikona jako rotujący wskaźnik pracy :)
 				case nil:
-					CPLog.debug("filetype: nil");
-					[dataView setFiletype:'spinner' withImageExtension:@"gif"];
+					CPLog.fatal("Ikona wskaźnika pracy");
+					[dataView setFiletype:@"spinner" withImageExtension:@"gif"];
 				break;
 			}
 		break;
