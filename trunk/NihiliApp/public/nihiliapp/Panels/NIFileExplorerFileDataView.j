@@ -5,7 +5,9 @@
 
 var NIDefaultFileType = @"blank",
 	NIDefaultImageExtension = @"png";
-	
+
+// Tablica przechowywująca wczytane ikony, typów plików
+var NIImageExtensionCache = {};
 
 @implementation NIFileExplorerFileDataView : CPView
 {
@@ -17,7 +19,7 @@ var NIDefaultFileType = @"blank",
 	CPImageView imageView @accessors;
 	CPTextField textField @accessors;
 	
-	BOOL _imageDidError;
+	CPString _imageDidErrorWithFilename;
 }
 
 - (id)initWithFrame:(CGRect)aFrame
@@ -25,7 +27,7 @@ var NIDefaultFileType = @"blank",
     self = [super initWithFrame:aFrame];
 	if(self)
 	{
-		_imageDidError = NO;
+		_imageDidErrorWithFilename = nil;
 	
 		[self setImageExtension:NIDefaultImageExtension];
 
@@ -53,25 +55,86 @@ var NIDefaultFileType = @"blank",
 	[self initImage];
 }
 
+/*
+	Inicjowanie wczytywania grafiki (ikony typu pliku)
+	
+	Sprawdzany jest cache, jeżeli istnieje grafika w cache
+	to jest wyciągana z niego. Dodatkowo jeżeli wczytywana grafika z cache 
+	jest wykryta jako wartość domyślna dla nieistniejącego typu pliku 
+	to domyślna wartość jest dodawana do cache dla nieistniejącego typu pliku.
+*/
 - (void)initImage
 {
-	var image = [[CPImage alloc] initWithContentsOfFile:[self imageFilepath] size:CGSizeMake(16.0, 16.0)];
-	[image setDelegate:self];
+	var cacheKey = [self imageFilepath],
+		image;
+	
+	CPLog.debug("Sprawdzam czy grafika istnieje w cache: " + cacheKey);
+	
+	if (NIImageExtensionCache[cacheKey]) {
+		CPLog.debug("Cache: Wczytuję grafikę z cache");
+		
+		image =	NIImageExtensionCache[cacheKey];
+
+		if (_imageDidErrorWithFilename) 
+		{
+			NIImageExtensionCache[_imageDidErrorWithFilename] = image;
+			_imageDidErrorWithFilename = nil;
+		}
+	} else {
+		CPLog.debug("Inicjuję nową grafikę");
+		
+		image = [[CPImage alloc] initWithContentsOfFile:[self imageFilepath] size:CGSizeMake(16.0, 16.0)];
+		[image setDelegate:self];
+	}
+
 	[[self imageView] setImage: image];
+}
+
+/*
+	Wczytane grafiki są dodawane do cache.
+	
+	W przypadku gdy grafika nie została znaleziona i jest wczytywana 
+	domyślna grafika - cache dla nie istniejącej grafiki również jest tworzony
+	tylko z grafiką domyślną.
+*/
+- (void)imageDidLoad:(CPImage)aImage
+{
+	CPLog.warn(@"Grafika została wczytana pomyślnie: " + [aImage filename]);
+	
+	var cacheKey;
+	
+	if (_imageDidErrorWithFilename) 
+	{
+		cacheKey = _imageDidErrorWithFilename;
+		_imageDidErrorWithFilename = nil;				
+	} else {
+		cacheKey = [aImage filename];
+	}
+
+	if (!NIImageExtensionCache[cacheKey]) {
+		CPLog.debug(@"Cache: Dodaję grafikę do cache.");
+		
+		NIImageExtensionCache[cacheKey] = aImage;
+	} else {
+		CPLog.debug(@"Cache: Grafika już jest w cache");
+	}
 }
 
 /*
 	W przypadku gdy nie została znaleziona ikona reprezentująca rozszeżenie do pliku,
 	wczytywana jest domyślna ikona. 
+	
+	Gdy zostanie znaleziona ikona domyślna zostaje przypisana w cache
+	ale pod kluczem nie istniejącej ukony @see imageDidLoad:
 */
-- (void)imageDidError:(id)aImage
+- (void)imageDidError:(CPImage)aImage
 {
 	CPLog.warn(@"imageDidError, filename: " + [aImage filename]);
 	
-	if (_imageDidError)
+	if (_imageDidErrorWithFilename)
 		return;
 
-	_imageDidError = YES;
+	_imageDidErrorWithFilename = [aImage filename];
 	
 	CPLog.info(@"Wczytaj kolejną grafikę");
 		
@@ -103,9 +166,9 @@ var NIDefaultFileType = @"blank",
 */
 - (CPString)filetype
 {
-	CPLog.debug(@"Pobieram typ pliku: " + _filetype);
+	CPLog.debug(@"Pobieram typ pliku: " + _filetype + ", dla " + filename);
 	
-	if (_imageDidError)
+	if (_imageDidErrorWithFilename)
 		return _filetype;
 
 	/* 
@@ -115,13 +178,13 @@ var NIDefaultFileType = @"blank",
 	*/
 	if (_filetype != @"folder" && _filetype != @"spinner") 
 	{
-		_filetype = [[[self filename] pathExtension] lowercaseString];
+		_filetype = [[filename pathExtension] lowercaseString];
 		if (!_filetype) {
 			_filetype = NIDefaultFileType;
 		}
 	}
 	
-	CPLog.debug(@"Ostatecznie zwracany typ pliku: " + _filetype);
+	CPLog.debug(@"Ostatecznie zwracany typ pliku: " + _filetype + ", dla " + filename);
 
 	return _filetype;
 }
@@ -131,11 +194,11 @@ var NIDefaultFileType = @"blank",
 */
 - (CPString)imageFilepath
 {
-	var filename = [self filetype] + @"." + [self imageExtension];
+	filepath = [self filetype] + @"." + [self imageExtension];
 	
-	CPLog.debug("Wczytuję grafikę: " + filename);
+	CPLog.debug("Wczytuję grafikę: " + filepath);
 	
-	filepath = [[CPBundle bundleForClass:[self class]] pathForResource:filename];
+	filepath = [[CPBundle bundleForClass:[self class]] pathForResource:filepath];
 	return filepath;
 }
 
