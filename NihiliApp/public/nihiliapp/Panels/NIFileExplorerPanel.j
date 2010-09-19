@@ -81,7 +81,7 @@ var FolderViewText = @"FolderViewText";
 		[_fileExplorerTable setVerticalMotionCanBeginDrag:NO];
 		[_fileExplorerTable setAllowsMultipleSelection:NO];
 
-		[_fileExplorerTable setRowHeight:16.0];
+		[_fileExplorerTable setRowHeight:20.0];
 
 			// tworzenie kolumny "Nazwa pliku"
 			var column = [[CPTableColumn alloc] initWithIdentifier:"filename"];
