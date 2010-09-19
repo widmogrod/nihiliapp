@@ -36,7 +36,14 @@ var SharedSIPanelController = nil;
 
 	if (self)
 	{
-		[[self window] orderFront:self];
+		[[self window] orderFront:self];     
+
+		var testConnection = [[VOConnection alloc] init];
+		[testConnection setServer:@"ftp.widmogrod.info"];
+		[testConnection setUsername:@"widmogrod"];
+		[testConnection setPassword:@"for6ba!"];
+		[self setConnection:testConnection];
+		
 	}
 	return self;
 }
@@ -126,10 +133,10 @@ var SharedSIPanelController = nil;
 	if (_connection == aConnection)
 		return;
 
-	[[[self window] serverField]   setStringValue:aConnection server];
-	[[[self window] usernameField] setStringValue:aConnection username];
-	[[[self window] passwordField] setStringValue:aConnection password];
-	[[[self window] pathnameField] setStringValue:aConnection pathname];
+	[[[self window] serverField]   setStringValue:[aConnection server]];
+	[[[self window] usernameField] setStringValue:[aConnection username]];
+	[[[self window] passwordField] setStringValue:[aConnection password]];
+	[[[self window] pathnameField] setStringValue:[aConnection pathname]];
 //	[[[self window] protocolField] setStringValue:aConnection protocol];
 	
 	_connection = aConnection;

@@ -18,7 +18,9 @@
 @import "NIDocument.j"
 
 //@import "Controllers/NIApiController.j"
-@import "Panels/NIFileExplorerController.j"
+@import "Panels/NIFileExplorerController.j"    
+
+//@import "Bespin.j"
 
 /*
 	Zmienne globale dla aplikacji
@@ -50,7 +52,13 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
     [theWindow orderFront:self];
 
-	contentView = [theWindow contentView];
+	contentView = [theWindow contentView];    
+	
+	// var bespin = [[Bespin alloc] initWithFrame:CGRectMake(10,10,300,300)];   
+	// var bespin = [[Bespin alloc] init];
+	// 	[bespin setFrame:CGRectMake(10,10,300,300)];
+	// 	[bespin setBackgroundColor:[CPColor redColor]];
+	// 	[contentView addSubview:bespin]; 
     
     // dokonanie autoryzacji uzytkownika przed uruchomieniem aplikacji!
     if (![[NIApiController sharedController] isAuthenticated])

@@ -30,7 +30,8 @@ var SharedFileExplorerController = nil;
 
 	if (self)
 	{
-		_fileExplorerTable = [fileExplorerPanel fileExplorerTable];
+		_fileExplorerTable = [fileExplorerPanel fileExplorerTable];   
+		[_fileExplorerTable setIndentationMarkerFollowsDataView:NO];
 		[_fileExplorerTable setDataSource:self];
 		[_fileExplorerTable setDelegate:self];
 	}
@@ -96,7 +97,7 @@ var SharedFileExplorerController = nil;
 */
 @implementation NIFileExplorerController (CPOutlineDataSource)
 
-- (id)outlineView:(CPOutlineView)anOutlineView  child:(int)aChild   ofItem:(id)anItem
+- (id)outlineView:(CPOutlineView)anOutlineView  child:(int)aChild  ofItem:(id)anItem
 {
 	if (!anItem)
 		return [_dataSource objectAtIndex:aChild];
@@ -125,7 +126,7 @@ var SharedFileExplorerController = nil;
 	{
 		// tworzenie "pustego wypełniacza" dla wiersza tabeli .(0_0).
 		var item = [anItem copy];
-		[item setValue:@"Wczytuje.." forKey:@"filename"];
+		[item setValue:@"Wczytuję..." forKey:@"filename"];
 		[item setValue:nil forKey:@"files"];
 		[item setValue:nil forKey:@"filetype"];
 		[childrens addObject:item];
@@ -134,7 +135,7 @@ var SharedFileExplorerController = nil;
 	return [childrens objectAtIndex:aChild];
 }
 
--(BOOL)outlineView:(CPOutlineView)anOutlineView  isItemExpandable:(id)anItem
+-(BOOL)outlineView:(CPOutlineView)anOutlineView isItemExpandable:(id)anItem
 {
 	if (!anItem)
 		return NO;
@@ -143,7 +144,7 @@ var SharedFileExplorerController = nil;
 	return [anItem valueForKey:@"filetype"] == "DIR" && [anItem valueForKey:@"files"] > 0;
 }
 
-- (int)outlineView:(CPOutlineView)anOutlineView  numberOfChildrenOfItem:(id)anItem
+- (int)outlineView:(CPOutlineView)anOutlineView numberOfChildrenOfItem:(id)anItem
 {
 	if (!anItem)
 		return [_dataSource count];
@@ -170,6 +171,49 @@ var SharedFileExplorerController = nil;
 	
 	console.log("outlineViewSelectionDidChange", item, [outlineView selectedRow]);
 	console.log([item valueForKey:@"pathname"])
+}
+
+@end     
+
+
+
+
+@import "NIFileExplorerFileDataView.j"
+
+
+@implementation NIFileExplorerController (CPOutlineDelegate)   
+
+- (CPView)outlineView:(CPOutlineView)theOutlineView dataViewForTableColumn:(CPTableColumn)theTableColumn item:(id)anItem
+{
+    var identifier = [theTableColumn identifier],
+		dataView;
+
+	switch (identifier)
+	{
+		case @"filename":
+			dataView = [[NIFileExplorerFileDataView alloc] init];
+			
+			switch([anItem valueForKey:@"filetype"])
+			{
+				// ikona jako folder
+				case @"DIR":
+					CPLog.debug("filetype:" + [anItem valueForKey:@"filetype"]);
+					[dataView setFiletype:'folder'];
+				break;
+				
+				// ikona jako rotujący wskaźnik pracy :)
+				case nil:
+					CPLog.debug("filetype: nil");
+					[dataView setFiletype:'spinner' withImageExtension:@"gif"];
+				break;
+			}
+		break;
+
+		default:
+			dataView = [theTableColumn dataView];
+	}
+
+	return dataView;
 }
 
 @end

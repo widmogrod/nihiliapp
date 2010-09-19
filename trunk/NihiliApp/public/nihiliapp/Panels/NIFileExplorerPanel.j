@@ -1,5 +1,46 @@
 @import <AppKit/CPPanel.j>
 
+@implementation FolderView : CPView 
+{
+	CPTextField  _textField;
+}
+
+- (void)setObjectValue:(CPString)aValue   
+{                           
+	console.log('666666');
+	if (nil == _textField) {
+		[CPTextField initWithTitle:aValue];
+		[self addSubview:_textField];
+	} else {
+		[_textField setObjectValue:aValue];
+	}
+}
+
+@end         
+
+var FolderViewText = @"FolderViewText";
+
+@implementation FolderView (CPCoding)
+
+- (id)initWithCoder:(CPCoder)aCoder
+{
+    self = [super initWithCoder:aCoder];
+
+    if (self)
+    {
+        [self setObjectValue:[aCoder decodeObjectForKey:FolderViewText]];
+    }
+
+    return self;
+}
+
+- (void)encodeWithCoder:(CPCoder)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:_textField forKey:FolderViewText];
+}
+
+@end
 
 @implementation NIFileExplorerPanel : CPPanel
 {
@@ -40,18 +81,30 @@
 		[_fileExplorerTable setVerticalMotionCanBeginDrag:NO];
 		[_fileExplorerTable setAllowsMultipleSelection:NO];
 
-		[_fileExplorerTable setRowHeight:26.0];
+		[_fileExplorerTable setRowHeight:16.0];
 
-			// tworzenie kolumny
+			// tworzenie kolumny "Nazwa pliku"
 			var column = [[CPTableColumn alloc] initWithIdentifier:"filename"];
 			[[column headerView] setStringValue:"Nazwa"];
 //			[column setWidth:220.0];
 //			[column setMinWidth:20.0];
 //			[column setMaxWidth: 200.0];
 //			[column setEditable:NO];
-//			[column setDataView:[CPTextField new]];
+			   
+			// var dataview = [[CPTextField alloc] init];
+			// 			[dataview setFont:[CPFont systemFontOfSize:99]];
+			// 			[dataview setTextColor:[CPColor blueColor]]; 
+			// 			[[column headerView] setDataView:dataview];   
+			
 			[_fileExplorerTable addTableColumn:column];
-			[_fileExplorerTable setOutlineTableColumn:column];
+			[_fileExplorerTable setOutlineTableColumn:column];    
+			
+			// tworzenie kolumny - "Rodzaj"
+			// var column = [[CPTableColumn alloc] initWithIdentifier:"filetype"];
+			// 			[[column headerView] setStringValue:"Rodzaj"];                              
+			// 			[column setMinWidth:20.0];
+			// 			[column setMaxWidth: 80.0];
+			// 			[_fileExplorerTable addTableColumn:column];
 			
 //			[_fileExplorerTable addTableColumn:[[CPTableColumn alloc] initWithIdentifier:@"Two"]];
 			
