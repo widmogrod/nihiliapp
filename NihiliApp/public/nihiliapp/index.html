@@ -11,24 +11,39 @@
 -->
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        <meta http-equiv="X-UA-Compatible" content="chrome=1" /> 
+		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
-        <link rel="apple-touch-icon" href="Resources/icon.png" />
-        <link rel="apple-touch-startup-image" href="Resources/default.png" />
+		<meta name="apple-mobile-web-app-capable" content="yes" /> 
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" /> 
+		
+		<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+			
+		<link rel="apple-touch-icon" href="Resources/icon.png" /> 
+		<link rel="apple-touch-startup-image" href="Resources/default.png" />       
 
         <title>niniliapp</title>
-
+         <!-- <script src="test.js" type="text/javascript" charset="utf-8"></script> -->
+          
         <script type="text/javascript">
-            OBJJ_MAIN_FILE = "main.j";
+            OBJJ_MAIN_FILE = "main.j"; 
+			var CPLogDisable = false;
+
+			window.onBespinLoad = function() {
+				alert('bespin load');
+			};
         </script>
         
         <script type="text/javascript" src="Frameworks/Objective-J/Objective-J.js" charset="UTF-8"></script>
 
+
+		<link id="bespin_base" href="Bespin/" type="text/css" >
+		<!-- <link rel="stylesheet" href="Bespin/BespinEmbedded.css" type="text/css" media="screen" title="no title" charset="utf-8"> -->
+		
+		 <!-- <script src="Bespin/BespinEmbedded.js" type="text/javascript" charset="utf-8"></script>                                  -->
+                          
         <style type="text/css">
             body{margin:0; padding:0;}
             #container {position: absolute; top:50%; left:50%;}
@@ -46,7 +61,8 @@
 
     </head>
 
-    <body style="">
+    <body style="">        
+		<!-- <div class="bespin" style="width:500px; height:200px; position:absolute; z-index:9999; top:200px; left:300px; display:block; background-color:green">jak się masz</div> -->
         <div id="cappuccino-body">
             <div id="loadingcontainer" style="background-color: #eeeeee; overflow:hidden; width:100%; height:100%; position: absolute; top: 0; left: 0;">
                 <script type="text/javascript">
