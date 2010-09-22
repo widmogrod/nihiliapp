@@ -12,7 +12,7 @@ defined('APPLICATION_ENV')
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/../library'),
     '/usr/share/php/KontorX/trunk',
-    '/usr/share/php/Zend/trunk/library',
+    '/usr/share/php/Zend/trunk',
     get_include_path(),
 )));
 

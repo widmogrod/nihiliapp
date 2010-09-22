@@ -1,47 +1,5 @@
 @import <AppKit/CPPanel.j>
 
-@implementation FolderView : CPView 
-{
-	CPTextField  _textField;
-}
-
-- (void)setObjectValue:(CPString)aValue   
-{                           
-	console.log('666666');
-	if (nil == _textField) {
-		[CPTextField initWithTitle:aValue];
-		[self addSubview:_textField];
-	} else {
-		[_textField setObjectValue:aValue];
-	}
-}
-
-@end         
-
-var FolderViewText = @"FolderViewText";
-
-@implementation FolderView (CPCoding)
-
-- (id)initWithCoder:(CPCoder)aCoder
-{
-    self = [super initWithCoder:aCoder];
-
-    if (self)
-    {
-        [self setObjectValue:[aCoder decodeObjectForKey:FolderViewText]];
-    }
-
-    return self;
-}
-
-- (void)encodeWithCoder:(CPCoder)aCoder
-{
-    [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:_textField forKey:FolderViewText];
-}
-
-@end
-
 @implementation NIFileExplorerPanel : CPPanel
 {
 	CPOutlineView _fileExplorerTable @accessors(readonly, property=fileExplorerTable);

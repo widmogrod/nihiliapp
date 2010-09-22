@@ -77,8 +77,28 @@ class Api_ConnectionController extends Zend_Controller_Action
 	 *
 	 * @response JSON
 	 */
-	public function lsAction()
+    public function lsAction()
 	{
 		$this->_connectionApi->ls();
+	}
+	
+    /**
+     * Odczytywanie pliku z serwera
+     * 
+     * @response JSON
+     */
+    public function getAction()
+	{
+		$this->_connectionApi->get();
+	}
+	
+    /**
+     * Zapisywanie pliku na serwerze
+     * 
+     * @response JSON
+     */
+    public function putAction()
+	{
+		$this->_connectionApi->put();
 	}
 }

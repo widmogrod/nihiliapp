@@ -20,8 +20,11 @@
 //@import "Controllers/NIApiController.j"
 @import "Panels/NIFileExplorerController.j"    
 
-//@import "Bespin.j"
+@import "Panels/NIPreviewPanel.j"
 
+// @import "Bespin.j"
+// @import <AppKit/CPPanel.j>
+// @import <AppKit/CPWindowController.j>
 /*
 	Zmienne globale dla aplikacji
 */ 
@@ -54,11 +57,29 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 	contentView = [theWindow contentView];    
 	
-	// var bespin = [[Bespin alloc] initWithFrame:CGRectMake(10,10,300,300)];   
+	var panel = [[NIPreviewPanel alloc] init];
+	[panel orderFront:self];
+	
+	// // var bespin = [[Bespin alloc] initWithFrame:CGRectMake(10,10,300,300)];   
 	// var bespin = [[Bespin alloc] init];
-	// 	[bespin setFrame:CGRectMake(10,10,300,300)];
-	// 	[bespin setBackgroundColor:[CPColor redColor]];
-	// 	[contentView addSubview:bespin]; 
+	// [bespin setFrame:CGRectMake(0,0,200,100)];
+	// [bespin setBackgroundColor:[CPColor redColor]];
+	// [bespin setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+	// // [contentView addSubview:bespin]; 
+	// 
+	// var panel = [[CPPanel alloc] initWithContentRect:(CGRectMake(200,20,200,100)) styleMask:CPClosableWindowMask | CPResizableWindowMask];
+	// 
+	// [[panel contentView] addSubview: bespin];
+	// 
+	// setTimeout(function (){
+	// 	window.bespin.useBespin([panel contentView]);
+	// }, 2000);
+	// 
+	// 
+	// [panel orderFront:self];
+	// 
+	// var window = [[CPWindowController alloc] initWithWindow: panel];
+	// // [window loadWindow];
     
     // dokonanie autoryzacji uzytkownika przed uruchomieniem aplikacji!
     if (![[NIApiController sharedController] isAuthenticated])
