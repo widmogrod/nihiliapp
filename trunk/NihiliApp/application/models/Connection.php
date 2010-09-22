@@ -1,6 +1,9 @@
 <?php
 class Application_Model_Connection extends Application_Model_Response
 {
+	/**
+	 * @var KontorX_Ftp
+	 */
 	protected $_ftp;
 	
 	protected $_data = array();
@@ -57,6 +60,45 @@ class Application_Model_Connection extends Application_Model_Response
 		}
 
 		$this->setResult($result);
+	}
+	
+	public function get() 
+	{
+		$localFile  = tempnam(sys_get_temp_dir(),'kx_ftp');
+		$remoteFile = $this->_data['pathname'];
+		
+		$result = $this->_ftp->get($localFile, $remoteFile);
+		if (!$result) 
+		{
+		    $this->addMessage('Nie można pobrać pliku z serwera');
+			$this->setStatus(self::FAILURE);
+			return;
+		}
+
+		$content = file_get_contents($localFile);
+		$this->setResult($content);
+		$this->setStatus(self::SUCCESS);
+	}
+	
+	public function put()
+	{
+		$localFile  = tempnam(sys_get_temp_dir(), 'kx_ftp');
+		$remoteFile = $this->_data['pathname'];
+		$data	    = $this->_data['content'];
+
+		if (!file_put_contents($localFile, $data)) {
+			$this->addMessage('Wystąpił błąd podczas zapisu pliku na dysku');
+			$this->setStatus(self::FAILURE);
+			return;
+		}
+		
+		if (!$this->_ftp->put($remoteFile, $localFile)) {
+		    $this->addMessage('Wystąpił błąd podczas zapisu pliku na serwerze');
+			$this->setStatus(self::FAILURE);
+			return;
+		}
+		
+		$this->setStatus(self::SUCCESS);
 	}
 }
 

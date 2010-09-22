@@ -171,13 +171,13 @@ var NIFTPApiShared = nil,
 	data = [data objectFromJSON];
 	data = [CPDictionary dictionaryWithJSObject: data recursively:YES];
 
-	console.log("CONNECION:userInfo", userInfo);
-	console.log("CONNECION:[self userInfo]", [self userInfo]);
+	CPLog.debug("CONNECION:userInfo", userInfo);
+	CPLog.debug("CONNECION:[self userInfo]", [self userInfo]);
 
 	if (userInfo)
 		[data setValue:userInfo forKey:@"userInfo"];
 
-	console.log("sel_getName(selector)", sel_getName(selector));
+	CPLog.debug("sel_getName(selector)", sel_getName(selector));
 
 	[delegate performSelector:selector withObject:data];
 }

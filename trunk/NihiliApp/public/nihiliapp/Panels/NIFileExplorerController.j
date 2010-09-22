@@ -34,6 +34,8 @@ var SharedFileExplorerController = nil;
 		[_fileExplorerTable setIndentationMarkerFollowsDataView:NO];
 		[_fileExplorerTable setDataSource:self];
 		[_fileExplorerTable setDelegate:self];
+		[_fileExplorerTable setTarget:self];
+		[_fileExplorerTable setDoubleAction:@selector(loadContentFile:)];
 	}
 	return self;
 }
@@ -52,45 +54,10 @@ var SharedFileExplorerController = nil;
 	[[self window] orderFront:self];
 }
 
-- (void)didReciveData:(CPDictionary)aResponse
-{
-	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
-	{
-		_dataSource = [aResponse valueForKey:@"result"];
-		[_fileExplorerTable reloadData];
-	}
-	
-}
 
-- (void)didReciveChildData:(CPDictionary)aResponse
-{
-	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
-	{
-		var item = [aResponse valueForKey:@"userInfo"];
-		[item setValue:[aResponse valueForKey:@"result"] forKey:@"childrens"];
-		[_fileExplorerTable reloadData];
-	}
-	
-}
 
 @end
 
-@implementation NIFileExplorerObject : CPObject
-{
-	CPString _filename @accessors(readonly, property=filename);
-}
-
-- (id)initWithObject:(Object)anObject
-{
-	_filename = anObject.filename;
-}
-
-- (CPString)description
-{
-	return _filename;
-}
-
-@end
 
 /*
 	Kategoria reprezentująca
@@ -164,15 +131,6 @@ var SharedFileExplorerController = nil;
 	return [anItem valueForKey:identifier];
 }
 
-- (id)outlineViewSelectionDidChange:(CPNotification)aNotification
-{
-	var outlineView = [aNotification object];
-	var item = [outlineView itemAtRow:[outlineView selectedRow]];
-	
-	console.log("outlineViewSelectionDidChange", item, [outlineView selectedRow]);
-	console.log([item valueForKey:@"pathname"])
-}
-
 @end     
 
 
@@ -218,5 +176,97 @@ var SharedFileExplorerController = nil;
 
 	return dataView;
 }
+
+@end
+
+
+@import "NIPreviewController.j"
+
+
+@implementation NIFileExplorerController (TargetActionAndNotifications)   
+
+- (void)loadContentFile:(CPOutlineView)theOutlineView
+{
+	// var row = [theOutlineView itemAtRow:[theOutlineView selectedRow]];
+	
+	CPLog.debug(@"loadContentFile:");
+	// CPLog.debug([row valueForKey:@"pathname"]);
+	
+	var preview = [NIPreviewController sharedController];
+	[preview setConnection:_connection];
+	
+	// // inicjowanie pobierania asynchronicznego danych
+	// var ftp = [NIFTPApi sharedApi];
+	// [ftp setConnection:_connection];
+	// [ftp action:@"get" delegate:self selector:@selector(didReciveContentFileData:)];
+	
+	
+}
+
+- (id)outlineViewSelectionDidChange:(CPNotification)aNotification
+{
+	var outlineView = [aNotification object];
+	var item = [outlineView itemAtRow:[outlineView selectedRow]];
+	
+	
+	CPLog.debug(@"outlineViewSelectionDidChange:");
+	CPLog.debug([item valueForKey:@"pathname"])
+	
+	[_connection setPathname:[item valueForKey:@"pathname"]];
+}
+
+@end
+
+
+
+/*
+	Kategoria zawiera metody do których są delegowane odpowiedzi
+	z serwera. Więcej szczegółów @see NIFTPApi.
+*/
+@implementation NIFileExplorerController (NIFTPApiDelegate)
+
+/*
+	Delegacja do tej metody jest ustalona 
+	w NIFileExplorerController @see setConnection:
+*/
+- (void)didReciveData:(CPDictionary)aResponse
+{
+	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
+	{
+		_dataSource = [aResponse valueForKey:@"result"];
+		[_fileExplorerTable reloadData];
+	}
+}
+
+/*
+	Delegacja do tej metody jest ustalona 
+	NIFileExplorerController @see outlineView:child:ofItem:
+*/
+- (void)didReciveChildData:(CPDictionary)aResponse
+{
+	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
+	{
+		var item = [aResponse valueForKey:@"userInfo"];
+		[item setValue:[aResponse valueForKey:@"result"] forKey:@"childrens"];
+		[_fileExplorerTable reloadData];
+	}
+	
+}
+
+// /*
+// 	Delegacja do tej metody jest ustalona 
+// 	NIFileExplorerController @see outlineView:child:ofItem:
+// */
+// - (void)didReciveContentFileData:(CPDictionary)aResponse
+// {
+// 	CPLog.debug(@"didReciveContentFileData:");
+// 	
+// 	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
+// 	{
+// 		CPLog.debug([aResponse valueForKey:@"result"]);
+// 	} else {
+// 		[[NIAlert alertWithResponse:aResponse] runModal];
+// 	}
+// }
 
 @end
