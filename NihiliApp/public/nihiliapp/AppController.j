@@ -57,8 +57,8 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 	contentView = [theWindow contentView];    
 	
-	var panel = [[NIPreviewPanel alloc] init];
-	[panel orderFront:self];
+	// var panel = [[NIPreviewPanel alloc] init];
+	// [panel orderFront:self];
 	
 	// // var bespin = [[Bespin alloc] initWithFrame:CGRectMake(10,10,300,300)];   
 	// var bespin = [[Bespin alloc] init];
@@ -82,14 +82,14 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 	// // [window loadWindow];
     
     // dokonanie autoryzacji uzytkownika przed uruchomieniem aplikacji!
-    if (![[NIApiController sharedController] isAuthenticated])
-    {
-    	[self login:self];
-    } else {
+    // if (![[NIApiController sharedController] isAuthenticated])
+    //     {
+    	// [self login:self];
+    // } else {
     	[self initApplicationView];
-    }
+    // }
     
-//    [[NIOpenWindow sharedOpenWindow] orderFront:self];
+   // [[NIOpenWindow sharedOpenWindow] orderFront:self];
     
     [NISitePanelController sharedController];
 }
@@ -99,14 +99,14 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 	// Aktywuj menu główne applikacji
     var mainMenu = [[NIMenu alloc] initWithDelegate:self];
     
-    // Utwórz pasek nawigacyjny
-	var toolbar = [[CPToolbar alloc] initWithIdentifier:"Navigation"];
-    [toolbar setDelegate:self];
-	[toolbar setVisible:YES];
-	[theWindow setToolbar:toolbar];
+    // // Utwórz pasek nawigacyjny
+    // 	var toolbar = [[CPToolbar alloc] initWithIdentifier:"Navigation"];
+    //     [toolbar setDelegate:self];
+    // 	[toolbar setVisible:YES];
+    // 	[theWindow setToolbar:toolbar];
 	
-	var pageView = [[NIPageView alloc] initWithFrame:CGRectMake(0,0, NIPageViewWidth, CGRectGetHeight([contentView bounds]))];
-	[contentView addSubview:pageView];
+	// var pageView = [[NIPageView alloc] initWithFrame:CGRectMake(0,0, NIPageViewWidth, CGRectGetHeight([contentView bounds]))];
+	// 	[contentView addSubview:pageView];
 }
 
 @end

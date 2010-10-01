@@ -13,6 +13,8 @@ var SharedFileExplorerController = nil;
 	@outlet CPOutlineTable _fileExplorerTable(property=fileExplorerTable);
 	CPArray _dataSource;
 	VOConnection _connection;
+	
+	CPSet _connections;
 }
 
 + (NIFileExplorerController)sharedController
@@ -35,7 +37,13 @@ var SharedFileExplorerController = nil;
 		[_fileExplorerTable setDataSource:self];
 		[_fileExplorerTable setDelegate:self];
 		[_fileExplorerTable setTarget:self];
-		[_fileExplorerTable setDoubleAction:@selector(loadContentFile:)];
+		[_fileExplorerTable setDoubleAction:@selector(doubleClickAction:)];
+
+		_connections = [[CPSet alloc] init];
+		
+		var tf = [[self window] headerTextField];
+		[tf setTarget:self];
+		[tf setAction:@selector(setPreviousConnection:)];
 	}
 	return self;
 }
@@ -45,7 +53,10 @@ var SharedFileExplorerController = nil;
 */
 - (void)setConnection:(VOConnection)aConnection
 {
+	console.log(aConnection, [aConnection UID]);
 	_connection = aConnection;
+	
+	[_connections addObject:[aConnection copy]];
 	
 	var ftp = [NIFTPApi sharedApi];
 	[ftp setConnection:aConnection];
@@ -54,6 +65,45 @@ var SharedFileExplorerController = nil;
 	[[self window] orderFront:self];
 }
 
+- (void)previousConnection
+{
+	CPLog.info(@"[_connections count]: " + [_connections count]);
+	
+	
+	if (![_connections count])
+		return;
+		
+	var en = [_connections objectEnumerator];	
+	// [en nextObject];
+	var conn;
+	
+	while(conn = [en nextObject])
+	{
+		if (conn != _connection) {
+			console.log('!=');
+			console.log(conn);
+			break;
+		} else {
+			console.log('==');
+			console.log(conn);
+		}
+	}
+	
+	console.log(conn);
+	
+	return conn;
+}
+
+- (void)setPreviousConnection:(id)aSender
+{
+	CPLog.info(@"setPreviousConnection: GO");
+	var conn = [self previousConnection];
+	if (conn) {
+		CPLog.error(@"!!!!!");
+		[self setConnection:conn];
+	}
+		
+}
 
 
 @end
@@ -185,22 +235,25 @@ var SharedFileExplorerController = nil;
 
 @implementation NIFileExplorerController (TargetActionAndNotifications)   
 
-- (void)loadContentFile:(CPOutlineView)theOutlineView
+- (void)doubleClickAction:(CPOutlineView)theOutlineView
 {
-	// var row = [theOutlineView itemAtRow:[theOutlineView selectedRow]];
+	var row = [theOutlineView itemAtRow:[theOutlineView selectedRow]];
 	
-	CPLog.debug(@"loadContentFile:");
-	// CPLog.debug([row valueForKey:@"pathname"]);
-	
-	var preview = [NIPreviewController sharedController];
-	[preview setConnection:_connection];
-	
-	// // inicjowanie pobierania asynchronicznego danych
-	// var ftp = [NIFTPApi sharedApi];
-	// [ftp setConnection:_connection];
-	// [ftp action:@"get" delegate:self selector:@selector(didReciveContentFileData:)];
-	
-	
+	if ([row valueForKey:@"filetype"] == 'FILE')
+	{
+		CPLog.debug(@"Wczytaj plik");
+		
+		var preview = [NIPreviewController sharedController];
+		[preview setConnection:_connection];
+	} else {
+		CPLog.debug(@"Przeładuj katalog");
+		// dodać klonowanie noweo obiektu
+		[self setConnection:[_connection copy]];
+		
+		CPLog.debug(@"Ustawiam nagłówek");
+
+		[[self window] setHeaderText:[row valueForKey:@"filename"]];
+	}
 }
 
 - (id)outlineViewSelectionDidChange:(CPNotification)aNotification
