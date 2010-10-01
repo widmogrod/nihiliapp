@@ -20,6 +20,26 @@ var NIImageExtensionCache = {};
 	CPTextField textField @accessors;
 	
 	CPString _imageDidErrorWithFilename;
+	
+	id target @accessors;
+	SEL action @accessors;
+}
+
+- (void)rightMouseDown:(CPEvent)anEvent
+{
+	CPLog.error(@"rightMouseDown:");
+	
+	if ([anEvent clickCount] > 1) 
+	{
+		if ([[self target] respondsToSelector: [self action]]) {
+			CPLog.error(@"ON:");
+			[[self target] performSelector:[self action] withObject:self];
+		} else {
+			CPLog.fatal(@"NIE:");
+		}		
+	} else {
+		CPLog.debug(@"mało zliczeń:");		
+	}
 }
 
 - (id)initWithFrame:(CGRect)aFrame

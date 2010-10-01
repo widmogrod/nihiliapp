@@ -3,6 +3,7 @@
 @import "NIPreviewPanel.j"
 @import "../Models/NIFTPApi.j"
 @import "../Models/VOConnection.j"
+@import "NIAlert.j"
 
 var SharedNIPreviewController = nil;
 
@@ -31,14 +32,11 @@ var SharedNIPreviewController = nil;
 }
 
 - (void)setConnection:(VOConnection)aConnection
-{
-	if (_connection == aConnection)
-		return;
-
+{	
 	_connection = aConnection;
 
 	var ftp = [NIFTPApi sharedApi];
-	[ftp setConnection:aConnection];
+	[ftp setConnection:_connection];
 	[ftp action:@"get" delegate:self selector:@selector(didReciveContentFileData:)];
 
 	[[self window] orderFront:self];
