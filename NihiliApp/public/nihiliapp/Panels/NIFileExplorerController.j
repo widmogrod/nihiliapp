@@ -53,10 +53,14 @@ var SharedFileExplorerController = nil;
 */
 - (void)setConnection:(VOConnection)aConnection
 {
-	console.log(aConnection, [aConnection UID]);
+	var um = [[self window] undoManager];	
+	CPLog.info(@"Czy zdarzenie jest cofane:" + ([um isUndoing] ? "Tak" : "Nie"));
+	CPLog.info(@"Sciezka: " + [_connection pathname]);
+		
+	// console.log(aConnection, [aConnection UID]);
 	_connection = aConnection;
 	
-	[_connections addObject:[aConnection copy]];
+	// [_connections addObject:[aConnection copy]];
 	
 	var ftp = [NIFTPApi sharedApi];
 	[ftp setConnection:aConnection];
@@ -69,39 +73,48 @@ var SharedFileExplorerController = nil;
 {
 	CPLog.info(@"[_connections count]: " + [_connections count]);
 	
-	
 	if (![_connections count])
 		return;
-		
-	var en = [_connections objectEnumerator];	
+	
+	var en = [[_connections allObjects] reverseObjectEnumerator];
+	// var en = [_connections objectEnumerator];	
 	// [en nextObject];
 	var conn;
-	
+
 	while(conn = [en nextObject])
 	{
 		if (conn != _connection) {
-			console.log('!=');
-			console.log(conn);
+			console.log('!=', conn);
+			[_connections removeObject:conn];
 			break;
 		} else {
-			console.log('==');
-			console.log(conn);
+			console.log('==', conn);
 		}
 	}
 	
-	console.log(conn);
+	console.log('setPreviousConnection', [conn pathname]);
 	
 	return conn;
 }
 
 - (void)setPreviousConnection:(id)aSender
 {
-	CPLog.info(@"setPreviousConnection: GO");
-	var conn = [self previousConnection];
-	if (conn) {
-		CPLog.error(@"!!!!!");
-		[self setConnection:conn];
-	}
+	CPLog.info(@"Cofam zdarzeie:");
+	CPLog.info(@"Sciezka: " + [_connection pathname]);
+	CPLog.debug(aSender);
+	
+	// 	var conn = [self previousConnection];
+	// 	if (conn) {
+	// 		CPLog.error(@"!!!!!");
+	// 		[self setConnection:conn];
+	// 	}
+	
+	//[self setConnection:aSender];
+	var um = [[self window] undoManager];
+	CPLog.error(@"Undo");
+	CPLog.debug([um canUndo]);
+	CPLog.debug([um canRedo]);
+	CPLog.error([um undo]);
 		
 }
 
@@ -243,12 +256,20 @@ var SharedFileExplorerController = nil;
 	{
 		CPLog.debug(@"Wczytaj plik");
 		
+		[_connection setPathname:[row valueForKey:@"pathname"]];
+		
 		var preview = [NIPreviewController sharedController];
 		[preview setConnection:_connection];
 	} else {
 		CPLog.debug(@"Przeładuj katalog");
+		CPLog.debug(@"Dodaję zdarzenie do cofnięcia");
+		
+		var um = [[self window] undoManager];	
+		[um registerUndoWithTarget:self selector:@selector(setConnection:) object:[_connection copy]];
+		
 		// dodać klonowanie noweo obiektu
-		[self setConnection:[_connection copy]];
+		[_connection setPathname:[row valueForKey:@"pathname"]];
+		[self setConnection:_connection];
 		
 		CPLog.debug(@"Ustawiam nagłówek");
 
@@ -265,7 +286,7 @@ var SharedFileExplorerController = nil;
 	CPLog.debug(@"outlineViewSelectionDidChange:");
 	CPLog.debug([item valueForKey:@"pathname"])
 	
-	[_connection setPathname:[item valueForKey:@"pathname"]];
+	// [_connection setPathname:[item valueForKey:@"pathname"]];
 }
 
 @end
