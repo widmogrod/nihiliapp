@@ -10,4 +10,15 @@
 	CPString protocol @accessors;
 }
 
+- (VOConnection)copy
+{
+	var copy = [[VOConnection alloc] init];
+	[copy setServer:[self server]];
+	[copy setUsername:[self username]];
+	[copy setPassword:[self password]];
+	[copy setPathname:[self pathname]];
+	[copy setProtocol:[self protocol]];	
+	return copy;
+}
+
 @end
