@@ -8,6 +8,7 @@
 	CPString password @accessors;
 	CPString pathname @accessors;
 	CPString protocol @accessors;
+	CPString content @accessors;
 }
 
 - (VOConnection)copy
@@ -18,6 +19,7 @@
 	[copy setPassword:[self password]];
 	[copy setPathname:[self pathname]];
 	[copy setProtocol:[self protocol]];	
+	[copy setContent:[self content]];	
 	return copy;
 }
 

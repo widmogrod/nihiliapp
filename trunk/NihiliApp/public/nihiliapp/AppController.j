@@ -22,6 +22,10 @@
 
 @import "Panels/NIPreviewPanel.j"
 
+@import "Windows/NIOpenWindowController.j"
+
+@import "Panels/NIImageController.j"
+
 // @import "Bespin.j"
 // @import <AppKit/CPPanel.j>
 // @import <AppKit/CPWindowController.j>
@@ -86,18 +90,21 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     //     {
     	// [self login:self];
     // } else {
-    	[self initApplicationView];
+    	//[self initApplicationView];
     // }
     
    // [[NIOpenWindow sharedOpenWindow] orderFront:self];
+	//[[NIOpenWindowController alloc] init];
     
     [NISitePanelController sharedController];
+
+	//[[[NIImageController sharedController] window] orderFront: self];
 }
 
 - (void)initApplicationView
 {
 	// Aktywuj menu główne applikacji
-    var mainMenu = [[NIMenu alloc] initWithDelegate:self];
+    // var mainMenu = [[NIMenu alloc] initWithDelegate:self];
     
     // // Utwórz pasek nawigacyjny
     // 	var toolbar = [[CPToolbar alloc] initWithIdentifier:"Navigation"];

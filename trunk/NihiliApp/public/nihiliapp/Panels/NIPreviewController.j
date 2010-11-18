@@ -34,7 +34,11 @@ var SharedNIPreviewController = nil;
 - (void)setConnection:(VOConnection)aConnection
 {	
 	_connection = aConnection;
-
+	
+	// wyczyść dane w oknie
+	[[[self window] textarea] setObjectValue:@""];
+	
+	// wczytaj nowe dane
 	var ftp = [NIFTPApi sharedApi];
 	[ftp setConnection:_connection];
 	[ftp action:@"get" delegate:self selector:@selector(didReciveContentFileData:)];
@@ -42,10 +46,14 @@ var SharedNIPreviewController = nil;
 	[[self window] orderFront:self];
 }
 
+@end
+
+
 /*
-	Delegacja do tej metody jest ustalona 
-	NIFileExplorerController @see outlineView:child:ofItem:
+	Delegacje z @see NIFTPApi.
 */
+@implementation NIPreviewController (ConnectionDelegations)
+
 - (void)didReciveContentFileData:(CPDictionary)aResponse
 {
 	CPLog.debug(@"didReciveContentFileData:");
@@ -53,10 +61,43 @@ var SharedNIPreviewController = nil;
 	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
 	{
 		var result = [aResponse valueForKey:@"result"];
-		[[[self window] textarea] setObjectValue:result]
+		[[[self window] textarea] setObjectValue:result];
 	} else {
 		[[NIAlert alertWithResponse:aResponse] runModal];
 	}
+}
+
+- (void)didSaveContentData:(CPDictionary)aResponse
+{
+	CPLog.debug(@"didSaveContentData:");
+	
+	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
+	{
+		[[[self window] plusButton] setTitle:@"Zapisz"];
+	} else {
+		[[NIAlert alertWithResponse:aResponse] runModal];
+	}
+}
+
+@end
+
+
+/*
+	Implementacja logiki akcji dla kontrolera podglądu aplikacji.
+*/
+@implementation NIPreviewController (TargetAction)
+
+- (void)performSave:(id)sender
+{
+	[sender setTitle:@"Zapisuję..."];
+	
+	[_connection setContent: 	[[[self window] textarea] objectValue]];
+	
+	var ftp = [NIFTPApi sharedApi];
+	[ftp setConnection:_connection];
+	[ftp action:@"put" delegate:self selector:@selector(didSaveContentData:)];
+
+	[[self window] orderFront:self];
 }
 
 @end

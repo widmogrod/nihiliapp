@@ -5,27 +5,60 @@ var NIPreviewPanel = nil;
 @implementation NIPreviewPanel : CPPanel
 {
 	CPTextView textarea @accessors;
+	CPButton _plusButton @accessors(getter=plusButton);
 }
 
 - (id)init
 {
-	self = [super initWithContentRect:CGRectMake(50,50,400,200) 
-							styleMask:CPClosableWindowMask | CPHUDBackgroundWindowMask];
+	self = [super initWithContentRect:CGRectMake(0,0,750,500) 
+							styleMask:CPClosableWindowMask | CPResizableWindowMask];
 	if(self)
 	{
 		[self setTitle:@"Podgląd"];
 		//[self center];
 		[self setFloatingPanel:YES];
+		[self center];
+	
+		var buttonBarHeight = 25;
 		
 		var contentView = [self contentView],
-			bounds = [contentView bounds];
+			frame = [contentView frame];
 		
-		textarea = [[CPTextView alloc] initWithFrame: bounds];
+		textarea = [[CPTextView alloc] initWithFrame: frame];
+		[textarea setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
 			// [textarea setEditable:YES];
 			// [textarea setBordered:YES];
 			// [textarea setBezeled:NO];
 		
 		[contentView addSubview:textarea];
+		
+		var buttonBar = [[CPButtonBar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - buttonBarHeight,
+																	 CGRectGetWidth(frame), buttonBarHeight)];
+
+		[buttonBar setAutoresizingMask: CPViewWidthSizable | CPViewMinYMargin];
+		
+		// _plusButton = [CPButtonBar plusButton];
+		
+		// _plusButton = [[CPButton alloc] initWithFrame:CGRectMake(0, 0, 35, 25)],
+		// _plusButtonImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:@"tick-36.png"] size:CGSizeMake(36, 36)];
+		// 
+		// 	    [_plusButton setBordered:NO];
+		// 	    [_plusButton setImage:_plusButtonImage];
+		// 	    [_plusButton setImagePosition:CPImageOnly];
+		// 
+		
+		_plusButton = [[CPButton alloc] initWithFrame:CGRectMake(0, 0, 65, 25)];
+		[_plusButton setTitle:@"Zapisz"];
+
+		[_plusButton setTarget:[self windowController]];
+		[_plusButton setAction:@selector(performSave:)];
+		
+		var buttons = [
+			_plusButton
+		];
+
+		[buttonBar setButtons:buttons];
+		[contentView addSubview:buttonBar];
 		//[self setWorksWhenModal:YES];
 	}
 	return self;

@@ -52,7 +52,10 @@ var NIFTPApiShared = nil,
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 
 	// przygotuj parametry rządania HTTP
-	[request setHTTPBody:[self _bodyFromConnection:[aRequestHelper connection]]];
+	var body = [self _bodyFromConnection:[aRequestHelper connection]],
+		body = body.join('&');
+		
+	[request setHTTPBody:body];
 
 	return request;
 }
@@ -61,13 +64,16 @@ var NIFTPApiShared = nil,
 /*
 	Przygotowywuje i zwraca dane POST do rządania.
 */
-- (CPString)_bodyFromConnection:(VOConnection)aConnection
+- (CPArray)_bodyFromConnection:(VOConnection)aConnection
 {
-	var body = @"server=" 	+ [aConnection server] + "&" +
-			   @"username=" + [aConnection username] + "&" +
-			   @"password=" + [aConnection password] + "&" +
-			   @"pathname=" + [aConnection pathname] + "&" +
-			   @"protocol=" + [aConnection protocol];
+	var body = [
+		@"server=" 	+ [aConnection server],
+		@"username=" + [aConnection username],
+		@"password=" + [aConnection password],
+		@"pathname=" + [aConnection pathname],
+		@"protocol=" + [aConnection protocol],
+		@"content=" + [aConnection content]
+	];
 
 	return body;
 }
