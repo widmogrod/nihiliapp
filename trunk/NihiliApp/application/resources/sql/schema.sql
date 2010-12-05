@@ -1,0 +1,17 @@
+CREATE TABLE app_connection (connection_id BIGSERIAL, server VARCHAR(255), username VARCHAR(50), password VARCHAR(50), pathname VARCHAR(512), protocol BIGINT, created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, PRIMARY KEY(connection_id));
+CREATE TABLE app_user_connection_content_version (fk_connection_id BIGINT, content text, created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, version BIGINT, PRIMARY KEY(fk_connection_id, version));
+CREATE TABLE app_user_connection_content (fk_connection_id BIGINT, content text, created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, version BIGINT, PRIMARY KEY(fk_connection_id));
+CREATE TABLE app_groups (group_id BIGSERIAL, name VARCHAR(255), created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, PRIMARY KEY(group_id));
+CREATE TABLE app_user (user_id BIGSERIAL, username VARCHAR(50), password VARCHAR(50), email VARCHAR(50), created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, PRIMARY KEY(user_id));
+CREATE TABLE app_user_connection (fk_user_id BIGINT, fk_connection_id BIGINT, type VARCHAR(255) DEFAULT 'guest', created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, PRIMARY KEY(fk_user_id, fk_connection_id));
+CREATE TABLE app_user_group (fk_user_id BIGINT, fk_group_id BIGINT, created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, PRIMARY KEY(fk_user_id, fk_group_id));
+CREATE INDEX app_user_connection_content_fk_connection_id_index ON app_user_connection_content (fk_connection_id);
+CREATE INDEX app_user_email_password_index ON app_user (email, password);
+CREATE UNIQUE INDEX app_user_connection_all_index ON app_user_connection (fk_user_id, fk_connection_id);
+CREATE INDEX app_user_connection_fk_user_id_index ON app_user_connection (fk_user_id);
+CREATE UNIQUE INDEX app_user_group_all_index ON app_user_group (fk_user_id, fk_group_id);
+ALTER TABLE app_user_connection_content_version ADD CONSTRAINT afaf_1 FOREIGN KEY (fk_connection_id) REFERENCES app_user_connection_content(fk_connection_id) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE app_user_connection ADD CONSTRAINT app_user_connection_fk_user_id_app_user_user_id FOREIGN KEY (fk_user_id) REFERENCES app_user(user_id) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE app_user_connection ADD CONSTRAINT afac_1 FOREIGN KEY (fk_connection_id) REFERENCES app_connection(connection_id) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE app_user_group ADD CONSTRAINT app_user_group_fk_user_id_app_user_user_id FOREIGN KEY (fk_user_id) REFERENCES app_user(user_id) NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE app_user_group ADD CONSTRAINT app_user_group_fk_group_id_app_groups_group_id FOREIGN KEY (fk_group_id) REFERENCES app_groups(group_id) NOT DEFERRABLE INITIALLY IMMEDIATE;
