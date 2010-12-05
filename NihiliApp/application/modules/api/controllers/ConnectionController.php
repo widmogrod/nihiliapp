@@ -7,6 +7,7 @@
  * - password 
  * - protocol
  * - pathname
+ * - content
  *
  * (*) - oznacza parametr wymagane.
  *

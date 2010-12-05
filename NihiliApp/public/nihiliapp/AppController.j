@@ -93,10 +93,10 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     	//[self initApplicationView];
     // }
     
-   // [[NIOpenWindow sharedOpenWindow] orderFront:self];
-	//[[NIOpenWindowController alloc] init];
+    //[[NIOpenWindow sharedOpenWindow] orderFront:self];
+	[[NIOpenWindowController alloc] init];
     
-    [NISitePanelController sharedController];
+    
 
 	//[[[NIImageController sharedController] window] orderFront: self];
 }

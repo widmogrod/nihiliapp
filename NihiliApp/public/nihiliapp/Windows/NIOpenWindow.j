@@ -1,4 +1,5 @@
 @import <AppKit/CPWindow.j>
+@import <AppKit/CPTableView.j>
 
 var SharedOpenWindow = nil;
 
@@ -16,6 +17,8 @@ var SharedOpenWindow = nil;
 	CPButton plusButton;
 	CPButton minusButton;
 	CPPopUpButton popUpButton;
+	
+	CPTableView _tableView @accessors(getter=tableView);
 }
 
 - (id)init
@@ -39,24 +42,24 @@ var SharedOpenWindow = nil;
 		[scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
 		[scrollView setHasHorizontalScroller: NO];
 		
-		var _fileExplorerTable = [[CPOutlineView alloc] initWithFrame:CGRectMake(0,0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
-		[_fileExplorerTable setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+		_tableView = [[CPTableView alloc] initWithFrame:CGRectMake(0,0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
+		[_tableView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
 
 		// zapewnia rozszeżenie sie pierwszej kolumny!
-		[_fileExplorerTable setColumnAutoresizingStyle:CPTableViewFirstColumnOnlyAutoresizingStyle];
+		[_tableView setColumnAutoresizingStyle:CPTableViewFirstColumnOnlyAutoresizingStyle];
 		// ustaw styl podświetlania rekordu
-		[_fileExplorerTable setSelectionHighlightStyle:CPTableViewSelectionHighlightStyleSourceList];
+		[_tableView setSelectionHighlightStyle:CPTableViewSelectionHighlightStyleSourceList];
 		// ustaw linie poziomą rodzielającą poszczególne wiersze
-		// [_fileExplorerTable setGridStyleMask:CPTableViewSolidHorizontalGridLineMask];
+		// [_tableView setGridStyleMask:CPTableViewSolidHorizontalGridLineMask];
 
-		[_fileExplorerTable setVerticalMotionCanBeginDrag:NO];
-		[_fileExplorerTable setAllowsMultipleSelection:NO];
+		[_tableView setVerticalMotionCanBeginDrag:NO];
+		[_tableView setAllowsMultipleSelection:NO];
 
-		[_fileExplorerTable setRowHeight:20.0];
+		[_tableView setRowHeight:20.0];
 
 			// tworzenie kolumny "Nazwa pliku"
-			var column = [[CPTableColumn alloc] initWithIdentifier:"name"];
-			[[column headerView] setStringValue:"Nazwa"];
+			var column = [[CPTableColumn alloc] initWithIdentifier:"server"];
+			[[column headerView] setStringValue:"Serwer"];
 //			[column setWidth:220.0];
 //			[column setMinWidth:20.0];
 //			[column setMaxWidth: 200.0];
@@ -67,11 +70,11 @@ var SharedOpenWindow = nil;
 			// 			[dataview setTextColor:[CPColor blueColor]]; 
 			// 			[[column headerView] setDataView:dataview];   
 			
-			[_fileExplorerTable addTableColumn:column];
-			[_fileExplorerTable setOutlineTableColumn:column];
+			[_tableView addTableColumn:column];
+			//[_tableView setOutlineTableColumn:column];
 		
 		
-		[scrollView setDocumentView:_fileExplorerTable];
+		[scrollView setDocumentView:_tableView];
 		[contentView addSubview:scrollView];
 		
 		var buttonBar = [[CPButtonBar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - buttonBarHeight,
