@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Europe/Warsaw');
 
 // Define path to application directory
 defined('APPLICATION_PATH')

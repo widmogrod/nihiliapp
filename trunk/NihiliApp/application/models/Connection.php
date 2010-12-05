@@ -84,7 +84,8 @@ class Application_Model_Connection extends Application_Model_Response
 	{
 		$localFile  = tempnam(sys_get_temp_dir(), 'kx_ftp');
 		$remoteFile = $this->_data['pathname'];
-		$data	    = $this->_data['content'];
+		$data	    = get_magic_quotes_gpc() ? stripslashes($this->_data['content']) : $this->_data['content'];
+//$data = $this->_data['content'];
 
 		if (!file_put_contents($localFile, $data)) {
 			$this->addMessage('Wystąpił błąd podczas zapisu pliku na dysku');

@@ -10,9 +10,13 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // action body
+        
     }
 
-
+	public function infoAction()
+	{
+		phpinfo();
+		$this->_helper->viewRenderer->setNoRender(true);
+	}
 }
 
