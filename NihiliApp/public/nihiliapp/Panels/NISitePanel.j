@@ -30,6 +30,8 @@ var NISitePanelWidth = 400.0,
 	CPTextField	_pathnameField @accessors(readonly, property=pathnameField);
 	CPTextField _protocolField @accessors(readonly, property=protocolField);
 	
+	CPButton _actionButton @accessors(getter=actionButton, setter=setActionButton:);
+	
 	CPTableView tableView;
 	CPOutlineView outlineView;
 }
@@ -114,23 +116,17 @@ var NISitePanelWidth = 400.0,
 		[contentView addSubview:_protocolField];
 		
 		var checkButton = [CPButton buttonWithTitle:"Sprawdź połączenie"];
-		//[loginButton setFont:[CPFont systemFontOfSize:18]];
-//		[checkButton setDefaultButton:YES];
-		//[loginButton setBezelStyle:CPHUDBezelStyle];
-		//[loginButton setThemeState:CPBackgroundButtonMask];
-//		[checkButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
-		[checkButton sizeToFit];
-		
-		// ustaw położenie w lewym dolnym roku!
-		[checkButton setFrameOrigin:CGPointMake(CGRectGetMaxX([contentView frame]) - CGRectGetWidth([checkButton frame]) - NISitePanelViewConntentSpacing, 
-												CGRectGetMaxY([contentView frame]) - CGRectGetHeight([checkButton frame]) - 4 * NISitePanelViewConntentSpacing)];
-
-		[checkButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin];
 		[checkButton setAction:@selector(testConnection:)];
 		[checkButton setTarget:[self windowController]];
-		[contentView addSubview:checkButton];
 		
-		var checkFrame = [checkButton frame];
+		[self setActionButton:checkButton];
+		
+		//[loginButton setFont:[CPFont systemFontOfSize:18]];
+//		[_actionButton setDefaultButton:YES];
+		//[loginButton setBezelStyle:CPHUDBezelStyle];
+		//[loginButton setThemeState:CPBackgroundButtonMask];
+//		[_actionButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
+		
 
 //		tableView = [[CPTableView alloc]  initWithFrame:CGRectMake(CGRectGetMinX(passwordFrame), 
 //																	CGRectGetMinY(passwordFrame) + 10 + fieldHeight,
@@ -255,6 +251,30 @@ var NISitePanelWidth = 400.0,
 - (BOOL)canBecomeMainWindow
 {
 	return YES;
+}
+
+- (void)setActionButton:(CPButton)aButton
+{
+	if (_actionButton == aButton)
+		return;
+	
+	[_actionButton removeFromSuperview];
+	_actionButton = aButton;
+
+	var contentView = [self contentView];
+	
+	[_actionButton sizeToFit];
+
+	// ustaw położenie w lewym dolnym roku!
+	[_actionButton setFrameOrigin:CGPointMake(CGRectGetMaxX([contentView frame]) - CGRectGetWidth([_actionButton frame]) - NISitePanelViewConntentSpacing, 
+											CGRectGetMaxY([contentView frame]) - CGRectGetHeight([_actionButton frame]) - 4 * NISitePanelViewConntentSpacing)];
+
+	[_actionButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin];
+
+
+	[contentView addSubview:_actionButton];
+	
+	// var checkFrame = [_actionButton frame];
 }
 
 @end

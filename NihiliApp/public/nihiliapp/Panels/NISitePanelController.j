@@ -48,6 +48,11 @@ var SharedSIPanelController = nil;
 	return self;
 }
 
+- (void)setActionButton:(CPButton)aButton
+{
+	[[self window] setActionButton:aButton];
+}
+
 /*
 
 */
@@ -133,6 +138,9 @@ var SharedSIPanelController = nil;
 	if (_connection == aConnection)
 		return;
 
+		CPLog.info("[aConnection id]");
+		CPLog.info([aConnection id]);
+
 	[[[self window] serverField]   setStringValue:[aConnection server]];
 	[[[self window] usernameField] setStringValue:[aConnection username]];
 	[[[self window] passwordField] setStringValue:[aConnection password]];
@@ -151,6 +159,10 @@ var SharedSIPanelController = nil;
 {
 	if (!_connection)
 		_connection = [[VOConnection alloc] init];
+
+		CPLog.info("[_connection id]");
+		CPLog.info([_connection id]);
+
 
 	[_connection setServer:   [[[self window] serverField] stringValue]];
 	[_connection setUsername: [[[self window] usernameField] stringValue]];

@@ -64,7 +64,9 @@ Connection:
     username: string(50)
     password: string(50)
     pathname: string(512)
-    protocol: integer(5)
+    protocol: 
+      type: enum
+      values: [ftp]
 
 ConnectionContent:
   connection: default

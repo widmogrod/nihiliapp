@@ -1,4 +1,4 @@
-CREATE TABLE app_connection (connection_id BIGSERIAL, server VARCHAR(255), username VARCHAR(50), password VARCHAR(50), pathname VARCHAR(512), protocol BIGINT, created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, PRIMARY KEY(connection_id));
+CREATE TABLE app_connection (connection_id BIGSERIAL, server VARCHAR(255), username VARCHAR(50), password VARCHAR(50), pathname VARCHAR(512), protocol VARCHAR(255), created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, PRIMARY KEY(connection_id));
 CREATE TABLE app_user_connection_content_version (fk_connection_id BIGINT, content text, created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, version BIGINT, PRIMARY KEY(fk_connection_id, version));
 CREATE TABLE app_user_connection_content (fk_connection_id BIGINT, content text, created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, version BIGINT, PRIMARY KEY(fk_connection_id));
 CREATE TABLE app_groups (group_id BIGSERIAL, name VARCHAR(255), created_at TIMESTAMP NOT NULL, updated_at TIMESTAMP NOT NULL, deleted_at TIMESTAMP, PRIMARY KEY(group_id));

@@ -83,6 +83,11 @@ class Api_ConnectionsController extends Zend_Controller_Action
 		$this->_connectionsApi->add();
 	}
 	
+	public function editAction()
+	{
+	    $this->_connectionsApi->edit();
+	}
+	
     public function getAction()
 	{
 		$this->_connectionsApi->get();
