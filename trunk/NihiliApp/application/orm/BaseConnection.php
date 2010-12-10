@@ -12,7 +12,7 @@ Doctrine_Manager::getInstance()->bindComponent('Connection', 'default');
  * @property string $username
  * @property string $password
  * @property string $pathname
- * @property integer $protocol
+ * @property enum $protocol
  * @property Doctrine_Collection $ConnectionContent
  * @property Doctrine_Collection $UserConnection
  * 
@@ -48,9 +48,12 @@ abstract class BaseConnection extends Doctrine_Record
              'type' => 'string',
              'length' => '512',
              ));
-        $this->hasColumn('protocol', 'integer', 5, array(
-             'type' => 'integer',
-             'length' => '5',
+        $this->hasColumn('protocol', 'enum', null, array(
+             'type' => 'enum',
+             'values' => 
+             array(
+              0 => 'ftp',
+             ),
              ));
     }
 

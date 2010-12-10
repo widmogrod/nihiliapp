@@ -12,6 +12,22 @@
 	CPString content @accessors;
 }
 
+- initWithDictionary:(CPDictionary)aDictionary
+{
+	self = [super init];
+	if (self) 
+	{
+		[self setId: [aDictionary valueForKey:@"connection_id"]];
+		[self setServer: [aDictionary valueForKey:@"server"]];
+		[self setUsername: [aDictionary valueForKey:@"username"]];
+		[self setPassword: [aDictionary valueForKey:@"password"]];
+		[self setProtocol: [aDictionary valueForKey:@"protocol"]];
+		[self setPathname: [aDictionary valueForKey:@"pathname"]];
+		[self setContent: [aDictionary valueForKey:@"content"]];
+	}
+	return self;
+}
+
 - (VOConnection)copy
 {
 	var copy = [[VOConnection alloc] init];

@@ -66,14 +66,26 @@
 */
 - (void)didReciveData:(CPDictionary)aResponse
 {
-	CPLog.info('Otrzymałem dane: didReciveData');
-	CPLog.info(aResponse);
+	//CPLog.info('Otrzymałem dane: didReciveData');
+	//CPLog.info(aResponse);
 	
 	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
 	{
 		_dataSource = [aResponse valueForKey:@"result"];
 		[_tableView reloadData];
 	}
+}
+
+- (void)didSaveData:(CPDictionary)aResponse
+{
+	//CPLog.info('Otrzymałem dane: didSaveData');
+	//CPLog.info(aResponse);
+	
+	[[NIAlert alertWithResponse:aResponse] runModal];
+	
+	// TODO: przebudowa danych po stronie JS
+	var connections = [NIConnectionsApi sharedApi];
+		[connections action:@"list" delegate:self selector:@selector(didReciveData:)];
 }
 
 @end;
@@ -84,17 +96,28 @@
 - (void)doubleClickAction:(CPTableView)aTableView
 {
 	var row = _dataSource[[aTableView selectedRow]];
+	CPLog.info(row);
 	// var row = [_dataSource valueForKey:[aTableView selectedRow]];
 	
-	var connection = [[VOConnection alloc] init];
-		[connection setServer: [row valueForKey:@"server"]];
-		[connection setUsername: [row valueForKey:@"username"]];
-		[connection setPassword: [row valueForKey:@"password"]];
-		[connection setProtocol: [row valueForKey:@"protocol"]];
-		[connection setPathname: [row valueForKey:@"pathname"]];
+	var connection = [[VOConnection alloc] initWithDictionary:row];
 		
 	var sitePanelController = [NISitePanelController sharedController];
 		[sitePanelController setConnection:connection];
+
+	var actionButton = [CPButton buttonWithTitle:@"Zapisz"];
+	[actionButton setTarget:self];
+	[actionButton setAction:@selector(saveConnection:)];
+	[sitePanelController setActionButton:actionButton];
+}
+
+- (void)saveConnection:(CPButton)aSender
+{
+	var connections = [NIConnectionsApi sharedApi];
+	var sitePanelController = [NISitePanelController sharedController];
+	
+	CPLog.info([[sitePanelController connection] id]);
+	[connections setConnection: [sitePanelController connection]];
+	[connections action:@"edit" delegate:self selector:@selector(didSaveData:)];
 }
 
 @end
