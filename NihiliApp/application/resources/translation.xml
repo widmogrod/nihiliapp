@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<!DOCTYPE tmx SYSTEM "tmx14.dtd">
+<tmx version="1.4">
+   <header creationtoolversion="1.0.0" datatype="winres" segtype="sentence"
+           adminlang="en-us" srclang="de-at" o-tmf="abc"
+           creationtool="XYZTool" >
+   </header>
+   <body>
+		<!-- Application_Model_Connections -->
+		<tu tuid="connections_list_err">
+			<tuv xml:lang="pl"><seg>Nie udało się wczytać listy zapisanych połączeń..</seg></tuv>
+		</tu>
+
+		<tu tuid="connections_add_ok">
+			<tuv xml:lang="pl"><seg>Nowe połączenie %s zostało dodane.</seg></tuv>
+		</tu>
+		<tu tuid="connections_add_err">
+			<tuv xml:lang="pl"><seg>Połączenie nie zostało dodane. Proszę sprubować ponownie.</seg></tuv>
+		</tu>
+       
+		<tu tuid="connections_do_not_exists">
+			<tuv xml:lang="pl"><seg>Połączenie nie istnieje.</seg></tuv>
+		</tu>
+       
+		<tu tuid="connections_edit_ok">
+			<tuv xml:lang="pl"><seg>Połączenie %s zostało zaktualizowane.</seg></tuv>
+		</tu>
+		<tu tuid="connections_edit_err">
+			<tuv xml:lang="pl"><seg>Połączenie %s nie zostało zaktualizowane. Proszę sprubować ponownie.</seg></tuv>
+		</tu>
+   </body>
+</tmx>
