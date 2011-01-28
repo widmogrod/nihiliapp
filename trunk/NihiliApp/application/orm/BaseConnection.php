@@ -27,9 +27,9 @@ abstract class BaseConnection extends Doctrine_Record
     {
         $this->setTableName('app_connection');
         $this->hasColumn('connection_id', 'integer', 8, array(
-             'primary' => true,
-             'autoincrement' => true,
              'type' => 'integer',
+             'autoincrement' => true,
+             'primary' => true,
              'length' => '8',
              ));
         $this->hasColumn('server', 'string', 255, array(
@@ -52,7 +52,7 @@ abstract class BaseConnection extends Doctrine_Record
              'type' => 'enum',
              'values' => 
              array(
-              0 => 'ftp',
+              0 => 'FTP',
              ),
              ));
     }

@@ -1,5 +1,6 @@
 @import <AppKit/CPWindow.j>
 @import <AppKit/CPTableView.j>
+@import "../NIButton.j"
 
 var SharedOpenWindow = nil;
 
@@ -14,8 +15,9 @@ var SharedOpenWindow = nil;
 */
 @implementation NIOpenWindow : CPWindow
 {
-	CPButton plusButton;
+	CPButton plusButton @accessors;
 	CPButton minusButton;
+	CPButton penButton @accessors;
 	CPPopUpButton popUpButton;
 	
 	CPTableView _tableView @accessors(getter=tableView);
@@ -89,8 +91,8 @@ var SharedOpenWindow = nil;
 		[popUpButton setAction:@selector(actionPopUp:)];
 		[popUpButton setTarget:self];
 		
-		plusButton = [CPButtonBar plusButton];
-		minusButton = [CPButtonBar minusButton];
+		// plusButton = [CPButtonBar plusButton];
+		// minusButton = [CPButtonBar minusButton];
 
 		var searchField = [[CPSearchField alloc] initWithFrame: CGRectMake(160,30,250,30)];
 			[searchField setBordered: NO];
@@ -118,12 +120,16 @@ var SharedOpenWindow = nil;
 		// 		[segmentedControl setLabel:@"Bababa" forSegment:1];
 		// 		
 		// 		[contentView addSubview: segmentedControl];
-		
-		
-		
+
+		penButton = [NIButton penButton];
+		plusButton = [NIButton plusButton];
+		minusButton = [NIButton minusButton];
+
+					
 		var buttons = [
 			plusButton,
 			minusButton,
+			penButton,
 			popUpButton,
 			searchField
 			// sliderField

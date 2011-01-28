@@ -36,7 +36,8 @@ class Application_Model_Connections extends Application_Model_Response
 			$this->setStatus(self::SUCCESS);
 		} catch(Exception $e) {
 			$this->setStatus(self::FAILURE);
-			$this->addMessage($e->getMessage(), self::ERROR);
+			$this->addMessage('connections_list_err', self::ERROR);
+			$this->logException($e);
 		}
 
 		$this->setResult($result);
@@ -50,34 +51,53 @@ class Application_Model_Connections extends Application_Model_Response
 	
     public function add() 
 	{
-		$this->setStatus(self::FAILURE);
-		$this->addMessage('TODO: ' . __METHOD__, self::ERROR);
-	}
-	
-    public function edit() 
-	{
 	    # sprawdzanie uprawnień użytkownika do edycji
 	    # - może Behavior?
 	    
 	    /* @var $connection Connection */
-	    $connection = Doctrine_Core::getTable('Connection')->find($this->_data['connection_id']);
-	    if (!$connection) {
-	        $this->setStatus(self::FAILURE);
-		    $this->addMessage('Połączenie nie istnieje', self::ERROR);
-		    return;
-	    }
+	    $connection = new Connection();
 	    
 	    $data = $this->_data;
-	    unset($data['connection_id']);
+	    unset($data['connections_id']);
 
         $connection->fromArray($data);
 
 	    try {
 	        $connection->save();
 	        $this->setStatus(self::SUCCESS);
+	        $this->addMessage('connections_add_ok', self::INFO, $connection->server);
 	    } catch (Exception $e) {
 	        $this->setStatus(self::FAILURE);
-		    $this->addMessage('Exception: ' . __METHOD__ . ' :: ' . $e->getMessage(), self::ERROR);
+		    $this->addMessage('connections_add_err', self::ERROR);
+		    $this->logException($e);
+	    }
+	}
+	
+    public function edit() 
+	{
+	    // TODO: sprawdzanie uprawnień użytkownika do edycji (może Behavior?)
+	    
+	    /* @var $connection Connection */
+	    $connection = Doctrine_Core::getTable('Connection')->find($this->_data['connection_id']);
+	    if (!$connection) {
+	        $this->setStatus(self::FAILURE);
+		    $this->addMessage('connections_do_not_exists', self::ERROR);
+		    return;
+	    }
+	    
+	    $data = $this->_data;
+	    unset($data['connections_id']);
+
+        $connection->fromArray($data);
+
+	    try {
+	        $connection->save();
+	        $this->setStatus(self::SUCCESS);
+	        $this->addMessage('connections_edit_ok', self::INFO, $connection->server);
+	    } catch (Exception $e) {
+	        $this->setStatus(self::FAILURE);
+	        $this->addMessage('connections_edit_err', self::ERROR, $connection->server);
+		    $this->logException($e);
 	    }
 	}
 	
@@ -87,4 +107,3 @@ class Application_Model_Connections extends Application_Model_Response
 		$this->addMessage('TODO: ' . __METHOD__, self::ERROR);
 	}
 }
-

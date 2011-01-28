@@ -22,6 +22,7 @@ class Addappuserconnection extends Doctrine_Migration_Base
               'fixed' => false,
               'unsigned' => false,
               'primary' => true,
+              'autoincrement' => true,
              ),
              'type' => 
              array(

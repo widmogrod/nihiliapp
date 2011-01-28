@@ -20,6 +20,13 @@
 		[_tableView setTarget:self];
 		[_tableView setDoubleAction:@selector(doubleClickAction:)];
 		
+		var plusButton = [openWindow plusButton];
+			[plusButton setTarget:self];
+			[plusButton setAction:@selector(createNewConnection:)];
+		
+		var penButton = [openWindow penButton];
+			[penButton setTarget:self];
+			[penButton setAction:@selector(editSelectedConnection:)];
 		
 		[openWindow orderFront:self];
 		
@@ -88,36 +95,118 @@
 		[connections action:@"list" delegate:self selector:@selector(didReciveData:)];
 }
 
+- (void)didAddData:(CPDictionary)aResponse
+{
+	//CPLog.info('Otrzymałem dane: didSaveData');
+	//CPLog.info(aResponse);
+	
+	[[NIAlert alertWithResponse:aResponse] runModal];
+	
+	// TODO: przebudowa danych po stronie JS
+	var connections = [NIConnectionsApi sharedApi];
+		[connections action:@"list" delegate:self selector:@selector(didReciveData:)];
+}
+
 @end;
 
 
 @implementation NIOpenWindowController (TargetActionAndNotifications)   
 
+/*
+	Edycja dwukrotnie klikniętego wiersza na liście zapisanych połączeń FTP
+	- pobierz dane z wiersza
+	- otwórz panel NISitePanel z pobranymi danymi
+	- personalizacja przyciksu "action" znajdującego się w NISitePanel
+	
+	INFO: działanie prawie identyczne z @see [self editSelectedConnection:]
+*/
 - (void)doubleClickAction:(CPTableView)aTableView
 {
 	var row = _dataSource[[aTableView selectedRow]];
-	CPLog.info(row);
-	// var row = [_dataSource valueForKey:[aTableView selectedRow]];
 	
 	var connection = [[VOConnection alloc] initWithDictionary:row];
-		
+
 	var sitePanelController = [NISitePanelController sharedController];
 		[sitePanelController setConnection:connection];
 
 	var actionButton = [CPButton buttonWithTitle:@"Zapisz"];
-	[actionButton setTarget:self];
-	[actionButton setAction:@selector(saveConnection:)];
+		[actionButton setTarget:self];
+		[actionButton setAction:@selector(updateConnection:)];
+		
 	[sitePanelController setActionButton:actionButton];
 }
 
-- (void)saveConnection:(CPButton)aSender
+/*
+	Edycja zaznaczonego wiersza na liście zapisanych połączeń FTP
+	- pobierz dane z wiersza
+	- otwórz panel NISitePanel z pobranymi danymi
+	- personalizacja przyciksu "action" znajdującego się w NISitePanel
+	
+	INFO: działanie prawie identyczne z @see [self doubleClickAction:]
+*/
+- (void)editSelectedConnection:(CPButton)aSender
+{
+	var row = _dataSource[[_tableView selectedRow]];
+
+	var connection = [[VOConnection alloc] initWithDictionary:row];
+
+	var sitePanelController = [NISitePanelController sharedController];
+		[sitePanelController setConnection:connection];
+
+	var actionButton = [CPButton buttonWithTitle:@"Edytuj"];
+		[actionButton setTarget:self];
+		[actionButton setAction:@selector(updateConnection:)];
+		
+	[sitePanelController setActionButton:actionButton];
+}
+
+/*
+	Tworzenia nowego połączenia.
+	- otwórz panel NISitePanel z pobranymi danymi
+	- personalizacja przyciksu "action" znajdującego się w NISitePanel
+*/
+- (void)createNewConnection:(CPButton)aSender
+{
+	var connection = [[VOConnection alloc] init];
+
+	var sitePanelController = [NISitePanelController sharedController];
+		[sitePanelController setConnection:connection];
+		
+	var actionButton = [CPButton buttonWithTitle:@"Dodaj"];
+		[actionButton setTarget:self];
+		[actionButton setAction:@selector(insertConnection:)];
+		[sitePanelController setActionButton:actionButton];
+}
+
+/*
+	Panel zapisu nowego połączenia
+*/
+- (void)updateConnection:(CPButton)aSender
 {
 	var connections = [NIConnectionsApi sharedApi];
 	var sitePanelController = [NISitePanelController sharedController];
 	
-	CPLog.info([[sitePanelController connection] id]);
+	CPLog.info("updateConnection:");
+	CPLog.debug([[sitePanelController connection] id]);
+	
 	[connections setConnection: [sitePanelController connection]];
 	[connections action:@"edit" delegate:self selector:@selector(didSaveData:)];
+}
+
+/*
+	Akcja wywoływana po kliknięciu "Zapisz"
+	w panelu "Nowe połączenie"
+*/
+- (void)insertConnection:(CPButton)aSender
+{
+	var connections = [NIConnectionsApi sharedApi];
+	var sitePanelController = [NISitePanelController sharedController];
+	
+	CPLog.info("insertConnection:");
+	CPLog.debug([[sitePanelController connection] id]);
+	
+	[connections setConnection: [sitePanelController connection]];
+	[connections action:@"add" delegate:self selector:@selector(didAddData:)];
 }
 
 @end
