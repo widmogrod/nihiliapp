@@ -86,8 +86,19 @@ abstract class Application_Model_Response
 	 * @param string $type
 	 * @return void
 	 */
-	public function addMessage($message, $type = self::INFO)
+	public function addMessage($message, $type = self::INFO, $inToMessage = null)
 	{
+	    $translate = $this->getTranslate();
+	    if ($translate instanceof Zend_Translate) 
+	    {
+	        $message = $translate->_($message);
+	        if (null !== $inToMessage) 
+	        {
+	            $message = vsprintf($message, (array) $inToMessage);
+	        }
+	    }
+	    
+	    
 		$this->_messages[] = array(
 			'type' => (string) $type,
 			'message' => (string) $message
@@ -101,7 +112,36 @@ abstract class Application_Model_Response
 	{
 		return $this->_messages;
 	}
+	
+	/**
+	 * @var Zend_Translate
+	 */
+	protected $_translate;
+	
+	/**
+	 * @return Zend_Translate
+	 */
+	public function getTranslate()
+	{
+	    
+	    if (null === $this->_translate) {
+	        $this->_translate = Zend_Registry::get(Zend_Application_Resource_Translate::DEFAULT_REGISTRY_KEY);
+	    }
+	    
+	    return $this->_translate;
+	}
 
+	/**
+	 * Logowanie wyjątków
+	 * TODO Dodać logowanie na mail lub do logów, obecne działanie jest tymczasowe
+	 * 
+	 * @param Exception $e
+	 */
+	public function logException(Exception $e) 
+	{
+	    $this->addMessage($e->getMessage(), self::ERROR);
+	}
+	
 	/**
 	 * @return array
 	 */

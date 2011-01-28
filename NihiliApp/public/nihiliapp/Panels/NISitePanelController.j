@@ -148,6 +148,8 @@ var SharedSIPanelController = nil;
 //	[[[self window] protocolField] setStringValue:aConnection protocol];
 	
 	_connection = aConnection;
+	
+	[[self window] orderFront:self];
 }
 
 /*

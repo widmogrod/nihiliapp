@@ -174,8 +174,24 @@ var NIFTPApiShared = nil,
 
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data
 {
-	data = [data objectFromJSON];
+	if ([data characterAtIndex:0] == '{'
+		|| [data characterAtIndex:0] == '[')
+	{
+		CPLog.debug("NIFTPApiRequestHelper (if):");
+		data = [data objectFromJSON];
+	} else {
+		CPLog.debug("NIFTPApiRequestHelper (else):");
+		data = {
+			'status':'FAILURE',
+			'messages': [
+				{'type':'ERROR', 'message': 'Nieokreślony błąd'}
+			]
+		};	
+	}
+	
+	CPLog.debug(data);
 	data = [CPDictionary dictionaryWithJSObject: data recursively:YES];
+	
 
 	CPLog.debug("CONNECION:userInfo", userInfo);
 	CPLog.debug("CONNECION:[self userInfo]", [self userInfo]);

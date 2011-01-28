@@ -57,16 +57,16 @@ Connection:
   actAs: [Timestampable, SoftDelete]
   columns:
     connection_id:
-      primary: true
-      autoincrement: true
       type: integer(8)
+      autoincrement: true
+      primary: true
     server: string(255)
     username: string(50)
     password: string(50)
     pathname: string(512)
     protocol: 
       type: enum
-      values: [ftp]
+      values: [FTP]
 
 ConnectionContent:
   connection: default

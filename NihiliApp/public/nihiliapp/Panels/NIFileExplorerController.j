@@ -305,10 +305,17 @@ var SharedFileExplorerController = nil;
 */
 - (void)didReciveData:(CPDictionary)aResponse
 {
+	CPLog.debug('didReciveData [308]');
+	CPLog.debug(aResponse);
 	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
 	{
 		_dataSource = [aResponse valueForKey:@"result"];
 		[_fileExplorerTable reloadData];
+	}
+	else if ([aResponse valueForKey:@"status"] == @"FAILURE")
+	{
+		[[NIAlert alertWithResponse: aResponse] runModal];
+		[[self window] close];
 	}
 }
 
@@ -318,6 +325,8 @@ var SharedFileExplorerController = nil;
 */
 - (void)didReciveChildData:(CPDictionary)aResponse
 {
+	CPLog.debug('didReciveChildData [327]');
+	CPLog.debug(aResponse);
 	if ([aResponse valueForKey:@"status"] == @"SUCCESS")
 	{
 		var item = [aResponse valueForKey:@"userInfo"];
