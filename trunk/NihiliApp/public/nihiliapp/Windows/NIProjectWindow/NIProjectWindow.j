@@ -50,7 +50,7 @@ var NIProjectWindow_leftPanelWidth = 150;
 		var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMakeZero()];
 
 			[scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-			[scrollView setHasHorizontalScroller: NO];
+			[scrollView setHasHorizontalScroller: YES];
 
 			
 		textView = [[NITextView alloc] initWithFrame:[scrollView frame]];
