@@ -3,6 +3,7 @@
 
 
 @import "NIProjectWindowNavigatorView.j";
+@import "../../NITextView.j"
 
 var NIProjectWindow_leftPanelWidth = 150;
 
@@ -29,26 +30,27 @@ var NIProjectWindow_leftPanelWidth = 150;
 
 		[self center];
 		[self setTitle:@"Otwarty projekt"];
-
-		var splitView = [[CPSplitView alloc] initWithFrame: CGRectMake(CGRectGetMinX(frame),
-																	   CGRectGetMinY(frame),
+		
+		var splitView = [[CPSplitView alloc] initWithFrame: CGRectMake(0,
+																	   0,
 																	   CGRectGetWidth(frame), 
-																	   CGRectGetMaxY(frame)-100)];
+																	   CGRectGetHeight(frame))];
 
 			[splitView setAutoresizingMask: CPViewWidthSizable | CPViewHeightSizable];
 			[splitView setIsPaneSplitter:YES];
 
-		var navigatorView = [[NIProjectWindowNavigatorView alloc] initWithFrame: CGRectMake(CGRectGetMinX([splitView frame]),
-																				 			CGRectGetMinY([splitView frame]),
-																							CGRectGetWidth([splitView frame]), 
-																							CGRectGetHeight([splitView frame]))];
-			// [navigatorView setAutoresizingMask: CPViewWidthSizable | CPViewHeightSizable];
+		// Nawigator
+		var navigatorView = [[NIProjectWindowNavigatorView alloc] initWithFrame: CGRectMakeZero()];
 			
-			[splitView addSubview: navigatorView];
-			[splitView setButtonBar:[navigatorView buttonBar] forDividerAtIndex:0];
-		
-			[splitView addSubview: [CPButton buttonWithTitle:@"Test2"]];
-		
+		[splitView addSubview: navigatorView];
+		[splitView setButtonBar:[navigatorView buttonBar] forDividerAtIndex:0];
+			
+		// Podgląd contentu
+		var textView = [[NITextView alloc] initWithFrame:CGRectMakeZero()];
+		[splitView addSubview: textView];
+	
+		[splitView setPosition:NIProjectWindow_leftPanelWidth ofDividerAtIndex:0];
+	
 		[contentView addSubview: splitView];
 	}
 	
