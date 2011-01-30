@@ -59,7 +59,7 @@ var NISitePanelWidth = 400.0,
 
 		_serverField = [self _createValueWithPlaceholderString:@"ftp.example.com (wymagane)" frame:frame];
 		[contentView addSubview:_serverField];
-		
+
 		frame = [_serverField frame];
 
 		
@@ -90,7 +90,7 @@ var NISitePanelWidth = 400.0,
 
 		_pathnameField = [self _createValueWithPlaceholderString:@"" frame:frame];
 		// mały odstęp od lewej - miejsce na przycisk "Wybierz katalog"
-		[_pathnameField setFrameSize:CGSizeMake(CGRectGetWidth([_pathnameField frame]) - 60,
+		[_pathnameField setFrameSize:CGSizeMake(CGRectGetWidth([_pathnameField frame]) - 80,
 											   CGRectGetHeight([_pathnameField frame]))];
 		[contentView addSubview:_pathnameField];
 
@@ -103,6 +103,9 @@ var NISitePanelWidth = 400.0,
 		[choseDirectoryButton setFrameOrigin: CGPointMake(CGRectGetMaxX(frame), CGRectGetMinY(frame))];
 		[choseDirectoryButton setAction:@selector(choseDirectory:)]
 		[choseDirectoryButton setTarget:[self windowController]];
+		[choseDirectoryButton setBordered: YES];
+		[choseDirectoryButton setBezelStyle: CPRoundedBezelStyle];
+		[choseDirectoryButton sizeToFit];
 		[contentView addSubview:choseDirectoryButton];
 		
 
@@ -111,7 +114,10 @@ var NISitePanelWidth = 400.0,
 		[contentView addSubview:protocolFieldLabel];
 
 		_protocolField = [[CPPopUpButton alloc] initWithFrame:[self _frameForValue:frame]];
+		// [_protocolField setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
+		// [_protocolField setBordered: YES];
 		[_protocolField addItemWithTitle:@"FTP"];
+		
 		[_protocolField sizeToFit];
 		[contentView addSubview:_protocolField];
 		
@@ -263,7 +269,13 @@ var NISitePanelWidth = 400.0,
 
 	var contentView = [self contentView];
 	
+	[_actionButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
+	[_actionButton setBordered: YES];
+	[_actionButton setBezelStyle: CPRoundedBezelStyle];
+	
 	[_actionButton sizeToFit];
+	
+	// [_actionButton setButtonType: ];
 
 	// ustaw położenie w lewym dolnym roku!
 	[_actionButton setFrameOrigin:CGPointMake(CGRectGetMaxX([contentView frame]) - CGRectGetWidth([_actionButton frame]) - NISitePanelViewConntentSpacing, 

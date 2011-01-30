@@ -1,5 +1,7 @@
 @import <AppKit/CPWindow.j>
 @import <AppKit/CPTableView.j>
+@import <AppKit/CPButton.j>
+@import <AppKit/CPButtonBar.j>
 @import "../NIButton.j"
 
 var SharedOpenWindow = nil;

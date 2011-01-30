@@ -23,6 +23,10 @@
 		var plusButton = [openWindow plusButton];
 			[plusButton setTarget:self];
 			[plusButton setAction:@selector(createNewConnection:)];
+			
+		var minusButton = [openWindow plusButton];
+			[minusButton setTarget:self];
+			[minusButton setAction:@selector(deleteSelectedConnection:)];
 		
 		var penButton = [openWindow penButton];
 			[penButton setTarget:self];
@@ -176,6 +180,17 @@
 		[actionButton setTarget:self];
 		[actionButton setAction:@selector(insertConnection:)];
 		[sitePanelController setActionButton:actionButton];
+}
+
+/*
+	Usuń zaznaczoną stronę
+	- sprawdź czy są zaznaczone rekordy
+	- otwiera panel potwierdzenia	
+	- po kliknięciu OK - strona zostanie usunięta
+*/
+- (void)deleteSelectedConnection:(CPButton)aSender
+{
+	
 }
 
 /*
