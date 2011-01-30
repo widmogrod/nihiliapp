@@ -3,7 +3,7 @@
 
 @import "../Models/NIConnectionsApi.j"
 
-@import "NIProjectWindow/NIProjectWindow.j"
+@import "NIProjectWindow/NIProjectWindowController.j"
 
 @implementation NIOpenWindowController : CPWindowController
 {
@@ -152,8 +152,11 @@
 */
 - (void)doubleClickAction:(CPTableView)aTableView
 {
-	var projectWindow = [[NIProjectWindow alloc] init];
-				[projectWindow orderFront:self];
+	var row = _dataSource[[_tableView selectedRow]],
+		connection = [[VOConnection alloc] initWithDictionary:row];
+		
+	var projectController = [NIProjectWindowController sharedController];
+		[projectController setConnection:connection];
 	
 	// var row = _dataSource[[aTableView selectedRow]];
 	// 
