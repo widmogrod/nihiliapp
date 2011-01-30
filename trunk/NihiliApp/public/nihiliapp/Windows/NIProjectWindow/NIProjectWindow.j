@@ -47,8 +47,16 @@ var NIProjectWindow_leftPanelWidth = 150;
 		[splitView setButtonBar:[navigatorView buttonBar] forDividerAtIndex:0];
 			
 		// Podgląd contentu
-		textView = [[NITextView alloc] initWithFrame:CGRectMakeZero()];
-		[splitView addSubview: textView];
+		var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMakeZero()];
+
+			[scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+			[scrollView setHasHorizontalScroller: NO];
+
+			
+		textView = [[NITextView alloc] initWithFrame:[scrollView frame]];
+		[scrollView setDocumentView:textView];		
+		
+		[splitView addSubview: scrollView];
 	
 		[splitView setPosition:NIProjectWindow_leftPanelWidth ofDividerAtIndex:0];
 	
