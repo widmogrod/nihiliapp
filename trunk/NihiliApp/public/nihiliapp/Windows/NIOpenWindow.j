@@ -20,7 +20,7 @@ var SharedOpenWindow = nil;
 	CPButton plusButton @accessors;
 	CPButton minusButton;
 	CPButton penButton @accessors;
-	CPPopUpButton popUpButton;
+	CPPopUpButton popUpButton @accessors;
 	
 	CPTableView _tableView @accessors(getter=tableView);
 }
@@ -86,12 +86,24 @@ var SharedOpenWindow = nil;
 
 		[buttonBar setAutoresizingMask: CPViewWidthSizable | CPViewMinYMargin];
 		
+		// Rozwijane menu
 		popUpButton = [CPButtonBar actionPopupButton];
-		[popUpButton addItemWithTitle:@"Ustawienia"];
-		[popUpButton addItemWithTitle:@"Zmień nazwę"];
 		
-		[popUpButton setAction:@selector(actionPopUp:)];
-		[popUpButton setTarget:self];
+		var item = [[CPMenuItem alloc] init];
+			[item setTitle:@"Dodaj"];
+			[item setTag:@"add"];
+		[popUpButton addItem:item];
+
+		var item = [[CPMenuItem alloc] init];
+			[item setTitle:@"Edytuj"];
+			[item setTag:@"edit"];
+		[popUpButton addItem:item];
+		
+		var item = [[CPMenuItem alloc] init];
+			[item setTitle:@"Usuń"];
+			[item setTag:@"delete"];
+		[popUpButton addItem:item];
+
 		
 		// plusButton = [CPButtonBar plusButton];
 		// minusButton = [CPButtonBar minusButton];
@@ -130,8 +142,8 @@ var SharedOpenWindow = nil;
 					
 		var buttons = [
 			plusButton,
-			minusButton,
-			penButton,
+			// minusButton,
+			// penButton,
 			popUpButton,
 			searchField
 			// sliderField
