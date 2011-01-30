@@ -3,6 +3,8 @@
 
 @import "../Models/NIConnectionsApi.j"
 
+@import "NIProjectWindow/NIProjectWindow.j"
+
 @implementation NIOpenWindowController : CPWindowController
 {
 	CPTableView _tableView;
@@ -31,7 +33,11 @@
 		var penButton = [openWindow penButton];
 			[penButton setTarget:self];
 			[penButton setAction:@selector(editSelectedConnection:)];
-		
+
+		var popUpButton = [openWindow popUpButton];
+			[popUpButton setTarget:self];
+			[popUpButton setAction:@selector(actionFromPopUp:)];
+
 		[openWindow orderFront:self];
 		
 		
@@ -117,6 +123,26 @@
 @implementation NIOpenWindowController (TargetActionAndNotifications)   
 
 /*
+	Akcje wykonywane po wybraniu akcji z rozwijanego menu
+*/
+- (void)actionFromPopUp:(CPPopupButton)anPopupButton
+{
+	switch([anPopupButton selectedTag])
+	{
+		case 'add':
+			[self createNewConnection:nil];
+			break;
+			
+		case 'edit':
+			[self editSelectedConnection:nil];
+			break;
+
+		case 'delete':
+			break;
+	}
+}
+
+/*
 	Edycja dwukrotnie klikniętego wiersza na liście zapisanych połączeń FTP
 	- pobierz dane z wiersza
 	- otwórz panel NISitePanel z pobranymi danymi
@@ -126,18 +152,21 @@
 */
 - (void)doubleClickAction:(CPTableView)aTableView
 {
-	var row = _dataSource[[aTableView selectedRow]];
+	var projectWindow = [[NIProjectWindow alloc] init];
+				[projectWindow orderFront:self];
 	
-	var connection = [[VOConnection alloc] initWithDictionary:row];
-
-	var sitePanelController = [NISitePanelController sharedController];
-		[sitePanelController setConnection:connection];
-
-	var actionButton = [CPButton buttonWithTitle:@"Zapisz"];
-		[actionButton setTarget:self];
-		[actionButton setAction:@selector(updateConnection:)];
-		
-	[sitePanelController setActionButton:actionButton];
+	// var row = _dataSource[[aTableView selectedRow]];
+	// 
+	// var connection = [[VOConnection alloc] initWithDictionary:row];
+	// 
+	// var sitePanelController = [NISitePanelController sharedController];
+	// 	[sitePanelController setConnection:connection];
+	// 
+	// var actionButton = [CPButton buttonWithTitle:@"Zapisz"];
+	// 	[actionButton setTarget:self];
+	// 	[actionButton setAction:@selector(updateConnection:)];
+	// 	
+	// [sitePanelController setActionButton:actionButton];
 }
 
 /*
@@ -150,9 +179,8 @@
 */
 - (void)editSelectedConnection:(CPButton)aSender
 {
-	var row = _dataSource[[_tableView selectedRow]];
-
-	var connection = [[VOConnection alloc] initWithDictionary:row];
+	var row = _dataSource[[_tableView selectedRow]],
+		connection = [[VOConnection alloc] initWithDictionary:row];
 
 	var sitePanelController = [NISitePanelController sharedController];
 		[sitePanelController setConnection:connection];
@@ -160,7 +188,7 @@
 	var actionButton = [CPButton buttonWithTitle:@"Edytuj"];
 		[actionButton setTarget:self];
 		[actionButton setAction:@selector(updateConnection:)];
-		
+
 	[sitePanelController setActionButton:actionButton];
 }
 
@@ -179,7 +207,8 @@
 	var actionButton = [CPButton buttonWithTitle:@"Dodaj"];
 		[actionButton setTarget:self];
 		[actionButton setAction:@selector(insertConnection:)];
-		[sitePanelController setActionButton:actionButton];
+
+	[sitePanelController setActionButton:actionButton];
 }
 
 /*
