@@ -76,6 +76,10 @@ class Application_Model_Connection extends Application_Model_Response
 		}
 
 		$content = file_get_contents($localFile);
+		
+		$filter = new KontorX_Filter_MagicQuotes();
+		$content = $filter->filter($content);
+		
 		$this->setResult($content);
 		$this->setStatus(self::SUCCESS);
 	}
@@ -84,10 +88,11 @@ class Application_Model_Connection extends Application_Model_Response
 	{
 		$localFile  = tempnam(sys_get_temp_dir(), 'kx_ftp');
 		$remoteFile = $this->_data['pathname'];
-		$data	    = get_magic_quotes_gpc() ? stripslashes($this->_data['content']) : $this->_data['content'];
-//$data = $this->_data['content'];
-
-		if (!file_put_contents($localFile, $data)) {
+		
+		$filter = new KontorX_Filter_MagicQuotes();
+		$content = $filter->filter($this->_data['content']);
+		
+		if (!file_put_contents($localFile, $content)) {
 			$this->addMessage('Wystąpił błąd podczas zapisu pliku na dysku');
 			$this->setStatus(self::FAILURE);
 			return;

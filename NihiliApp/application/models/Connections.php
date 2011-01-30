@@ -58,7 +58,7 @@ class Application_Model_Connections extends Application_Model_Response
 	    $connection = new Connection();
 	    
 	    $data = $this->_data;
-	    unset($data['connections_id']);
+	    unset($data['connection_id']);
 
         $connection->fromArray($data);
 
