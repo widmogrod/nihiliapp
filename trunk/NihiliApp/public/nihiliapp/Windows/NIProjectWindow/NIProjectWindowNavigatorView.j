@@ -12,6 +12,8 @@ var NIProjectWindow_buttonBarHeight= 24;
 	CPButtonBar buttonBar @accessors(readonly);
 	CPButton plusButton @accessors(readonly);
 	CPPopupButton optionsButton @accessors(readonly);
+	
+	CPOutlineView navigatorTable @accessors(readonly);
 }
 
 - (id)initWithFrame:(CGRect)aFrame
@@ -25,8 +27,8 @@ var NIProjectWindow_buttonBarHeight= 24;
 			[scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
 			[scrollView setHasHorizontalScroller: NO];
 
-		var navigatorTable = [[CPOutlineView alloc] initWithFrame:CGRectMake(0,0, CGRectGetWidth([scrollView frame]), 
-																				  CGRectGetHeight([scrollView frame]))];
+		navigatorTable = [[CPOutlineView alloc] initWithFrame:CGRectMake(0,0, CGRectGetWidth([scrollView frame]), 
+																			  CGRectGetHeight([scrollView frame]))];
 
 			[navigatorTable setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
 

@@ -15,7 +15,8 @@ var NIProjectWindow_leftPanelWidth = 150;
 */
 @implementation NIProjectWindow : CPWindow
 {
-	
+	NIProjectWindowNavigatorView navigatorView @accessors(readonly);
+	NITextView textView @accessors(readonly);
 }
 
 - (id)init
@@ -40,13 +41,13 @@ var NIProjectWindow_leftPanelWidth = 150;
 			[splitView setIsPaneSplitter:YES];
 
 		// Nawigator
-		var navigatorView = [[NIProjectWindowNavigatorView alloc] initWithFrame: CGRectMakeZero()];
+		navigatorView = [[NIProjectWindowNavigatorView alloc] initWithFrame: CGRectMakeZero()];
 			
 		[splitView addSubview: navigatorView];
 		[splitView setButtonBar:[navigatorView buttonBar] forDividerAtIndex:0];
 			
 		// Podgląd contentu
-		var textView = [[NITextView alloc] initWithFrame:CGRectMakeZero()];
+		textView = [[NITextView alloc] initWithFrame:CGRectMakeZero()];
 		[splitView addSubview: textView];
 	
 		[splitView setPosition:NIProjectWindow_leftPanelWidth ofDividerAtIndex:0];
