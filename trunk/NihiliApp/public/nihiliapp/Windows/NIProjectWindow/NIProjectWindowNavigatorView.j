@@ -1,3 +1,4 @@
+@import <AppKit/CPView.j>
 @import <AppKit/CPButton.j>
 @import <AppKit/CPButtonBar.j>
 @import <AppKit/CPOutlineView.j>
@@ -5,12 +6,14 @@
 
 @import "../../NIButton.j"
 
-var NIProjectWindow_buttonBarHeight= 24;
+
+// TODO: Wyciągnąć od wsólnego pliku konfiguracyjnego
+var NIProjectWindow_buttonBarHeight = 24;
 
 @implementation NIProjectWindowNavigatorView : CPView
 {
 	CPButtonBar buttonBar @accessors(readonly);
-	CPButton plusButton @accessors(readonly);
+	CPButton saveButton @accessors(readonly);
 	CPPopupButton optionsButton @accessors(readonly);
 	
 	CPOutlineView navigatorTable @accessors(readonly);
@@ -62,7 +65,7 @@ var NIProjectWindow_buttonBarHeight= 24;
 		[buttonBar setAutoresizingMask: CPViewWidthSizable | CPViewMinYMargin];
 
 		// +
-		plusButton = [NIButton plusButton];
+		saveButton = [NIButton plusButton];
 
 		// Opcje
 		optionsButton = [CPButtonBar actionPopupButton];		
@@ -77,7 +80,7 @@ var NIProjectWindow_buttonBarHeight= 24;
 			[optionsButton addItem:item];		
 		
 		var buttons = [
-			plusButton,
+			saveButton,
 			optionsButton
 		];
 
