@@ -1,9 +1,10 @@
 @import <AppKit/CPWindow.j>
-@import <AppKit/CPSplitView.j>
-
 
 @import "NIProjectWindowNavigatorView.j";
+@import "NIProjectWindowEditor.j";
 @import "../../NITextView.j"
+
+
 
 var NIProjectWindow_leftPanelWidth = 150;
 
@@ -16,7 +17,8 @@ var NIProjectWindow_leftPanelWidth = 150;
 @implementation NIProjectWindow : CPWindow
 {
 	NIProjectWindowNavigatorView navigatorView @accessors(readonly);
-	NITextView textView @accessors(readonly);
+	NIProjectWindowEditor editorView @accessors(readonly);
+	// NITextView textView @accessors(readonly);
 }
 
 - (id)init
@@ -31,35 +33,25 @@ var NIProjectWindow_leftPanelWidth = 150;
 
 		[self center];
 		[self setTitle:@"Otwarty projekt"];
-		
-		var splitView = [[CPSplitView alloc] initWithFrame: CGRectMake(0,
-																	   0,
-																	   CGRectGetWidth(frame), 
-																	   CGRectGetHeight(frame))];
+
+		var splitView = [[CPSplitView alloc] initWithFrame: CGRectMake(0, 0, CGRectGetWidth(frame), 
+																	   		 CGRectGetHeight(frame))];
 
 			[splitView setAutoresizingMask: CPViewWidthSizable | CPViewHeightSizable];
 			[splitView setIsPaneSplitter:YES];
 
 		// Nawigator
 		navigatorView = [[NIProjectWindowNavigatorView alloc] initWithFrame: CGRectMakeZero()];
-			
 		[splitView addSubview: navigatorView];
 		[splitView setButtonBar:[navigatorView buttonBar] forDividerAtIndex:0];
-			
-		// Podgląd contentu
-		var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMakeZero()];
 
-			[scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-			[scrollView setHasHorizontalScroller: YES];
-
-			
-		textView = [[NITextView alloc] initWithFrame:[scrollView frame]];
-		[scrollView setDocumentView:textView];		
+		// Edytor
+		editorView = [[NIProjectWindowEditor alloc] initWithFrame: CGRectMakeZero()];
+		[splitView addSubview: editorView];
+		//[splitView setButtonBar:[editorView buttonBar] forDividerAtIndex:0];
 		
-		[splitView addSubview: scrollView];
-	
 		[splitView setPosition:NIProjectWindow_leftPanelWidth ofDividerAtIndex:0];
-	
+		
 		[contentView addSubview: splitView];
 	}
 	

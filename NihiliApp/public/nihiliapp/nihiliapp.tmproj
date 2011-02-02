@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>Panels/NISitePanel.j</string>
+	<string>Windows/NIProjectWindow/NIProjectWindowController.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -60,58 +60,86 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>10</integer>
+				<integer>55</integer>
 				<key>line</key>
-				<integer>184</integer>
+				<integer>72</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>153</integer>
+			<integer>48</integer>
+		</dict>
+		<key>Models/NIFTPConnection.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>12</integer>
+				<key>line</key>
+				<integer>15</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>6</integer>
 		</dict>
 		<key>Models/VOConnection.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>49</integer>
+				<integer>2</integer>
 				<key>line</key>
-				<integer>19</integer>
+				<integer>26</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>42</integer>
-				<key>line</key>
-				<integer>19</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>55</integer>
-				<key>line</key>
-				<integer>19</integer>
-			</dict>
 		</dict>
 		<key>NIButton.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>14</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>41</integer>
+				<integer>4</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
+		</dict>
+		<key>NITextView.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>20</integer>
+				<key>line</key>
+				<integer>8</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>333</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>16</integer>
+				<key>line</key>
+				<integer>8</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>26</integer>
+				<key>line</key>
+				<integer>8</integer>
+			</dict>
 		</dict>
 		<key>Panels/Info.plist</key>
 		<dict>
@@ -132,29 +160,29 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>20</integer>
+				<integer>13</integer>
 				<key>line</key>
-				<integer>17</integer>
+				<integer>11</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>11</integer>
+				<integer>8</integer>
 				<key>line</key>
-				<integer>17</integer>
+				<integer>11</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>28</integer>
+				<integer>26</integer>
 				<key>line</key>
-				<integer>17</integer>
+				<integer>11</integer>
 			</dict>
 		</dict>
 		<key>Panels/NIFileExplorerController.j</key>
@@ -162,43 +190,59 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>1</integer>
+				<integer>96</integer>
 				<key>line</key>
-				<integer>284</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>Panels/NIFileExplorerPanel.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>5</integer>
-				<key>line</key>
-				<integer>100</integer>
+				<integer>267</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>32</integer>
+			<integer>242</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
 				<integer>2</integer>
 				<key>line</key>
-				<integer>100</integer>
+				<integer>266</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>11</integer>
+				<integer>96</integer>
 				<key>line</key>
-				<integer>100</integer>
+				<integer>267</integer>
+			</dict>
+		</dict>
+		<key>Panels/NIFileExplorerPanel.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>38</integer>
+				<key>line</key>
+				<integer>95</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>72</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>2</integer>
+				<key>line</key>
+				<integer>47</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>38</integer>
+				<key>line</key>
+				<integer>95</integer>
 			</dict>
 		</dict>
 		<key>Panels/NIImageController.j</key>
@@ -257,35 +301,109 @@
 			<key>firstVisibleLine</key>
 			<integer>53</integer>
 		</dict>
+		<key>Panels/NIPreviewController.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>69</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>52</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>80</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>69</integer>
+			</dict>
+		</dict>
 		<key>Panels/NIPreviewPanel.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>52</integer>
+				<integer>4</integer>
 				<key>line</key>
-				<integer>7</integer>
+				<integer>494</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>3</integer>
+			<integer>446</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>112</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>4</integer>
+				<key>line</key>
+				<integer>494</integer>
+			</dict>
 		</dict>
 		<key>Panels/NISitePanel.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>1</integer>
+				<integer>34</integer>
 				<key>line</key>
-				<integer>229</integer>
+				<integer>272</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>23</integer>
+			<integer>249</integer>
 		</dict>
 		<key>Panels/NISitePanelController.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>60</integer>
+				<key>line</key>
+				<integer>146</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>122</integer>
+		</dict>
+		<key>Windows/NILoginWindow.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>Windows/NIOpenWindow.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
@@ -294,39 +412,25 @@
 				<key>line</key>
 				<integer>151</integer>
 			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>69</integer>
-		</dict>
-		<key>Windows/NIOpenWindow.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>15</integer>
-				<key>line</key>
-				<integer>19</integer>
-			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>119</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>10</integer>
+				<integer>2</integer>
 				<key>line</key>
-				<integer>19</integer>
+				<integer>86</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>19</integer>
+				<integer>33</integer>
 				<key>line</key>
-				<integer>19</integer>
+				<integer>151</integer>
 			</dict>
 		</dict>
 		<key>Windows/NIOpenWindowController.j</key>
@@ -334,52 +438,100 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>7</integer>
+				<integer>47</integer>
 				<key>line</key>
-				<integer>137</integer>
+				<integer>158</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>110</integer>
-			<key>selectFrom</key>
+			<integer>144</integer>
+		</dict>
+		<key>Windows/NIProjectWindow/NIProjectWindow.j</key>
+		<dict>
+			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>3</integer>
+				<integer>1</integer>
 				<key>line</key>
-				<integer>137</integer>
+				<integer>20</integer>
 			</dict>
-			<key>selectTo</key>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>8</integer>
+		</dict>
+		<key>Windows/NIProjectWindow/NIProjectWindowController.j</key>
+		<dict>
+			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>15</integer>
+				<integer>54</integer>
 				<key>line</key>
-				<integer>137</integer>
+				<integer>237</integer>
 			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>212</integer>
+		</dict>
+		<key>Windows/NIProjectWindow/NIProjectWindowEditor.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>36</integer>
+				<key>line</key>
+				<integer>6</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>2</integer>
+		</dict>
+		<key>Windows/NIProjectWindow/NIProjectWindowNavigatorView.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>36</integer>
+				<key>line</key>
+				<integer>10</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>AppController.j</string>
 		<string>Windows/NIOpenWindowController.j</string>
+		<string>Windows/NIOpenWindow.j</string>
 		<string>Panels/NIAlert.j</string>
 		<string>Models/VOConnection.j</string>
 		<string>Panels/NISitePanelController.j</string>
-		<string>Windows/NIOpenWindow.j</string>
+		<string>Models/NIFTPConnection.j</string>
 		<string>NIButton.j</string>
 		<string>Panels/NIFileExplorerController.j</string>
+		<string>Windows/NIProjectWindow/NIProjectWindowController.j</string>
+		<string>Panels/NIPreviewController.j</string>
 		<string>Panels/Info.plist</string>
 		<string>Panels/NIImageController.j</string>
 		<string>Panels/NIImagePanel.j</string>
 		<string>Panels/NIPreviewPanel.j</string>
+		<string>NITextView.j</string>
 		<string>Models/NIFTPApi.j</string>
 		<string>Models/NIConnectionsApi.j</string>
 		<string>Panels/NIImageInspectorController.j</string>
 		<string>Panels/NIImageInspector.j</string>
 		<string>Panels/NIFileExplorerPanel.j</string>
 		<string>Panels/NISitePanel.j</string>
+		<string>Windows/NIProjectWindow/NIProjectWindow.j</string>
+		<string>Windows/NIProjectWindow/NIProjectWindowEditor.j</string>
+		<string>Windows/NIProjectWindow/NIProjectWindowNavigatorView.j</string>
+		<string>Windows/NILoginWindow.j</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
