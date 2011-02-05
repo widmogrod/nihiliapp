@@ -5,6 +5,12 @@
 	<key>CPApplicationDelegateClass</key>
 	<string>AppController</string>
 	
+	<key>CPApplicationSize</key>
+	<dict>
+		<key>executable</key>
+		<string>1763198</string>
+	</dict>
+	
 	<key>CPBundleName</key>
 	<string>NiniliApp</string>
 	
@@ -12,7 +18,7 @@
 	<string>CPApplication</string>
 	
 	<key>CPBundleVersion</key>
-	<string>0.1</string>
+	<string>0.3</string>
 
 	<key>CPBundleShortVersionString</key>
 	<string>alpha</string>

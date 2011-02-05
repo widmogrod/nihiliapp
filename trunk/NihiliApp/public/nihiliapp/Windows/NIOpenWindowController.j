@@ -5,10 +5,22 @@
 
 @import "NIProjectWindow/NIProjectWindowController.j"
 
+@import "../Models/VOConnection.j"
+
+var SharedNIOpenWindowController = nil;
+
 @implementation NIOpenWindowController : CPWindowController
 {
 	CPTableView _tableView;
 	CPDictionary _dataSource;
+}
+
++ (NIOpenWindowController)sharedController
+{
+	if (!SharedNIOpenWindowController)
+		SharedNIOpenWindowController = [[NIOpenWindowController alloc] init];
+
+	return SharedNIOpenWindowController;
 }
 
 - (id)init

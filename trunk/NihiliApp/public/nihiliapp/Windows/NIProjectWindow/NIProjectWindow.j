@@ -6,7 +6,7 @@
 
 
 
-var NIProjectWindow_leftPanelWidth = 150;
+var NIProjectWindow_leftPanelWidth = 210;
 
 /*
 	Widok projektu, połączenia z stroną.
@@ -23,8 +23,8 @@ var NIProjectWindow_leftPanelWidth = 150;
 
 - (id)init
 {
-	self = [super initWithContentRect:CGRectMake(0,0,800,400) 
-						     styleMask:CPTitledWindowMask | CPClosableWindowMask | CPResizableWindowMask];
+	self = [super initWithContentRect:CGRectMakeZero()
+						     styleMask:CPBorderlessBridgeWindowMask];
 
 	if (self)
 	{

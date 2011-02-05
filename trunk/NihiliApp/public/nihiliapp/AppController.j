@@ -7,24 +7,26 @@
  */
 
 @import <Foundation/CPObject.j>
-@import "Windows/NIOpenWindow.j"
-@import "Panels/NILoginPanel.j"
-
-@import "Panels/NISitePanelController.j"
-
-@import "Views/NIPageView.j"
+// @import "Windows/NIOpenWindow.j"
+// @import "Panels/NILoginPanel.j"
+// 
+// @import "Panels/NISitePanelController.j"
+// 
+// @import "Views/NIPageView.j"
 @import "NIMenu.j"
+// 
+// @import "NIDocument.j"
+// 
+// //@import "Controllers/NIApiController.j"
+// @import "Panels/NIFileExplorerController.j"    
+// 
+// @import "Panels/NIPreviewPanel.j"
+// 
 
-@import "NIDocument.j"
+// 
+// @import "Panels/NIImageController.j"
 
-//@import "Controllers/NIApiController.j"
-@import "Panels/NIFileExplorerController.j"    
-
-@import "Panels/NIPreviewPanel.j"
-
-@import "Windows/NIOpenWindowController.j"
-
-@import "Panels/NIImageController.j"
+@import "Windows/NIProjectWindow/NIProjectWindowController.j"
 
 // @import "Bespin.j"
 // @import <AppKit/CPPanel.j>
@@ -56,10 +58,13 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-    var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
-    [theWindow orderFront:self];
-
-	contentView = [theWindow contentView];    
+	var theWindow = [NIProjectWindowController sharedController];
+		[[theWindow window] orderFront:self];
+	
+    // var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
+    //     [theWindow orderFront:self];
+    // 
+    // 	contentView = [theWindow contentView];    
 	
 	// var panel = [[NIPreviewPanel alloc] init];
 	// [panel orderFront:self];
@@ -90,11 +95,11 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     //     {
     	// [self login:self];
     // } else {
-    	//[self initApplicationView];
+    	[self initApplicationView];
     // }
     
     //[[NIOpenWindow sharedOpenWindow] orderFront:self];
-	[[NIOpenWindowController alloc] init];
+	//[[NIOpenWindowController alloc] init];
     
     
 
@@ -104,7 +109,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 - (void)initApplicationView
 {
 	// Aktywuj menu główne applikacji
-    // var mainMenu = [[NIMenu alloc] initWithDelegate:self];
+    var mainMenu = [[NIMenu alloc] initWithDelegate:self];
     
     // // Utwórz pasek nawigacyjny
     // 	var toolbar = [[CPToolbar alloc] initWithIdentifier:"Navigation"];
@@ -118,6 +123,10 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 @end
 
+
+
+@import "Windows/NIOpenWindowController.j"
+
 /*
 	Kategoria obsługuje wiadomości akcj operacji na dokumencie
 */
@@ -125,7 +134,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)openDocument:(id)sender
 {
-	[[NIOpenWindow sharedOpenWindow] orderFront:self];
+	[[[NIOpenWindowController sharedController] window] orderFront:self];
 }
 
 - (void)login:(id)sender
