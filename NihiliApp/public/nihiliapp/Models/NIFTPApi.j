@@ -72,7 +72,7 @@ var NIFTPApiShared = nil,
 		@"password=" + [aConnection password],
 		@"pathname=" + ([[aConnection pathname] isKindOfClass:[CPNull class]] ? '' : [aConnection pathname]),
 		@"protocol=" + [aConnection protocol],
-		@"content=" + [aConnection content]
+		@"content=" + encodeURIComponent([aConnection content])
 	];
 
 	return body;
