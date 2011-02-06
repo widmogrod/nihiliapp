@@ -24,7 +24,7 @@
 	<string>alpha</string>
 
 	<key>CPApplicationIcon</key>
-	<string>Resources/NihiliAppIcon_256x256.png</string>
+	<string>Resources/ApplicationIcon.png</string>
 
 	<key>CPHumanReadableCopyright</key>
 	<string>Gabriel Habryn</string>

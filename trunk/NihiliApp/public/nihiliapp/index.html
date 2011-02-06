@@ -33,20 +33,19 @@
 			// OBJJ_AUTO_BOOTSTRAP = false;
 
 			OBJJ_PROGRESS_CALLBACK = function(percent, appsize, path) {
-				console.log(percent, appsize, path);
+				console.log(percent);
+				console.log(appsize);
+				console.log(path);
 				
-				value = .5 + percent * .5 * .95;
-								
-				// progress = document.getElementById("progress"),
+				value = (percent >= 0) ? .5 + percent * .5 * .95 : 1 ;
+
 				progressValue = document.getElementById("progressValue");
 				
-				// if (progress) {
-				// 					progress.style.height = FLOOR(value * window.iconHeight) + "px";
-				// 					progress.style.top = -1 * FLOOR(value * window.iconHeight) + "px";
-				// 				}
-				
-				if (progressValue)
+				if (progressValue) {
+					progressValue.style.width = ROUND(value*100) + "%";
 					progressValue.innerHTML = ROUND(value*100) + "%";
+				}
+					
 			};
 			
 			// console.log((typeof CPApp === "undefined" || !CPApp || !CPApp._finishedLaunching));
@@ -55,15 +54,23 @@
 		</script>
 
         <script type="text/javascript">
-            OBJJ_MAIN_FILE = "main.j"; 
+            OBJJ_MAIN_FILE = "main.j";
+ 
 			var CPLogDisable = false;
-
+			
+			var objj =document.createElement('script');
+				objj.charset = 'UTF-8';
+				objj.type = 'text/javascript';
+				objj.src = 'Frameworks/Objective-J/Objective-J.js';
+				
+				var head = document.getElementsByTagName('head')[0];
+					head.appendChild(objj);
 			// window.onBespinLoad = function() {
 			// 	alert('bespin load');
 			// };
         </script>
         
-        <script type="text/javascript" src="Frameworks/Objective-J/Objective-J.js" charset="UTF-8"></script>
+        <!-- <script type="text/javascript" src="Frameworks/Objective-J/Objective-J.js" charset="UTF-8"></script> -->
 
 
 		<!-- <link id="bespin_base" href="Bespin/" type="text/css" >
@@ -72,10 +79,20 @@
                           
         <style type="text/css">
             body{margin:0; padding:0;}
-            #container {position: absolute; top:50%; left:50%;}
-            #content {width:800px; text-align:center; margin-left: -400px; height:50px; margin-top:-25px; line-height: 50px;}
+            #container {
+				position: absolute; 
+				top:20%; left:50%; 
+				width:800px; 
+				height: 350px;
+				margin-left:-400px;
+				
+				background: transparent url(Resources/ApplicationIcon.png) 50% 10px no-repeat;
+			}
+            #content {text-align:center; margin-top:250px; line-height: 50px;}
             #content {font-family: "Helvetica", "Arial", sans-serif; font-size: 18px; color: black; text-shadow: 0px 1px 0px white; }
+			#loadingcontainer {background-color: #eee; overflow:hidden; width:100%; height:100%; position: absolute; top: 0; left: 0;}
             #loadgraphic {margin-right: 0.2em; margin-bottom:-2px;}
+			#progressValue {background-color:#a77b34; display:block; height:1px; width:0%;}
         </style>
 
         <!--[if lt IE 7]>
@@ -89,12 +106,15 @@
 
     <body style="">        
         <div id="cappuccino-body">
-            <div id="loadingcontainer" style="background-color: #eeeeee; overflow:hidden; width:100%; height:100%; position: absolute; top: 0; left: 0;">
-				<p id="progressValue">0</p>
+            <div id="loadingcontainer">
                 <script type="text/javascript">
-                    document.write("<div id='container'><p id='content'>" +
-                                   "<img id='loadgraphic' width='16' height='16' src='Resources/spinner.gif' /> " +
-                                   "Loading niniliapp...</p></div>");
+                    document.write("<div id='container'>"+
+										"<p id='content'>" +
+                                   			"<img id='loadgraphic' width='16' height='16' src='Resources/spinner.gif' /> " +
+                                 			"Loading niniliapp..."+
+										"</p>"+
+										"<p id='progressValue'></p>"+
+									"</div>");
                 </script>
         
                 <noscript>

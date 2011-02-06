@@ -8,7 +8,7 @@
 
 @import <Foundation/CPObject.j>
 // @import "Windows/NIOpenWindow.j"
-// @import "Panels/NILoginPanel.j"
+@import "Panels/NILoginPanel.j"
 // 
 // @import "Panels/NISitePanelController.j"
 // 
@@ -59,7 +59,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
 	var theWindow = [NIProjectWindowController sharedController];
-		[[theWindow window] orderFront:self];
+			[theWindow showWindow:self];
 	
     // var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
     //     [theWindow orderFront:self];
@@ -93,7 +93,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     // dokonanie autoryzacji uzytkownika przed uruchomieniem aplikacji!
     // if (![[NIApiController sharedController] isAuthenticated])
     //     {
-    	// [self login:self];
+    	[self login:self];
     // } else {
     	[self initApplicationView];
     // }
@@ -111,6 +111,10 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 	// Aktywuj menu główne applikacji
     var mainMenu = [[NIMenu alloc] initWithDelegate:self];
     
+@import "Panels/NIProgress.j"
+	// var progress = [NIProgress sharedProgress];
+	// 	// [progress setDelegate:self]; 
+	// 	[progress showWindow:self];
     // // Utwórz pasek nawigacyjny
     // 	var toolbar = [[CPToolbar alloc] initWithIdentifier:"Navigation"];
     //     [toolbar setDelegate:self];
@@ -134,7 +138,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)openDocument:(id)sender
 {
-	[[[NIOpenWindowController sharedController] window] orderFront:self];
+	[[NIOpenWindowController sharedController] showWindow: self];
 }
 
 - (void)login:(id)sender

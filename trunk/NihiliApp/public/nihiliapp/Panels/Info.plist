@@ -10,5 +10,10 @@
 	<string>NIFileExplorerFileDataView</string>
 	<key>CPBundlePackageType</key>
 	<string>FMWK</string>
+	<key>CPApplicationSize</key>
+	<dict>
+		<key>executable</key>
+		<string>17631</string>
+	</dict>
 </dict>
 </plist>
