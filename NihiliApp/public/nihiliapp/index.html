@@ -28,9 +28,6 @@
          <!-- <script src="test.js" type="text/javascript" charset="utf-8"></script> -->
 
 		<script type="text/javascript">
-			// window.files_total = 1763198; // TODO: better estimate
-			// 			window.iconHeight = 50;			
-			// OBJJ_AUTO_BOOTSTRAP = false;
 
 			OBJJ_PROGRESS_CALLBACK = function(percent, appsize, path) {
 				console.log(percent);
@@ -47,14 +44,11 @@
 				}
 					
 			};
-			
-			// console.log((typeof CPApp === "undefined" || !CPApp || !CPApp._finishedLaunching));
-			// console.log(typeof OBJJ_PROGRESS_CALLBACK === "function");
-			// console.log(CPApplicationSizeInBytes);
 		</script>
 
         <script type="text/javascript">
             OBJJ_MAIN_FILE = "main.j";
+			OBJJ_AUTO_BOOTSTRAP = true;
  
 			var CPLogDisable = false;
 			
@@ -78,7 +72,14 @@
 		<script src="Bespin/BespinEmbedded.js" type="text/javascript" charset="utf-8"></script>                                  -->
                           
         <style type="text/css">
-            body{margin:0; padding:0;}
+            html, body{
+				margin:0; 
+				padding:0;
+				height:100%;
+			}
+			body {
+				background: #eee url(Resources/ApplicationIcon.png) 50% 40% no-repeat;
+			}
             #container {
 				position: absolute; 
 				top:20%; left:50%; 
@@ -86,11 +87,11 @@
 				height: 350px;
 				margin-left:-400px;
 				
-				background: transparent url(Resources/ApplicationIcon.png) 50% 10px no-repeat;
+				
 			}
             #content {text-align:center; margin-top:250px; line-height: 50px;}
             #content {font-family: "Helvetica", "Arial", sans-serif; font-size: 18px; color: black; text-shadow: 0px 1px 0px white; }
-			#loadingcontainer {background-color: #eee; overflow:hidden; width:100%; height:100%; position: absolute; top: 0; left: 0;}
+			#loadingcontainer {overflow:hidden; width:100%; height:100%; position: absolute; top: 0; left: 0;}
             #loadgraphic {margin-right: 0.2em; margin-bottom:-2px;}
 			#progressValue {background-color:#a77b34; display:block; height:1px; width:0%;}
         </style>
