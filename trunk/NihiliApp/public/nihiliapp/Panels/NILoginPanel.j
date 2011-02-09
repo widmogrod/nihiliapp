@@ -13,6 +13,7 @@ var SharedLoginPanel = nil;
 {
 	CPTextField usernameField;
 	CPTextField passwordField;
+	CPButton loginButton @accessors(readonly);
 }
 
 - (id)init
@@ -52,7 +53,7 @@ var SharedLoginPanel = nil;
 																	  fieldHeight)];
 		[usernameField setEditable:YES];
 		[usernameField setBezeled:YES];
-		[usernameField setPlaceholderString:@"Użytkownik"];
+		[usernameField setPlaceholderString:@"Adres e-mail"];
 		// [usernameField setAlignment:CPRightTextAlignment];		
 		[contentView addSubview:usernameField];
 
@@ -67,13 +68,13 @@ var SharedLoginPanel = nil;
 		[passwordField setPlaceholderString:@"Hasło"];
 		[contentView addSubview:passwordField];
 
-		var loginButton = [CPButton buttonWithTitle:"Zaloguj"];
-			// ustaw położenie w lewym dolnym roku!
-			[loginButton setFrameOrigin:CGPointMake(CGRectGetMaxX(frame) - 20 - CGRectGetWidth([loginButton frame]), 
-													CGRectGetMaxY(frame) - 10 - CGRectGetHeight([loginButton frame]))];
-			[loginButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin ];
-			[loginButton setAction:@selector(login:)];
-			[loginButton setTarget:self];
+		loginButton = [CPButton buttonWithTitle:"Zaloguj"];
+		// ustaw położenie w lewym dolnym roku!
+		[loginButton setFrameOrigin:CGPointMake(CGRectGetMaxX(frame) - 20 - CGRectGetWidth([loginButton frame]), 
+												CGRectGetMaxY(frame) - 10 - CGRectGetHeight([loginButton frame]))];
+		[loginButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin ];
+		// [loginButton setAction:@selector(openDocument:)];
+		// [loginButton setTarget:CPApp];
 
 		[self setDefaultButton:loginButton];
 		[contentView addSubview:loginButton];
