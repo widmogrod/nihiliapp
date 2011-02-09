@@ -18,17 +18,32 @@ var SharedLoginPanel = nil;
 - (id)init
 {
 	// CPDocModalWindowMask
-	self = [super initWithContentRect:CGRectMake(0,0,300,200) styleMask:CPHUDBackgroundWindowMask];
+	self = [super initWithContentRect:CGRectMake(0,0,300,120) styleMask:CPDocModalWindowMask];
 	
 	if (self)
 	{
 		var contentView = [self contentView],
 			frame = [contentView frame];
+			
+		// ukrywam okno przed uruchomieniem animacji
+		[self setValue: 0 forKey: @"alphaValue"];
 
 		[self center];
-		[self setFloatingPanel:YES];
+		[self setFrameOrigin:CGPointMake(CGRectGetMinX([self frame]), 0)];
+		// [self setFloatingPanel:YES];
 		[self setWorksWhenModal:YES];
-
+		// [self setHasShadow:YES];
+		// [self setBackgroundColor:[CPColor whiteColor]];
+		
+		
+		// [self orderBack:self];
+/*
+		CPWindowShadowStyleStandard
+	    CPWindowShadowStyleMenu
+	    CPWindowShadowStylePanel
+*/
+		// [self setShadowStyle:CPWindowShadowStyleMenu];
+// console.log([self representedURL]);
 		var fieldHeight = 29;
 
 		usernameField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(frame) + 10, 
@@ -44,7 +59,7 @@ var SharedLoginPanel = nil;
 		var usernameFrame = [usernameField frame];
 		
 		passwordField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(usernameFrame), 
-																	  CGRectGetMinY(usernameFrame) + 20 + fieldHeight,
+																	  CGRectGetMinY(usernameFrame) + 20 + fieldHeight/2,
 																	  CGRectGetWidth(usernameFrame),
 																	  fieldHeight)];
 		[passwordField setEditable:YES];
@@ -54,14 +69,24 @@ var SharedLoginPanel = nil;
 
 		var loginButton = [CPButton buttonWithTitle:"Zaloguj"];
 			// ustaw położenie w lewym dolnym roku!
-			[loginButton setFrameOrigin:CGPointMake(CGRectGetMinX(frame) + 10, 
-													CGRectGetMaxY(frame) - 40 - CGRectGetHeight([loginButton frame]))];
+			[loginButton setFrameOrigin:CGPointMake(CGRectGetMaxX(frame) - 20 - CGRectGetWidth([loginButton frame]), 
+													CGRectGetMaxY(frame) - 10 - CGRectGetHeight([loginButton frame]))];
 			[loginButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin ];
 			[loginButton setAction:@selector(login:)];
 			[loginButton setTarget:self];
 
 		[self setDefaultButton:loginButton];
 		[contentView addSubview:loginButton];
+		
+		[self setValue: 1 forKey: @"alphaValue"];
+		
+		// [self setFrame:CGRectMake(200,0,300,200) display:YES animate:YES];
+		
+		var opacityAnimation = [[CPPositionAnimation alloc] initWithWindow:self];
+			[opacityAnimation setStart:-CGRectGetWidth([self frame])];
+			[opacityAnimation setEnd:CGRectGetMinY([self frame])];
+			[opacityAnimation setDuration:0.5];
+			[opacityAnimation startAnimation];
 	}
 	
 	return self;
@@ -69,11 +94,7 @@ var SharedLoginPanel = nil;
 
 - (id)login:(id)sender
 {
-	// var opacityAnimation = [[CPSlideInAnimation alloc] initWithWindow:self];
-	// 	[opacityAnimation setStart:0.0];
-	// 	[opacityAnimation setEnd:CGRectGetMinY([self frame])];
-	// 	[opacityAnimation setDuration:0.2];
-	// 	[opacityAnimation startAnimation];
+	
 
 	// var opacityAnimation = [[CPPropertyAnimation alloc] initWithView:[self contentView] property:@"alphaValue"];
 	// 	[opacityAnimation setStart:0];

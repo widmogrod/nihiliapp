@@ -58,8 +58,8 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-	var theWindow = [NIProjectWindowController sharedController];
-			[theWindow showWindow:self];
+	// var theWindow = [NIProjectWindowController sharedController];
+	// 			[theWindow showWindow:self];
 	
     // var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
     //     [theWindow orderFront:self];
@@ -95,7 +95,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
     //     {
     	[self login:self];
     // } else {
-    	[self initApplicationView];
+    	// [self initApplicationView];
     // }
     
     //[[NIOpenWindow sharedOpenWindow] orderFront:self];

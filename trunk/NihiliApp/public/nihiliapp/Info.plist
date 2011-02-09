@@ -11,6 +11,8 @@
 		<string>1763198</string>
 	</dict>
 	
+	<!-- CPDefaultTheme -->
+	
 	<key>CPBundleName</key>
 	<string>NiniliApp</string>
 	
@@ -42,5 +44,16 @@
 			<string>NIDocument</string>
 		</dict>
 	</array>
+	
+	<key>ApplicationName</key>
+	<string>BlekotApp</string>
+	
+	<key>ApplicationIcon</key>
+	<string>BlekotApp</string>
+	
+	<key>Version</key>
+	<string>123</string>
+	
+	
 </dict>
 </plist>
