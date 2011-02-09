@@ -111,7 +111,7 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 	// Aktywuj menu główne applikacji
     var mainMenu = [[NIMenu alloc] initWithDelegate:self];
     
-@import "Panels/NIProgress.j"
+// @import "Panels/NIProgress.j"
 	// var progress = [NIProgress sharedProgress];
 	// 	// [progress setDelegate:self]; 
 	// 	[progress showWindow:self];
@@ -143,7 +143,12 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)login:(id)sender
 {
-	var panel = [[NILoginPanel sharedLoginPanel] makeKeyAndOrderFront:self];
+	var panel = [NILoginPanel sharedLoginPanel];
+		[panel makeKeyAndOrderFront:self];
+		[[panel loginButton] setAction:@selector(openDocument:)];
+		[[panel loginButton] setTarget:self];
+		
+		
 }
 
 @end
