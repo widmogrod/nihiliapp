@@ -1,4 +1,5 @@
 @import <AppKit/CPPanel.j>
+@import <Foundation/CPTimer.j>
 
 var SharedLoginPanel = nil;
 
@@ -27,7 +28,7 @@ var SharedLoginPanel = nil;
 			frame = [contentView frame];
 			
 		// ukrywam okno przed uruchomieniem animacji
-		[self setValue: 0 forKey: @"alphaValue"];
+		// [self setValue: 0 forKey: @"alphaValue"];
 
 		[self center];
 		[self setFrameOrigin:CGPointMake(CGRectGetMinX([self frame]), 0)];
@@ -79,18 +80,26 @@ var SharedLoginPanel = nil;
 		[self setDefaultButton:loginButton];
 		[contentView addSubview:loginButton];
 		
-		[self setValue: 1 forKey: @"alphaValue"];
+		//[self setValue: 1 forKey: @"alphaValue"];
 		
 		// [self setFrame:CGRectMake(200,0,300,200) display:YES animate:YES];
 		
-		var opacityAnimation = [[CPPositionAnimation alloc] initWithWindow:self];
-			[opacityAnimation setStart:-CGRectGetWidth([self frame])];
-			[opacityAnimation setEnd:CGRectGetMinY([self frame])];
-			[opacityAnimation setDuration:0.5];
-			[opacityAnimation startAnimation];
+		
 	}
 	
 	return self;
+}
+
+- (void)showWithAnimation
+{	
+	var opacityAnimation = [[CPPositionAnimation alloc] initWithWindow:self];
+		[opacityAnimation setStart:-CGRectGetWidth([self frame])];
+		[opacityAnimation setEnd:CGRectGetMinY([self frame])];
+		[opacityAnimation setDuration:0.5];
+		[opacityAnimation startAnimation];
+
+	// taki interwał dopełnia animację - nie efektu niepełnej animajci
+	[CPTimer scheduledTimerWithTimeInterval: 0.10 target:self selector:@selector(orderFront:) userInfo:nil repeats:1];
 }
 
 - (id)login:(id)sender
