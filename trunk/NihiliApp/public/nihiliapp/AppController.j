@@ -138,15 +138,17 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)openDocument:(id)sender
 {
+	// [[NILoginPanel sharedLoginPanel] orderOut:self];
 	[[NIOpenWindowController sharedController] showWindow: self];
 }
 
 - (void)login:(id)sender
 {
 	var panel = [NILoginPanel sharedLoginPanel];
-		[panel makeKeyAndOrderFront:self];
 		[[panel loginButton] setAction:@selector(openDocument:)];
 		[[panel loginButton] setTarget:self];
+		
+		[panel showWithAnimation];
 		
 		
 }
