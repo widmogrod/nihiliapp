@@ -1,5 +1,7 @@
+# todo zamiast Timestampable, create_date. modification_date
 actAs: [Timestampable]
 
+# Użytkownicy
 User:
   connection: default
   tableName: app_user
@@ -12,49 +14,77 @@ User:
     username: string(50)
     password: string(50)
     email: string(50)
+    is_enabled: 
+      type: boolean
+      default: false
   indexes:
-    app_user_email_password_index:
-      fields: [email, password]
-
-Group:
-  connection: default
-  tableName: app_groups
-  actAs: [Timestampable, SoftDelete]
-  columns:
-    group_id:
-      primary: true
-      autoincrement: true
-      type: integer(8)
-    name: string(255)
-
-UserGroup:
-  connection: default
-  tableName: app_user_group
-  columns:
-    fk_user_id:
-      type: integer(8)
-      primary: true
-    fk_group_id:
-      type: integer(8)
-      primary: true
-  indexes:
-    app_user_group_all_index:
-      fields: [fk_user_id, fk_group_id]
+    app_user_email_unique_index:
+      fields: [email]
       type: unique
-  relations:
-    User:
-      local: fk_user_id
-      foreign: user_id
-      type: one
-    Group:
-      local: fk_group_id
-      foreign: group_id
-      type: one
+    app_user_email_password_is_enabled_index:
+      fields: [email, password, is_enabled]
+    app_user_is_enabled_index:
+      fields: [is_enabled]
 
+# Ustawienia użytkowników
+#UserSettings:
+#  connection: default
+#  tableName: app_user_settings
+#  columns:
+#    fk_user_id:
+#      primary: true
+#      type: integer(8)
+#
+#    send_notifications: 
+#      type: boolean
+#      default: false
+#  indexes:
+#    app_user_settings_fk_user_id_unique_index:
+#      fields: [fk_user_id]
+#      type: unique
+
+# Grupy użytkowników
+#Group:
+#  connection: default
+#  tableName: app_groups
+#  actAs: [Timestampable, SoftDelete]
+#  columns:
+#    group_id:
+#      primary: true
+#      autoincrement: true
+#      type: integer(8)
+#    name: string(255)
+
+# Powiązania użytkowników do grup
+#UserGroup:
+#  connection: default
+#  tableName: app_user_group
+#  columns:
+#    fk_user_id:
+#      type: integer(8)
+#      primary: true
+#    fk_group_id:
+#      type: integer(8)
+#      primary: true
+#  indexes:
+#    app_user_group_all_index:
+#      fields: [fk_user_id, fk_group_id]
+#      type: unique
+#  relations:
+#    User:
+#      local: fk_user_id
+#      foreign: user_id
+#      type: one
+#    Group:
+#      local: fk_group_id
+#      foreign: group_id
+#      type: one
+
+# Dane połączenia do serwera
 Connection:
   connection: default
   tableName: app_connection
-  actAs: [Timestampable, SoftDelete]
+  actAs: [Timestampable]
   columns:
     connection_id:
       type: integer(8)
@@ -68,33 +98,7 @@ Connection:
       type: enum
       values: [FTP]
 
-ConnectionContent:
-  connection: default
-  tableName: app_user_connection_content
-  actAs: 
-    Timestampable:
-    SoftDelete:
-    Versionable:
-      versionColumn: version
-      className: %CLASS%Version
-      auditLog: true
-      tableName: app_user_connection_content_version
-  columns:
-    fk_connection_id:
-      type: integer(8)
-      primary: true
-    content: text
-  indexes:
-    app_user_connection_content_fk_connection_id_index:
-      fields: [fk_connection_id]
-  relations:
-    Connection:
-      local: fk_connection_id
-      foreign: connection_id
-      type: one
-      onDelete: CASCADE
-      onUpdate: CASCADE
-
+# Powiązanie połączenia serwera z użytkownikiem
 UserConnection:
   connection: default
   tableName: app_user_connection
@@ -110,21 +114,160 @@ UserConnection:
       values: [creator, guest]
       default: guest
   indexes:
-    app_user_connection_all_index:
+    app_user_connection_all_unique_index:
       fields: [fk_user_id, fk_connection_id]
       type: unique
     app_user_connection_fk_user_id_index:
       fields: [fk_user_id]
+    app_user_connection_fk_connection_id_index:
+      fields: [fk_connection_id]
   relations:
     User:
       local: fk_user_id
       foreign: user_id
       type: one
-      onDelete: CASCADE
-      onUpdate: CASCADE
+      #onDelete: CASCADE
+      #onUpdate: CASCADE
     Connection:
       local: fk_connection_id
       foreign: connection_id
       type: one
-      onDelete: CASCADE
-      onUpdate: CASCADE
+      #onDelete: CASCADE
+      #onUpdate: CASCADE
+
+# Logowanie zmian nazwy pliku w kontekście połączenia
+ConnectionFile:
+  connection: default
+  tableName: app_connection_file
+  actAs: 
+    Timestampable:
+    Versionable:
+      versionColumn: version
+      className: %CLASS%Version
+      auditLog: true
+      tableName: app_connection_file_version
+  columns:
+    file_id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+    fk_connection_id:
+      type: integer(8)
+      notnull: true
+    filename:
+      type: string(255)
+  indexes:
+    app_connection_file_fk_connection_id_index:
+      fields: [fk_connection_id]
+    app_connection_file_fk_connection_id_filename_unique_index:
+      fields: [fk_connection_id, filename]
+      type: unique
+  relations:
+    Connection:
+      local: fk_connection_id
+      foreign: connection_id
+      type: one
+      #onDelete: CASCADE
+      #onUpdate: CASCADE
+
+# Logowanie zmian zawartości pliku w kontekście połączenia i nazwy pliku
+ConnectionFileContent:
+  connection: default
+  tableName: app_user_connection_file_content
+  actAs: 
+    Timestampable:
+    SoftDelete:
+    Versionable:
+      versionColumn: version
+      className: %CLASS%Version
+      auditLog: true
+      tableName: app_user_connection_file_content_version
+  columns:
+    fk_file_id:
+      type: integer(8)
+      primary: true
+    fk_file_version:
+      type: integer(8)
+    content: text
+  indexes:
+    app_user_connection_file_content_fk_file_id_index:
+      fields: [fk_file_id]
+    app_user_connection_file_content_fk_file_id_fk_file_version_index:
+      fields: [fk_file_id, fk_file_version]
+  relations:
+    ConnectionFile:
+      local: fk_file_id
+      foreign: file_id
+      type: one
+      #onDelete: CASCADE
+      #onUpdate: CASCADE
+
+# Dzielenie się/udostępnianie połączeniem
+ConnectionShare:
+  connection: default
+  tableName: app_connection_share
+  columns:
+    share_id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+    fk_connection_id:
+      type: integer(8)
+
+    # opcjonalnie można podać nazwę połączenia by łatwiej można było je rozróżnić
+    name:
+      type: string(255)
+    # czy dzielenie jest aktywne
+    is_enabled:
+      type: boolean
+      default: false
+
+    # opcje dzielenia się
+    is_readable:
+      type: boolean
+      default: false
+    is_writable:
+      type: boolean
+      default: false
+    send_notifications:
+      type: boolean
+      default: false  
+  indexes:
+    app_connection_share_fk_connection_id_index:
+      fields: [fk_connection_id]
+    app_connection_share_share_id_is_enabled_id_index:
+      fields: [share_id, is_enabled]
+  relations:
+    Connection:
+      local: fk_connection_id
+      foreign: connection_id
+      type: one
+
+# Udostępnianie określonych plików, katalogów
+ConnectionShareFile:
+  connection: default
+  tableName: app_connection_share_file
+  columns:
+    fk_share_id:
+      type: integer(8)
+      primary: true
+    fk_file_id:
+      type: integer(8)
+      primary: true
+  indexes:
+    app_connection_share_file_all_unique_index:
+      fields: [fk_share_id, fk_file_id]
+      type: unique
+    app_connection_share_file_fk_share_id_index:
+      fields: [fk_share_id]
+    app_connection_share_file_fk_file_id_index:
+      fields: [fk_file_id]
+  relations:
+    ConnectionShare:
+      local: fk_share_id
+      foreign: share_id
+      type: one
+    ConnectionFile:
+      local: fk_file_id
+      foreign: file_id
+      type: one

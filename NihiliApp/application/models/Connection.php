@@ -88,22 +88,41 @@ class Application_Model_Connection extends Application_Model_Response
 	{
 		$localFile  = tempnam(sys_get_temp_dir(), 'kx_ftp');
 		$remoteFile = $this->_data['pathname'];
+		$remoteFileBak = $remoteFile.'.nihili.'.time();
 		
 		$filter = new KontorX_Filter_MagicQuotes();
 		$content = $filter->filter($this->_data['content']);
 		
-		if (!file_put_contents($localFile, $content)) {
+		if (!file_put_contents($localFile, $content)) 
+		{
 			$this->addMessage('Wystąpił błąd podczas zapisu pliku na dysku');
 			$this->setStatus(self::FAILURE);
 			return;
 		}
-		
-		if (!$this->_ftp->put($remoteFile, $localFile)) {
+
+		/*
+		 * ochrona przed nadpisywaniem pliku - gdyby w całości nie został skopiowany 
+		 */
+
+		if (!$this->_ftp->put($remoteFileBak, $localFile)) 
+		{
+			$this->_ftp->delete($remoteFileBak);
+
 		    $this->addMessage('Wystąpił błąd podczas zapisu pliku na serwerze');
 			$this->setStatus(self::FAILURE);
 			return;
 		}
 		
+		if (!$this->_ftp->rename($remoteFileBak, $remoteFile))
+		{
+			$this->_ftp->delete($remoteFileBak);
+
+			$this->addMessage('Wystąpił błąd podczas zapisu pliku na serwerze. Błąd przy zmianie nazwy.');
+			$this->setStatus(self::FAILURE);
+
+			return;
+		}
+
 		$this->setStatus(self::SUCCESS);
 	}
 }
