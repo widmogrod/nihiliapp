@@ -167,6 +167,58 @@ var SharedNIOpenWindowController = nil;
 	var row = _dataSource[[_tableView selectedRow]],
 		connection = [[VOConnection alloc] initWithDictionary:row];
 		
+		
+		
+		// console.log(connection);
+		
+		// console.log(class_copyIvarList([VOConnection class]));
+		console.log([connection toJSONString]);
+// [connection stringify];
+		// 		try	{
+		// 			console.log([connection toJSON]);
+		// 		} catch (e) {
+		// 			console.error(e);
+		// 		} finally {
+		// 			console.log('finally');
+		// 		}
+		// 		
+		// 		var toJSONRef = function(object) {
+		// 			return JSON.stringify(object, function(key, value){
+		// 				console.log('value2', value, typeof value);
+		// 				console.log('key2', key, typeof key);
+		// 
+		// 				if (typeof value == 'object'
+		// 					|| typeof value == 'array') 
+		// 				{
+		// 					var o = {};
+		// 					for (var name in value) 
+		// 					{
+		// 						if (typeof value[name] == 'object'
+		// 							|| typeof value[name] == 'array') 
+		// 						{
+		// 							o[name] = toJSONRef(value[name]);
+		// 						} else {
+		// 							o[name] = value[name];
+		// 						}
+		// 						
+		// 					}
+		// 					// console.log(object.mem);
+		// 					// return;
+		// 					return toJSONRef(o);
+		// 				} else {
+		// 					return value;
+		// 				}
+		// 			});
+		// 		}
+		// 
+		// 		try {
+		// 			toJSONRef(connection);
+		// 		} catch (e) {
+		// 			console.error(e);
+		// 		} finally {
+		// 			console.log('finally2');
+		// 		}
+		
 	var projectController = [NIProjectWindowController sharedController];
 		[projectController setConnection:connection];
 	

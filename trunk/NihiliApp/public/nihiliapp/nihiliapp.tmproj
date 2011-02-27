@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>Windows/NIProjectWindow/NIProjectWindowController.j</string>
+	<string>Models/VOConnection.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -32,14 +32,28 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>4</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>98</integer>
+				<integer>130</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>75</integer>
+			<integer>130</integer>
+		</dict>
+		<key>Models/NIApiModel.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>12</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
 		</dict>
 		<key>Models/NIConnectionsApi.j</key>
 		<dict>
@@ -60,23 +74,23 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>55</integer>
+				<integer>14</integer>
 				<key>line</key>
-				<integer>72</integer>
+				<integer>57</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>48</integer>
+			<integer>59</integer>
 		</dict>
 		<key>Models/NIFTPConnection.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>12</integer>
+				<integer>2</integer>
 				<key>line</key>
-				<integer>15</integer>
+				<integer>16</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -88,9 +102,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>2</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>26</integer>
+				<integer>67</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -141,19 +155,49 @@
 				<integer>8</integer>
 			</dict>
 		</dict>
-		<key>Panels/Info.plist</key>
+		<key>Nihili/VOObject.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>35</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>9</integer>
+				<integer>1</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
+		</dict>
+		<key>Panels/Info.plist</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>8</integer>
+				<key>line</key>
+				<integer>18</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>8</integer>
+				<key>line</key>
+				<integer>18</integer>
+			</dict>
 		</dict>
 		<key>Panels/NIAlert.j</key>
 		<dict>
@@ -301,34 +345,62 @@
 			<key>firstVisibleLine</key>
 			<integer>53</integer>
 		</dict>
+		<key>Panels/NILoginController.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>37</integer>
+				<key>line</key>
+				<integer>1</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>Panels/NILoginPanel.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>30</integer>
+				<key>line</key>
+				<integer>1</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>Panels/NIPreviewController.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>line</key>
-				<integer>69</integer>
+				<integer>31</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>52</integer>
+			<integer>0</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>80</integer>
+				<integer>0</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>line</key>
-				<integer>69</integer>
+				<integer>31</integer>
 			</dict>
 		</dict>
 		<key>Panels/NIPreviewPanel.j</key>
@@ -438,14 +510,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>47</integer>
+				<integer>23</integer>
 				<key>line</key>
-				<integer>158</integer>
+				<integer>175</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>144</integer>
+			<integer>152</integer>
 		</dict>
 		<key>Windows/NIProjectWindow/NIProjectWindow.j</key>
 		<dict>
@@ -466,14 +538,30 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>54</integer>
+				<integer>44</integer>
 				<key>line</key>
-				<integer>237</integer>
+				<integer>227</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>212</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>15</integer>
+				<key>line</key>
+				<integer>227</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>44</integer>
+				<key>line</key>
+				<integer>227</integer>
+			</dict>
 		</dict>
 		<key>Windows/NIProjectWindow/NIProjectWindowEditor.j</key>
 		<dict>
@@ -503,16 +591,35 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>index.html</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>23</integer>
+				<key>line</key>
+				<integer>51</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>38</integer>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>AppController.j</string>
+		<string>Panels/NILoginPanel.j</string>
+		<string>Panels/NILoginController.j</string>
+		<string>index.html</string>
 		<string>Windows/NIOpenWindowController.j</string>
 		<string>Windows/NIOpenWindow.j</string>
 		<string>Panels/NIAlert.j</string>
 		<string>Models/VOConnection.j</string>
+		<string>Nihili/VOObject.j</string>
 		<string>Panels/NISitePanelController.j</string>
 		<string>Models/NIFTPConnection.j</string>
+		<string>Models/NIApiModel.j</string>
 		<string>NIButton.j</string>
 		<string>Panels/NIFileExplorerController.j</string>
 		<string>Windows/NIProjectWindow/NIProjectWindowController.j</string>
@@ -536,6 +643,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{222, 47}, {1051, 952}}</string>
+	<string>{{222, 50}, {1051, 952}}</string>
 </dict>
 </plist>
