@@ -13,8 +13,9 @@ Doctrine_Manager::getInstance()->bindComponent('Connection', 'default');
  * @property string $password
  * @property string $pathname
  * @property enum $protocol
- * @property Doctrine_Collection $ConnectionContent
  * @property Doctrine_Collection $UserConnection
+ * @property Doctrine_Collection $ConnectionFile
+ * @property Doctrine_Collection $ConnectionShare
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -60,17 +61,19 @@ abstract class BaseConnection extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
-        $this->hasMany('ConnectionContent', array(
-             'local' => 'connection_id',
-             'foreign' => 'fk_connection_id'));
-
         $this->hasMany('UserConnection', array(
              'local' => 'connection_id',
              'foreign' => 'fk_connection_id'));
 
+        $this->hasMany('ConnectionFile', array(
+             'local' => 'connection_id',
+             'foreign' => 'fk_connection_id'));
+
+        $this->hasMany('ConnectionShare', array(
+             'local' => 'connection_id',
+             'foreign' => 'fk_connection_id'));
+
         $timestampable0 = new Doctrine_Template_Timestampable();
-        $softdelete0 = new Doctrine_Template_SoftDelete();
         $this->actAs($timestampable0);
-        $this->actAs($softdelete0);
     }
 }
