@@ -8,7 +8,7 @@
 
 @import <Foundation/CPObject.j>
 // @import "Windows/NIOpenWindow.j"
-@import "Panels/NILoginPanel.j"
+@import "Panels/NILoginController.j"
 // 
 // @import "Panels/NISitePanelController.j"
 // 
@@ -144,13 +144,8 @@ var ToolbarItemUndo = "ToolbarItemUndo",
 
 - (void)login:(id)sender
 {
-	var panel = [NILoginPanel sharedLoginPanel];
-		[[panel loginButton] setAction:@selector(openDocument:)];
-		[[panel loginButton] setTarget:self];
-		
-		[panel showWithAnimation];
-		
-		
+	var controller = [NILoginController sharedController];
+		[controller showWithAnimation];	
 }
 
 @end

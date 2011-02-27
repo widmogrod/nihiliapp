@@ -1,9 +1,8 @@
-@import <Foundation/CPObject.j>
-@import <Foundation/CPString.j>
+@import <Nihili/VOObject.j>
 
-@implementation VOConnection : CPObject
+@implementation VOConnection : VOObject
 {
-	unsigned int _id @accessors(getter=id,setter=setId:);
+	unsigned int connection_id @accessors(getter=id,setter=setId:);
 	CPString server @accessors;
 	CPString username @accessors;
 	CPString password @accessors;
@@ -12,7 +11,7 @@
 	CPString content @accessors;
 }
 
-- initWithDictionary:(CPDictionary)aDictionary
+- (id)initWithDictionary:(CPDictionary)aDictionary
 {
 	self = [super init];
 	if (self) 
