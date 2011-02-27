@@ -44,7 +44,7 @@ abstract class BaseUserConnection extends Doctrine_Record
              ));
 
 
-        $this->index('app_user_connection_all_index', array(
+        $this->index('app_user_connection_all_unique_index', array(
              'fields' => 
              array(
               0 => 'fk_user_id',
@@ -58,6 +58,12 @@ abstract class BaseUserConnection extends Doctrine_Record
               0 => 'fk_user_id',
              ),
              ));
+        $this->index('app_user_connection_fk_connection_id_index', array(
+             'fields' => 
+             array(
+              0 => 'fk_connection_id',
+             ),
+             ));
     }
 
     public function setUp()
@@ -65,15 +71,11 @@ abstract class BaseUserConnection extends Doctrine_Record
         parent::setUp();
         $this->hasOne('User', array(
              'local' => 'fk_user_id',
-             'foreign' => 'user_id',
-             'onDelete' => 'CASCADE',
-             'onUpdate' => 'CASCADE'));
+             'foreign' => 'user_id'));
 
         $this->hasOne('Connection', array(
              'local' => 'fk_connection_id',
-             'foreign' => 'connection_id',
-             'onDelete' => 'CASCADE',
-             'onUpdate' => 'CASCADE'));
+             'foreign' => 'connection_id'));
 
         $timestampable0 = new Doctrine_Template_Timestampable();
         $this->actAs($timestampable0);

@@ -11,7 +11,7 @@ Doctrine_Manager::getInstance()->bindComponent('User', 'default');
  * @property string $username
  * @property string $password
  * @property string $email
- * @property Doctrine_Collection $UserGroup
+ * @property boolean $is_enabled
  * @property Doctrine_Collection $UserConnection
  * 
  * @package    ##PACKAGE##
@@ -42,13 +42,31 @@ abstract class BaseUser extends Doctrine_Record
              'type' => 'string',
              'length' => '50',
              ));
+        $this->hasColumn('is_enabled', 'boolean', null, array(
+             'type' => 'boolean',
+             'default' => false,
+             ));
 
 
-        $this->index('app_user_email_password_index', array(
+        $this->index('app_user_email_unique_index', array(
+             'fields' => 
+             array(
+              0 => 'email',
+             ),
+             'type' => 'unique',
+             ));
+        $this->index('app_user_email_password_is_enabled_index', array(
              'fields' => 
              array(
               0 => 'email',
               1 => 'password',
+              2 => 'is_enabled',
+             ),
+             ));
+        $this->index('app_user_is_enabled_index', array(
+             'fields' => 
+             array(
+              0 => 'is_enabled',
              ),
              ));
     }
@@ -56,10 +74,6 @@ abstract class BaseUser extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
-        $this->hasMany('UserGroup', array(
-             'local' => 'user_id',
-             'foreign' => 'fk_user_id'));
-
         $this->hasMany('UserConnection', array(
              'local' => 'user_id',
              'foreign' => 'fk_user_id'));
