@@ -2,9 +2,9 @@
 
 @implementation VOUser : VOObject
 {
-	unsigned int user_id @accessors(getter=id, setter=setId:);
-	CPString email @accessors;
-	CPString password @accessors;
+	unsigned int 	user_id @accessors(getter=id, setter=setId:);
+	CPString 		email @accessors;
+	CPString 		password;
 }
 
 - (id)initWithDictionary:(CPDictionary)aDictionary
@@ -19,12 +19,27 @@
 	return self;
 }
 
+- (void)setPassword:(CPString)aPassword
+{
+	password = MD5(aPassword);
+}
+
+- (void)setPasswordWithoutMD5:(CPString)aPassword
+{
+	password = aPassword;
+}
+
+- (CPString)password
+{
+	return password;
+}
+
 - (VOUser)copy
 {
 	var copy = [[VOUser alloc] init];
 	[copy setId:[self id]];
 	[copy setEmail:[self email]];
-	[copy setPassword:[self password]];
+	[copy setPasswordWithoutMD5:[self password]];
 	return copy;
 }
 

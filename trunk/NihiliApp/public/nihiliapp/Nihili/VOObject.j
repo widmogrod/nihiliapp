@@ -18,8 +18,17 @@
 
 		switch(true)
 		{
+			case @"null" == value:
 			case [value isKindOfClass:[CPNull class]]:
 				value = @"";
+				break;
+
+			// case [value isSubclassOfClass:[CPControl class]]:
+			case [value isKindOfClass:[CPControl class]]:
+			// console.log([value stringValue]);
+				// value = [value objectValue];
+				value = [value stringValue];
+				break;
 		}
 
 		result[name] = encodeURIComponent(value);

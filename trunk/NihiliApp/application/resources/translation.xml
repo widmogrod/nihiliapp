@@ -28,5 +28,13 @@
 		<tu tuid="connections_edit_err">
 			<tuv xml:lang="pl"><seg>Połączenie %s nie zostało zaktualizowane. Proszę sprubować ponownie.</seg></tuv>
 		</tu>
+		
+		<tu tuid="register_new_user_ok">
+			<tuv xml:lang="pl"><seg>Zostałeś zarejestrowany.</seg></tuv>
+		</tu>
+		<tu tuid="register_new_user_err">
+			<tuv xml:lang="pl"><seg>Nie udało się zarejestrować użytkownika.</seg></tuv>
+		</tu>
+		
    </body>
 </tmx>

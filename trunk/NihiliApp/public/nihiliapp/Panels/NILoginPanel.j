@@ -1,4 +1,5 @@
 @import <AppKit/CPPanel.j>
+@import <AppKit/CPSecureTextField.j>
 @import <Foundation/CPTimer.j>
 
 /*
@@ -10,9 +11,9 @@
 */
 @implementation NILoginPanel : CPPanel
 {
-	CPTextField emailField @accessors(readonly);
-	CPTextField passwordField @accessors(readonly);
-	CPButton loginButton @accessors(readonly);
+	CPTextField 		emailField @accessors(readonly);
+	CPSecureTextField 	passwordField @accessors(readonly);
+	CPButton 			loginButton @accessors(readonly);
 }
 
 - (id)init
@@ -58,10 +59,10 @@
 
 		var usernameFrame = [emailField frame];
 		
-		passwordField = [[CPTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(usernameFrame), 
-																	  CGRectGetMinY(usernameFrame) + 20 + fieldHeight/2,
-																	  CGRectGetWidth(usernameFrame),
-																	  fieldHeight)];
+		passwordField = [[CPSecureTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(usernameFrame), 
+																	  		CGRectGetMinY(usernameFrame) + 20 + fieldHeight/2,
+																	  		CGRectGetWidth(usernameFrame),
+																	  		fieldHeight)];
 		[passwordField setEditable:YES];
 		[passwordField setBezeled:YES];
 		[passwordField setPlaceholderString:@"Hasło"];
