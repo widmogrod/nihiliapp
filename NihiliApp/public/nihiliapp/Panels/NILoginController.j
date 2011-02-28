@@ -52,8 +52,8 @@ var SharedNILoginController = nil;
 - (VOUser)VOUser
 {
 	var user = [VOUser new];
-		[user setEmail:[[self window] emailField]];
-		[user setPassword:[[self window] passwordField]];
+		[user setEmail:[[[self window] emailField] stringValue]];
+		[user setPassword:[[[self window] passwordField] stringValue]];
 		
 	return user;
 }

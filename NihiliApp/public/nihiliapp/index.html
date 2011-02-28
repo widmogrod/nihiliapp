@@ -45,6 +45,19 @@
 					
 			};
 		</script>
+		
+		<script type="text/javascript">		
+			var script =document.createElement('script');
+				script.charset = 'UTF-8';
+				script.type = 'text/javascript';
+				script.src = 'lib/md5.js';
+				
+				var head = document.getElementsByTagName('head')[0];
+					head.appendChild(script);
+			// window.onBespinLoad = function() {
+			// 	alert('bespin load');
+			// };
+        </script>
 
         <script type="text/javascript">
             OBJJ_MAIN_FILE = "main.j";
@@ -53,13 +66,13 @@
  
 			var CPLogDisable = false;
 			
-			var objj =document.createElement('script');
-				objj.charset = 'UTF-8';
-				objj.type = 'text/javascript';
-				objj.src = 'Frameworks/Objective-J/Objective-J.js';
+			var script =document.createElement('script');
+				script.charset = 'UTF-8';
+				script.type = 'text/javascript';
+				script.src = 'Frameworks/Objective-J/Objective-J.js';
 				
 				var head = document.getElementsByTagName('head')[0];
-					head.appendChild(objj);
+					head.appendChild(script);
 			// window.onBespinLoad = function() {
 			// 	alert('bespin load');
 			// };

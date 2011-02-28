@@ -105,6 +105,31 @@ abstract class Application_Model_Response
 		);
 	}
 	
+	public function addMessages(array $messages, $type = null, $inToMessage = null)
+	{
+	    while ($_message = array_shift($messages)) 
+	    {
+            $_type = null;
+            $_inToMessage = null;
+
+	        if (is_array($_message)) 
+	        {
+	            switch (count($_message))
+	            {
+	                case 2: list ($_message, $_type) = $_message;
+	                case 3: list ($_message, $_type, $_inToMessage) = $_message;
+	                default: 
+	                    throw new Exception('Wrong message stucture for array');
+	            }
+	        }
+
+	        $_type = (null === $_type) ? $type : $_type;
+	        $_inToMessage = (null === $_inToMessage) ? $inToMessage : $_inToMessage;
+	        
+	        $this->addMessage($_message, $_type, $_inToMessage);
+	    }
+	}
+	
 	/**
 	 * @return array
 	 */
