@@ -8,10 +8,11 @@ class UserController extends Zend_Controller_Action
 	protected $_userApi;
 	
 	/**
-	 * Wyłącz widok i utwórz obiekt Application_Model_Connection
+	 * Wyłącz widok i utwórz obiekt Application_Model_User
 	 */
 	public function init()
 	{
+	    // przygotowanie nadesłanych danych
 	    $data = file_get_contents('php://input');
 	    $data = urldecode($data);
 	    $data = Zend_Json::decode($data);
@@ -26,15 +27,19 @@ class UserController extends Zend_Controller_Action
 		$this->_helper->json($this->_userApi->toArray());
 	}
 
+    /**
+     * Logowanie użytkownika
+     */
     public function loginAction()
     {
-        if ($this->_userApi->hasLogin()) 
-        {
-            $this->_userApi->login();
-        }
-        else
-        {
-            $this->_userApi->register();
-        }
+        $this->_userApi->login();
+    }
+    
+    /**
+     * Rejestracja nowego użytkownika
+     */
+    public function registerAction()
+    {
+        $this->_userApi->register();
     }
 }
