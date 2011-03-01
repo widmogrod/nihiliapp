@@ -35,6 +35,9 @@
 		<tu tuid="register_new_user_err">
 			<tuv xml:lang="pl"><seg>Nie udało się zarejestrować użytkownika.</seg></tuv>
 		</tu>
+		<tu tuid="username_is_taken">
+			<tuv xml:lang="pl"><seg>Adres email jest już wykorzystywany.</seg></tuv>
+		</tu>
 		
    </body>
 </tmx>

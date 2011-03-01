@@ -31,8 +31,10 @@ var SharedNILoginController = nil;
 
 	if (self)
 	{
-		[[[self window] loginButton] setAction:@selector(login:)];
-		[[[self window] loginButton] setTarget:self];
+		[[[self window] switchButton] setAction:@selector(swichForm:)];
+		[[[self window] switchButton] setTarget:self];
+		
+		[self swichForm:nil]; // aktywuj formularz
 	}
 	return self;
 }
@@ -64,29 +66,71 @@ var SharedNILoginController = nil;
 
 @implementation NILoginController (TargetAction)
 
-- (id)login:(id)sender
+- (void)login:(id)sender
 {
 	var queue = [NIQueueConnection sharedQueue];
 		[queue action:@"/login" 
 			   object:[self VOUser]
 			   delegate:self
 			   selector:@selector(loginComplite:)];
-
-	// var opacityAnimation = [[CPPropertyAnimation alloc] initWithView:[self contentView] property:@"alphaValue"];
-	// 	[opacityAnimation setStart:0];
-	// 	[opacityAnimation setEnd:1];
-	// 	[opacityAnimation setDuration:2];
-	// 	[opacityAnimation startAnimation];
-		
-	// console.log([usernameField stringValue]);
-	// 	console.log([passwordField stringValue]);
-	// 	[self close];
 }
 
-- (id)loginComplite:(CPDictionary)aDictionary
+- (void)register:(id)sender
 {
+	var queue = [NIQueueConnection sharedQueue];
+		[queue action:@"/register" 
+			   object:[self VOUser]
+			   delegate:self
+			   selector:@selector(loginComplite:)];
+}
+
+
+- (void)loginComplite:(CPDictionary)aDictionary
+{
+	[[NIAlert alertWithResponse:aDictionary] runModal];
 	// var user = [VOUser initWithDictionary:[aDictionary valueFor]];
-	console.log(aDictionary);
+	// console.log(aDictionary);
+}
+
+- (void)swichForm:(id)sender
+{
+	var state = [sender isKindOfClass: [CPButton class]] ? [sender title] : 'Zaloguj';
+
+	switch(state)
+	{
+		case 'Zaloguj':
+			[[[self window] submitButton] setAction:@selector(login:)];
+			[[[self window] submitButton] setTarget:self];
+			
+			// [[self window] showRePassword]; 
+			
+			[[[self window] submitButton] setTitle:@"Zaloguj"];
+			[[[self window] switchButton] setTitle:@"Rejestracja"];
+			break;
+
+		case 'Rejestracja':
+			[[[self window] submitButton] setAction:@selector(register:)];
+			[[[self window] submitButton] setTarget:self];
+			
+			// [[self window] hideRePassword];
+			
+			[[[self window] submitButton] setTitle:@"Rejestracja"];
+			[[[self window] switchButton] setTitle:@"Zaloguj"];
+			break;
+	}
+
+	/*
+		Przeliczenie położenia przycisku akcji by 
+		- był zawsze wyrównany do prawje krawędzi 
+		- posiadał rozmiar dopasowany do tekstu
+	*/
+	var	baseFrame = [[[self window] submitButton] frame];
+	[[[self window] submitButton] sizeToFit];
+	var	newFrame = [[[self window] submitButton] frame];
+		newFrame = CGRectOffset(newFrame, CGRectGetWidth(baseFrame) - CGRectGetWidth(newFrame), 0);
+	[[[self window] submitButton] setFrame:newFrame];
+
+	[[[self window] switchButton] sizeToFit];
 }
 
 @end

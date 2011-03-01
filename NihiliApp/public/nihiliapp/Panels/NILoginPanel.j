@@ -13,7 +13,8 @@
 {
 	CPTextField 		emailField @accessors(readonly);
 	CPSecureTextField 	passwordField @accessors(readonly);
-	CPButton 			loginButton @accessors(readonly);
+	CPButton 			submitButton @accessors(readonly);
+	CPButton 			switchButton @accessors(readonly);
 }
 
 - (id)init
@@ -68,22 +69,29 @@
 		[passwordField setPlaceholderString:@"Hasło"];
 		[contentView addSubview:passwordField];
 
-		loginButton = [CPButton buttonWithTitle:"Zaloguj"];
+		submitButton = [CPButton buttonWithTitle:"Zaloguj"];
 		// ustaw położenie w lewym dolnym roku!
-		[loginButton setFrameOrigin:CGPointMake(CGRectGetMaxX(frame) - 20 - CGRectGetWidth([loginButton frame]), 
-												CGRectGetMaxY(frame) - 10 - CGRectGetHeight([loginButton frame]))];
-		[loginButton setAutoresizingMask:CPViewMinYMargin | CPViewMinXMargin ];
-		// [loginButton setAction:@selector(openDocument:)];
-		// [loginButton setTarget:CPApp];
+		[submitButton setFrameOrigin:CGPointMake(CGRectGetMaxX(frame) - 20 - CGRectGetWidth([submitButton frame]), 
+												CGRectGetMaxY(frame) - 10 - CGRectGetHeight([submitButton frame]))];
 
-		[self setDefaultButton:loginButton];
-		[contentView addSubview:loginButton];
+		[submitButton setAutoresizingMask:CPViewMinXMargin | CPViewMinYMargin];
+		// [submitButton setAction:@selector(openDocument:)];
+		// [submitButton setTarget:CPApp];
+
+		[self setDefaultButton:submitButton];
+		[contentView addSubview:submitButton];
 		
 		//[self setValue: 1 forKey: @"alphaValue"];
 		
 		// [self setFrame:CGRectMake(200,0,300,200) display:YES animate:YES];
 		
-		
+		switchButton = [CPButton buttonWithTitle:"Rejestracja"];
+		// ustaw położenie w lewym dolnym roku!
+		[switchButton setFrameOrigin:CGPointMake(CGRectGetMinX(frame) + 15, 
+												CGRectGetMaxY(frame) - 10 - CGRectGetHeight([switchButton frame]))];
+
+		[switchButton setAutoresizingMask:CPViewMinXMargin | CPViewMinYMargin];
+		[contentView addSubview:switchButton];
 	}
 	
 	return self;
