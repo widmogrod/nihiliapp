@@ -1,6 +1,7 @@
 @import <AppKit/CPPanel.j>
 @import <AppKit/CPSecureTextField.j>
-@import <Foundation/CPTimer.j>
+@import <Nihili/NIPositionAnimation.j>
+@import <Nihili/NIPropertyAnimation.j>
 
 /*
 	Panel logowania jest zawsze widoczny nad wszystkimi oknami.
@@ -13,6 +14,7 @@
 {
 	CPTextField 		emailField @accessors(readonly);
 	CPSecureTextField 	passwordField @accessors(readonly);
+	CPSecureTextField 	repasswordField @accessors(readonly);
 	CPButton 			submitButton @accessors(readonly);
 	CPButton 			switchButton @accessors(readonly);
 }
@@ -20,7 +22,7 @@
 - (id)init
 {
 	// CPDocModalWindowMask
-	self = [super initWithContentRect:CGRectMake(0,0,300,120) styleMask:CPDocModalWindowMask];
+	self = [super initWithContentRect:CGRectMake(0,0,300,145) styleMask:CPDocModalWindowMask];
 	
 	if (self)
 	{
@@ -68,9 +70,21 @@
 		[passwordField setBezeled:YES];
 		[passwordField setPlaceholderString:@"Hasło"];
 		[contentView addSubview:passwordField];
+		
+		var passwordFrame = [passwordField frame];
+		
+		repasswordField = [[CPSecureTextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(passwordFrame), 
+																	  		CGRectGetMinY(passwordFrame) + 20 + fieldHeight/2,
+																	  		CGRectGetWidth(passwordFrame),
+																	  		fieldHeight)];
+		[repasswordField setEditable:YES];
+		[repasswordField setBezeled:YES];
+		[repasswordField setPlaceholderString:@"Powtórz hasło"];
+		[contentView addSubview:repasswordField];
+		[repasswordField setHidden: YES];
 
 		submitButton = [CPButton buttonWithTitle:"Zaloguj"];
-		// ustaw położenie w lewym dolnym roku!
+		// ustaw położenie w prawym dolnym roku!
 		[submitButton setFrameOrigin:CGPointMake(CGRectGetMaxX(frame) - 20 - CGRectGetWidth([submitButton frame]), 
 												CGRectGetMaxY(frame) - 10 - CGRectGetHeight([submitButton frame]))];
 
@@ -85,7 +99,7 @@
 		
 		// [self setFrame:CGRectMake(200,0,300,200) display:YES animate:YES];
 		
-		switchButton = [CPButton buttonWithTitle:"Rejestracja"];
+		switchButton = [CPButton buttonWithTitle:"Nowe konto"];
 		// ustaw położenie w lewym dolnym roku!
 		[switchButton setFrameOrigin:CGPointMake(CGRectGetMinX(frame) + 15, 
 												CGRectGetMaxY(frame) - 10 - CGRectGetHeight([switchButton frame]))];
@@ -95,6 +109,76 @@
 	}
 	
 	return self;
+}
+
+- (void)animateLogin
+{
+	/*
+		Przeliczenie położenia przycisku akcji by 
+		- był zawsze wyrównany do prawje krawędzi 
+		- posiadał rozmiar dopasowany do tekstu
+	*/
+	var	baseFrame = [self frame];
+	var	repasswordFrame = [repasswordField frame];
+	var newFrame = CGRectMake(CGRectGetMinX(baseFrame), 
+							  CGRectGetMinY(baseFrame), 
+							  CGRectGetWidth(baseFrame), 
+							  CGRectGetHeight(baseFrame) - CGRectGetHeight(repasswordFrame));
+
+	[repasswordField setHidden: YES];	
+	
+	var positionAnimation = [[NIPositionAnimation alloc] initWithWindow:self];
+		[positionAnimation setStart:baseFrame];
+		[positionAnimation setEnd:newFrame];
+		[positionAnimation setDuration:0.2];
+		[positionAnimation startAnimation];
+
+	var	opacityAnimation = [[NIPropertyAnimation alloc] initWithView:repasswordField property:@"alphaValue"];
+		[opacityAnimation setStart:1];
+		[opacityAnimation setEnd:0];
+		[opacityAnimation setDuration:0.5];
+		[opacityAnimation startAnimation];
+}
+
+- (void)animateRegister
+{
+	/*
+		Przeliczenie położenia przycisku akcji by 
+		- był zawsze wyrównany do prawje krawędzi 
+		- posiadał rozmiar dopasowany do tekstu
+	*/
+	var	baseFrame = [self frame];
+	var	repasswordFrame = [repasswordField frame];
+	var newFrame = CGRectMake(CGRectGetMinX(baseFrame), 
+							  CGRectGetMinY(baseFrame), 
+							  CGRectGetWidth(baseFrame), 
+							  CGRectGetHeight(baseFrame) + CGRectGetHeight(repasswordFrame));
+
+
+
+	var positionAnimation = [[NIPositionAnimation alloc] initWithWindow:self];
+		[positionAnimation setStart:baseFrame];
+		[positionAnimation setEnd:newFrame];
+		[positionAnimation setDuration:0.2];
+		[positionAnimation startAnimation];
+
+	var	opacityAnimation = [[NIPropertyAnimation alloc] initWithView:repasswordField property:@"alphaValue"];
+		[opacityAnimation setStart:0];
+		[opacityAnimation setEnd:1];
+		[opacityAnimation setDuration:0.5];
+		[opacityAnimation startAnimation];
+
+	[repasswordField setHidden: NO];
+}
+
+- (void)animateShow
+{
+	var frame = [self frame];
+	var opacityAnimation = [[NIPositionAnimation alloc] initWithWindow:self];
+		[opacityAnimation setStart:CGRectMake(CGRectGetMinX(frame), -CGRectGetWidth(frame)), CGRectGetWidth(frame), CGRectGetHeight(frame)];
+		[opacityAnimation setEnd:  CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame)), CGRectGetWidth(frame), CGRectGetHeight(frame)];
+		[opacityAnimation setDuration:0.5];
+		[opacityAnimation startAnimation];
 }
 
 - (BOOL)canBecomeMainWindow

@@ -1,6 +1,5 @@
 @import <AppKit/CPWindowController.j>
-@import <Nihili/NIPositionAnimation.j>
-
+@import <Foundation/CPTimer.j>
 
 @import "NILoginPanel.j"
 @import "../Models/NIFTPApi.j"
@@ -41,13 +40,9 @@ var SharedNILoginController = nil;
 
 - (void)showWithAnimation
 {	
-	var opacityAnimation = [[NIPositionAnimation alloc] initWithWindow:[self window]];
-		[opacityAnimation setStart:-CGRectGetWidth([[self window] frame])];
-		[opacityAnimation setEnd:CGRectGetMinY([[self window] frame])];
-		[opacityAnimation setDuration:0.5];
-		[opacityAnimation startAnimation];
+	[[self window] animateShow];
 
-	// taki interwał dopełnia animację - nie efektu niepełnej animajci
+	// taki interwał dopełnia animację - usuwa brak efektu niepełnej animajci
 	[CPTimer scheduledTimerWithTimeInterval: 0.10 target:[self window] selector:@selector(orderFront:) userInfo:nil repeats:1];
 }
 
@@ -94,28 +89,30 @@ var SharedNILoginController = nil;
 
 - (void)swichForm:(id)sender
 {
-	var state = [sender isKindOfClass: [CPButton class]] ? [sender title] : 'Zaloguj';
+	var state = [sender isKindOfClass: [CPButton class]] ? [sender title] : 'Logowanie';
 
 	switch(state)
 	{
-		case 'Zaloguj':
+		case 'Logowanie':
+		// case 'Zaloguj':
 			[[[self window] submitButton] setAction:@selector(login:)];
 			[[[self window] submitButton] setTarget:self];
 			
-			// [[self window] showRePassword]; 
+			[[self window] animateLogin]; 
 			
 			[[[self window] submitButton] setTitle:@"Zaloguj"];
-			[[[self window] switchButton] setTitle:@"Rejestracja"];
+			[[[self window] switchButton] setTitle:@"Nowe konto"];
 			break;
 
-		case 'Rejestracja':
+		case 'Nowe konto':
+		// case 'Utwórz':
 			[[[self window] submitButton] setAction:@selector(register:)];
 			[[[self window] submitButton] setTarget:self];
 			
-			// [[self window] hideRePassword];
+			[[self window] animateRegister];
 			
-			[[[self window] submitButton] setTitle:@"Rejestracja"];
-			[[[self window] switchButton] setTitle:@"Zaloguj"];
+			[[[self window] submitButton] setTitle:@"Stwórz"];
+			[[[self window] switchButton] setTitle:@"Logowanie"];
 			break;
 	}
 

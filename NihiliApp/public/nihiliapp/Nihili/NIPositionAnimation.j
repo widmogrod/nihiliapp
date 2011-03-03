@@ -7,11 +7,8 @@
 @implementation NIPositionAnimation : CPAnimation
 {
 	CPWindow _window;
-	
-	float _x;
-
-	CPValue _start;
-	CPValue _end;
+	CGRect _start;
+	CGRect _end;
 }
 
 - (id)initWithWindow:(CPWindow)aWindow
@@ -21,7 +18,6 @@
 	{
 		if([aWindow respondsToSelector:@selector(frame)]){
 			_window = aWindow;
-			_x = CGRectGetMinX([aWindow frame]);
 		} else {
 			return null;
 		}
@@ -35,27 +31,41 @@
 	[super setCurrentProgress:progress];
 
 	progress = [self currentValue];	
-	progress = (progress * (_end - _start)) + _start;
 
-	[_window setFrameOrigin:CGPointMake(_x, progress)];
+
+	if (_end.origin.y != _start.origin.y || _end.origin.x != _start.origin.x)
+	{
+		var y = (progress * (_end.origin.y - _start.origin.y)) + _start.origin.y,
+			x = (progress * (_end.origin.x - _start.origin.x)) + _start.origin.x;
+		
+		[_window setFrameOrigin:CGPointMake(x, y)];
+	}
+	
+	if (_end.size.width  != _start.size.width || _end.size.height != _start.size.height) 
+	{
+		var width = (progress  * (_end.size.width  - _start.size.width))  + _start.size.width,
+			height = (progress * (_end.size.height - _start.size.height)) + _start.size.height;	
+
+		[_window setFrameSize:CGSizeMake(width, height)];
+	}
 }
 
-- (void)setStart:(float)aValue
+- (void)setStart:(CGRect)aValue
 {
 	_start = aValue;
 }
 
-- (float)start
+- (CGRect)start
 {
 	return _start;
 }
 
-- (void)setEnd:(float)aValue
+- (void)setEnd:(CGRect)aValue
 {
 	_end = aValue;
 }
 
-- (float)end
+- (CGRect)end
 {
 	return _end;
 }
