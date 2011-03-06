@@ -5,6 +5,8 @@
 
 @import "NIProjectWindow/NIProjectWindowController.j"
 
+@import "../Panels/NISitePanelController.j"
+
 @import "../Models/VOConnection.j"
 
 var SharedNIOpenWindowController = nil;
@@ -38,13 +40,13 @@ var SharedNIOpenWindowController = nil;
 			[plusButton setTarget:self];
 			[plusButton setAction:@selector(createNewConnection:)];
 			
-		var minusButton = [openWindow plusButton];
-			[minusButton setTarget:self];
-			[minusButton setAction:@selector(deleteSelectedConnection:)];
-		
-		var penButton = [openWindow penButton];
-			[penButton setTarget:self];
-			[penButton setAction:@selector(editSelectedConnection:)];
+		// var minusButton = [openWindow plusButton];
+		// 	[minusButton setTarget:self];
+		// 	[minusButton setAction:@selector(deleteSelectedConnection:)];
+		// 
+		// var penButton = [openWindow penButton];
+		// 	[penButton setTarget:self];
+		// 	[penButton setAction:@selector(editSelectedConnection:)];
 
 		var popUpButton = [openWindow popUpButton];
 			[popUpButton setTarget:self];
@@ -266,6 +268,8 @@ var SharedNIOpenWindowController = nil;
 */
 - (void)createNewConnection:(CPButton)aSender
 {
+	console.log(aSender);
+
 	var connection = [[VOConnection alloc] init];
 
 	var sitePanelController = [NISitePanelController sharedController];
