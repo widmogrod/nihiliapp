@@ -2,6 +2,8 @@
 @import <AppKit/CPTableView.j>
 @import <AppKit/CPButton.j>
 @import <AppKit/CPButtonBar.j>
+@import <AppKit/CPImage.j>
+@import <AppKit/CPImageView.j>
 @import "../NIButton.j"
 
 var SharedOpenWindow = nil;
@@ -33,12 +35,17 @@ var SharedOpenWindow = nil;
 	{
 		var contentView = [self contentView],
 			frame = [contentView frame];
+			
+		// TODO: To constants?
+		var buttonBarHeight = 25;
 
 		[self center];
 		[self setTitle:@"Otwórz stronę internetową"];
 		
+		
+		
 
-		var buttonBarHeight = 25;
+		
 		
 		var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0, 0,
 																		CGRectGetWidth(frame), 
@@ -81,6 +88,15 @@ var SharedOpenWindow = nil;
 		[scrollView setDocumentView:_tableView];
 		[contentView addSubview:scrollView];
 		
+		
+		var image = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:@"add_new_connection.png"]
+													size:CGSizeMake(248, 48)];
+
+		var imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - buttonBarHeight - 48, 248, 48)];
+			[imageView setImage:image];
+			[scrollView addSubview:imageView];
+
+		
 		var buttonBar = [[CPButtonBar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - buttonBarHeight,
 																	 CGRectGetWidth(frame), buttonBarHeight)];
 
@@ -108,9 +124,9 @@ var SharedOpenWindow = nil;
 		// plusButton = [CPButtonBar plusButton];
 		// minusButton = [CPButtonBar minusButton];
 
-		var searchField = [[CPSearchField alloc] initWithFrame: CGRectMake(160,30,250,30)];
-			[searchField setBordered: NO];
-			[searchField setBezeled: NO];
+		// var searchField = [[CPSearchField alloc] initWithFrame: CGRectMake(160,30,250,30)];
+		// 	[searchField setBordered: NO];
+		// 	[searchField setBezeled: NO];
 			
 		// var sliderField = [[CPSlider alloc] initWithFrame: CGRectMake(20,30,100,25)];
 		// 		// [sliderField setBezeled:NO];
@@ -145,7 +161,7 @@ var SharedOpenWindow = nil;
 			// minusButton,
 			// penButton,
 			popUpButton,
-			searchField
+			// searchField
 			// sliderField
 		];
 
@@ -165,20 +181,6 @@ var SharedOpenWindow = nil;
 		SharedOpenWindow = [[NIOpenWindow alloc] init];
 
 	return SharedOpenWindow;
-}
-
-@end
-
-@implementation NIOpenWindow (Actions)
-
-- (void)openSetting:(id)sender
-{
-	
-}
-
-- (void)rename:(id)sender
-{
-	
 }
 
 @end
